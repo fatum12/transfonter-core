@@ -1,0 +1,10 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Fatum12\\TransfonterCore\\": "src/"
+    },
+    "files": [
+      "src/constants.php"
+    ]
+  }
+}
