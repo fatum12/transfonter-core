@@ -8,7 +8,7 @@ class Shell
 {
 	public static function exec($command)
 	{
-		exec(escapeshellcmd($command) . ' 1> /dev/null 2> /dev/null', $output, $result);
+		exec($command . ' 2> /dev/null', $output, $result);
 
 		if ($result == 127) {
 			throw new CommandNotFound(sprintf('Command "%s" not found.', $command));

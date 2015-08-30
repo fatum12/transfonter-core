@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Transfonter demo</title>
+	<link href="<?= $stylesheet ?>" rel="stylesheet">
+	<style>
+		/*
+		http://meyerweb.com/eric/tools/css/reset/
+		v2.0 | 20110126
+		License: none (public domain)
+		*/
+		html, body, div, span, applet, object, iframe,
+		h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+		a, abbr, acronym, address, big, cite, code,
+		del, dfn, em, img, ins, kbd, q, s, samp,
+		small, strike, strong, sub, sup, tt, var,
+		b, u, i, center,
+		dl, dt, dd, ol, ul, li,
+		fieldset, form, label, legend,
+		table, caption, tbody, tfoot, thead, tr, th, td,
+		article, aside, canvas, details, embed,
+		figure, figcaption, footer, header, hgroup,
+		menu, nav, output, ruby, section, summary,
+		time, mark, audio, video {
+			margin: 0;
+			padding: 0;
+			border: 0;
+			font-size: 100%;
+			font: inherit;
+			vertical-align: baseline;
+		}
+		/* HTML5 display-role reset for older browsers */
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+		body {
+			line-height: 1;
+		}
+		ol, ul {
+			list-style: none;
+		}
+		blockquote, q {
+			quotes: none;
+		}
+		blockquote:before, blockquote:after,
+		q:before, q:after {
+			content: '';
+			content: none;
+		}
+		table {
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+		/* common styles */
+		body {
+			background: #f1f1f1;
+			color: #000;
+		}
+		.page {
+			background: #fff;
+			width: 940px;
+			margin: 0 auto;
+			padding: 20px 20px 0 20px;
+			overflow: hidden;
+		}
+		.font-container {
+			overflow-x: auto;
+			overflow-y: hidden;
+			margin-bottom: 40px;
+			line-height: 1.3;
+			white-space: nowrap;
+			padding-bottom: 5px;
+		}
+		h1 {
+			position: relative;
+			background: #444;
+			font-size: 32px;
+			color: #fff;
+			padding: 10px 20px;
+			margin: 0 -20px 10px -20px;
+		}
+		.letters {
+			font-size: 25px;
+			margin-bottom: 10px;
+		}
+		/* fonts demo styles */
+<?= $styles ?>
+
+	</style>
+</head>
+<body>
+<div class="page">
+<?= $text ?>
+
+</div>
+</body>
+</html>

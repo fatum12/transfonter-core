@@ -27,7 +27,7 @@ class Font
 		'demibold' => 600,
 		'extrabold' => 800,
 		'ultrabold' => 800,
-		'bold' => 700,
+		'bold' => 'bold',
 		'black' => 900,
 		'heavy' => 900,
 	];
@@ -131,7 +131,7 @@ class Font
 			$rows = explode("\n", $output);
 			$this->info = [];
 			foreach ($rows as $row) {
-				$delimiterPos = strpos(':', $row);
+				$delimiterPos = strpos($row, ':');
 				$key = trim(substr($row, 0, $delimiterPos));
 				$value = trim(substr($row, $delimiterPos + 1));
 

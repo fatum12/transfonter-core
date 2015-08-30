@@ -83,7 +83,7 @@ class FontConverter
 
 	protected function autohint()
 	{
-		$hinted = dirname($this->files[Font::TYPE_TTF]) . '/hinted-' . basename($this->files[Font::TYPE_TTF]);
+		$hinted = $this->dest . '/hinted-' . basename($this->files[Font::TYPE_TTF]);
 		$command = sprintf('ttfautohint  --strong-stem-width="" --windows-compatibility --composites %s %s', $this->files[Font::TYPE_TTF], $hinted);
 		Shell::exec($command);
 
@@ -95,8 +95,8 @@ class FontConverter
 
 	protected function toEOT()
 	{
-		$target = Path::uniqueFileName($this->dest . '/' . $this->font->getSafeName() . '.eot');
-		$command = sprintf('ttf2eot %s %s', $this->files[Font::TYPE_TTF], $target);
+		$target = $this->dest . '/' . Path::filename($this->files[Font::TYPE_TTF]) . '.eot';
+		$command = sprintf('ttf2eot %s > %s', $this->files[Font::TYPE_TTF], $target);
 		Shell::exec($command);
 
 		$this->files[Font::TYPE_EOT] = $target;
@@ -104,8 +104,8 @@ class FontConverter
 
 	protected function toWOFF()
 	{
-		$target = Path::uniqueFileName($this->dest . '/' . $this->font->getSafeName() . '.woff');
-		$command = sprintf('sfnt2woff %s %s', $this->files[Font::TYPE_TTF], $target);
+		$target = $this->dest . '/' . Path::filename($this->files[Font::TYPE_TTF]) . '.woff';
+		$command = sprintf('sfnt2woff %s', $this->files[Font::TYPE_TTF]);
 		Shell::exec($command);
 
 		$this->files[Font::TYPE_WOFF] = $target;
@@ -113,7 +113,7 @@ class FontConverter
 
 	protected function toWOFF2()
 	{
-		$target = dirname($this->files[Font::TYPE_TTF]) . '/' . Path::filename($this->files[Font::TYPE_TTF]) . '.woff2';
+		$target = $this->dest . '/' . Path::filename($this->files[Font::TYPE_TTF]) . '.woff2';
 		$command = sprintf('woff2_compress %s', $this->files[Font::TYPE_TTF]);
 		Shell::exec($command);
 
@@ -124,7 +124,7 @@ class FontConverter
 
 	protected function toSVG()
 	{
-		$target = Path::uniqueFileName($this->dest . '/' . $this->font->getSafeName() . '.svg');
+		$target = $this->dest . '/' . Path::filename($this->files[Font::TYPE_TTF]) . '.svg';
 		$command = sprintf('fontforge -script %s/2svg.pe %s %s', \TRANSFONTER_CORE_FONTFORGE_COMMANDS, $this->files[Font::TYPE_TTF], $target);
 		Shell::exec($command);
 
@@ -145,6 +145,6 @@ class FontConverter
 			return '';
 		}
 
-		return '';
+		return $this->font->getName();
 	}
 }
