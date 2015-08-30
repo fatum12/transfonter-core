@@ -70,7 +70,7 @@ class FontManager
 			]);
 			$demoTexts[] = Template::render('demo_item', [
 				'index' => $index,
-				'fontName' => $font->getFamilyName(),
+				'fontName' => $font->getFullName(),
 				'letters' => $demoLetters,
 				'string' => $demoString
 			]);
@@ -78,7 +78,7 @@ class FontManager
 
 		// write css file
 		file_put_contents($dest . '/' . $this->options['stylesheet_name'], Template::render('stylesheet', [
-			'css' => implode("\n", $css)
+			'css' => implode("\n\n", $css)
 		]));
 		// write demo file
 		file_put_contents($dest . '/' . $this->options['demo_name'], Template::render('demo', [
