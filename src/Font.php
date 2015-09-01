@@ -14,6 +14,14 @@ class Font
 	const TYPE_WOFF2 = 'woff2';
 	const TYPE_SVG = 'svg';
 
+	const SUBSET_LATIN = 'latin';
+	const SUBSET_LATIN_EXT = 'latin-ext';
+	const SUBSET_VIETNAMESE = 'vietnamese';
+	const SUBSET_GREEK = 'greek';
+	const SUBSET_GREEK_EXT = 'greek-ext';
+	const SUBSET_CYRILLIC = 'cyrillic';
+	const SUBSET_CYRILLIC_EXT = 'cyrillic-ext';
+
 	/**
 	 * @link http://www.w3.org/TR/css3-fonts/#font-weight-numeric-values
 	 */

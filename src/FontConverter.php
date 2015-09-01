@@ -27,6 +27,7 @@ class FontConverter
 	{
 		// ttf and eot by default
 		$this->toTTF();
+		$this->subsets();
 		if ($this->options['autohint']) {
 			$this->autohint();
 		}
@@ -146,5 +147,20 @@ class FontConverter
 		}
 
 		return $this->font->getName();
+	}
+
+	protected function subsets()
+	{
+		if (!isset($this->options['subsets']) || !is_array($this->options['subsets']) || empty($this->options['subsets'])) {
+			return;
+		}
+		$target = $this->dest . '/subset-' . basename($this->files[Font::TYPE_TTF]);
+		$command = sprintf('python %s/subset.py --subset=%s --nmr --null --roundtrip --script %s %s', \TRANSFONTER_CORE_TOOLS, implode('+', $this->options['subsets']), $this->files[Font::TYPE_TTF], $target);
+		Shell::exec($command);
+
+		if (file_exists($target)) {
+			unlink($this->files[Font::TYPE_TTF]);
+			$this->files[Font::TYPE_TTF] = $target;
+		}
 	}
 }

@@ -11,3 +11,4 @@ Used software:
 * [sfnt2woff](http://people.mozilla.org/~jkew/woff/)
 * [woff2_compress](https://github.com/google/woff2)
 * [ttfautohint](http://www.freetype.org/ttfautohint/)
+* Google subset.py script

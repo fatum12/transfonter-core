@@ -7,6 +7,8 @@ use Fatum12\TransfonterCore\Font;
 $manager = new FontManager([
 	'formats' => [Font::TYPE_WOFF, Font::TYPE_WOFF2, Font::TYPE_SVG],
 	'autohint' => true,
+	'subsets' => [Font::SUBSET_CYRILLIC],
+	'demo_language' => 'ru'
 ]);
 $manager->loadFromDir(__DIR__ . '/fonts');
 $manager->process(__DIR__ . '/output');

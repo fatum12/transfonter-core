@@ -1,3 +1,4 @@
 <?php
 defined('TRANSFONTER_CORE_TEMPLATES') or define('TRANSFONTER_CORE_TEMPLATES', __DIR__ . '/../templates');
 defined('TRANSFONTER_CORE_FONTFORGE_COMMANDS') or define('TRANSFONTER_CORE_FONTFORGE_COMMANDS', __DIR__ . '/../fontforge');
+defined('TRANSFONTER_CORE_TOOLS') or define('TRANSFONTER_CORE_TOOLS', __DIR__ . '/../tools');
