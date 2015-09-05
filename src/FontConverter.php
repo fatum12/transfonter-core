@@ -20,6 +20,7 @@ class FontConverter
 			'formats' => [Font::TYPE_WOFF, Font::TYPE_WOFF2],
 			'autohint' => false,
 			'compress_svg' => false,
+			'local' => false
 		], $options);
 	}
 
@@ -50,7 +51,10 @@ class FontConverter
 			'ttf' => basename($this->files[Font::TYPE_TTF]),
 			'eot' => basename($this->files[Font::TYPE_EOT]),
 			'weight' => $this->font->getWight(),
-			'style' => $this->font->getStyle()
+			'style' => $this->font->getStyle(),
+			'local' => $this->options['local'],
+			'localName' => $this->font->getFullName(),
+			'localPostScriptName' => $this->font->getName()
 		];
 
 		foreach ($this->options['formats'] as $format) {

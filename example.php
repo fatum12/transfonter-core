@@ -8,7 +8,8 @@ $manager = new FontManager([
 	'formats' => [Font::TYPE_WOFF, Font::TYPE_WOFF2, Font::TYPE_SVG],
 	'autohint' => true,
 	'subsets' => [Font::SUBSET_CYRILLIC],
-	'demo_language' => 'ru'
+	'demo_language' => 'ru',
+	'local' => true,
 ]);
 $manager->loadFromDir(__DIR__ . '/fonts');
 $manager->process(__DIR__ . '/output');
