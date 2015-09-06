@@ -45,7 +45,9 @@ class FontManager
 		}
 		if ($this->options['demo_language'] == 'ru') {
 			$demoLetters = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя <br />
-				АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ <br />';
+				АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ <br />
+				abcdefghijklmnopqrstuvwxyz <br />
+				ABCDEFGHIJKLMNOPQRSTUVWXYZ <br />';
 			$demoString = 'Съешь же ещё этих мягких французских булок, да выпей чаю.';
 		}
 		else {

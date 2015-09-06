@@ -64,6 +64,11 @@ class Font
 		return $this->path;
 	}
 
+	public function getFileName()
+	{
+		return basename($this->getPath());
+	}
+
 	/**
 	 * @return string Font type
 	 */
@@ -134,7 +139,7 @@ class Font
 	protected function getInfo()
 	{
 		if (!$this->info) {
-			$command = sprintf('fontforge -script %s/getFontInfo.pe %s', \TRANSFONTER_CORE_FONTFORGE_COMMANDS, $this->path);
+			$command = sprintf('fontforge -script "%s/getFontInfo.pe" "%s"', \TRANSFONTER_CORE_FONTFORGE_COMMANDS, $this->path);
 			$output = Shell::exec($command);
 			$rows = explode("\n", $output);
 			$this->info = [];
