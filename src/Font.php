@@ -56,6 +56,19 @@ class Font
 		}
 	}
 
+	public static function getSubsetsList()
+	{
+		return [
+			self::SUBSET_LATIN => 'Latin',
+			self::SUBSET_LATIN_EXT => 'Latin Extended',
+			self::SUBSET_CYRILLIC => 'Cyrillic',
+			self::SUBSET_CYRILLIC_EXT => 'Cyrillic Extended',
+			self::SUBSET_GREEK => 'Greek',
+			self::SUBSET_GREEK_EXT => 'Greek Extended',
+			self::SUBSET_VIETNAMESE => 'Vietnamese'
+		];
+	}
+
 	/**
 	 * @return string Path to font
 	 */
