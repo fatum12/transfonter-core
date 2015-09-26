@@ -1,4 +1,5 @@
 {
+  "name": "fatum12/transfonter-core",
   "autoload": {
     "psr-4": {
       "Fatum12\\TransfonterCore\\": "src/"
