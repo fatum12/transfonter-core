@@ -1,7 +1,7 @@
 @font-face {
 	font-family: '<?= $name ?>';
 	src: url('<?= $eot ?>');
-	src: <?php if ($local):?>local('<?= $localName ?>'),<?php if ($localPostScriptName != $localName):?> local('<?= $localPostScriptName ?>'),<?php endif;?>
+	src: <?php if ($local):?>local('<?= $localName ?>')<?php if ($localPostScriptName != $localName):?>, local('<?= $localPostScriptName ?>')<?php endif;?>,
 		<?php endif;?>url('<?= $eot ?>?#iefix') format('embedded-opentype'),
 <?php if (isset($woff2)):?>
 		url('<?= $woff2 ?>') format('woff2'),
