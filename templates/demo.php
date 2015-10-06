@@ -85,6 +85,49 @@
 			font-size: 25px;
 			margin-bottom: 10px;
 		}
+		.s10:before {
+			content: '10px';
+		}
+		.s11:before {
+			content: '11px';
+		}
+		.s12:before {
+			content: '12px';
+		}
+		.s14:before {
+			content: '14px';
+		}
+		.s18:before {
+			content: '18px';
+		}
+		.s24:before {
+			content: '24px';
+		}
+		.s30:before {
+			content: '30px';
+		}
+		.s36:before {
+			content: '36px';
+		}
+		.s48:before {
+			content: '48px';
+		}
+		.s60:before {
+			content: '60px';
+		}
+		.s72:before {
+			content: '72px';
+		}
+		.s10:before, .s11:before, .s12:before, .s14:before,
+		.s18:before, .s24:before, .s30:before, .s36:before,
+		.s48:before, .s60:before, .s72:before {
+			font-family: Arial, sans-serif;
+			font-size: 10px;
+			font-weight: normal;
+			font-style: normal;
+			color: #999;
+			padding-right: 6px;
+		}
 		/* fonts demo styles */
 <?= $styles ?>
 
