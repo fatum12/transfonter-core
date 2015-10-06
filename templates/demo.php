@@ -83,7 +83,7 @@
 		}
 		.letters {
 			font-size: 25px;
-			margin-bottom: 10px;
+			margin-bottom: 20px;
 		}
 		.s10:before {
 			content: '10px';
