@@ -87,7 +87,7 @@ class FontConverter
 	protected function autohint()
 	{
 		$hinted = $this->dest . '/hinted-' . basename($this->files[Font::TYPE_TTF]);
-		$command = sprintf('ttfautohint  --strong-stem-width="GD" --windows-compatibility --composites -i "%s" "%s"', $this->files[Font::TYPE_TTF], $hinted);
+		$command = sprintf('ttfautohint --strong-stem-width="" --windows-compatibility --composites -i "%s" "%s"', $this->files[Font::TYPE_TTF], $hinted);
 		Shell::exec($command);
 
 		if (file_exists($hinted)) {
