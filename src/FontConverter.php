@@ -20,7 +20,8 @@ class FontConverter
 			'formats' => [Font::TYPE_WOFF, Font::TYPE_WOFF2],
 			'autohint' => false,
 			'compress_svg' => false,
-			'local' => false
+			'local' => false,
+			'base64' => false,
 		], $options);
 	}
 
@@ -56,14 +57,25 @@ class FontConverter
 		];
 
 		foreach ($this->files as $format => $file) {
-			$data[$format] = basename($file);
+			if ($this->options['base64']) {
+				if (in_array($format, [Font::TYPE_WOFF, Font::TYPE_WOFF2])) {
+					$data[$format] = $this->base64($file);
+				} elseif ($format == Font::TYPE_TTF && !isset($this->files[Font::TYPE_WOFF]) &&
+					!isset($this->files[Font::TYPE_WOFF2])) {
+					$data[$format] = $this->base64($file);
+				} else {
+					$data[$format] = basename($file);
+				}
+			} else {
+				$data[$format] = basename($file);
+			}
 		}
 
 		if (isset($this->files[Font::TYPE_SVG])) {
 			$data['svgId'] = $this->getSVGID();
 		}
 
-		return Template::render('font_face', $data);
+		return Template::render($this->options['base64'] ? 'font_face_base64' : 'font_face', $data);
 	}
 
 	protected function toTTF()
@@ -168,5 +180,10 @@ class FontConverter
 			unlink($this->files[Font::TYPE_TTF]);
 			$this->files[Font::TYPE_TTF] = $target;
 		}
+	}
+
+	protected function base64($file)
+	{
+		return base64_encode(file_get_contents($file));
 	}
 }

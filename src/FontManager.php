@@ -49,8 +49,7 @@ class FontManager
 				abcdefghijklmnopqrstuvwxyz <br />
 				ABCDEFGHIJKLMNOPQRSTUVWXYZ <br />';
 			$demoString = 'Съешь же ещё этих мягких французских булок, да выпей чаю.';
-		}
-		else {
+		} else {
 			$demoLetters = 'abcdefghijklmnopqrstuvwxyz <br />
 				ABCDEFGHIJKLMNOPQRSTUVWXYZ <br />';
 			$demoString = 'The quick brown fox jumps over the lazy dog.';
