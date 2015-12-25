@@ -22,6 +22,8 @@ class FontConverter
 			'compress_svg' => false,
 			'local' => false,
 			'base64' => false,
+			// family support in CSS
+			'font_family' => true,
 		], $options);
 	}
 
@@ -47,10 +49,12 @@ class FontConverter
 
 	public function getCSS()
 	{
+		$useFamily = $this->options['font_family'];
+
 		$data = [
-			'name' => $this->font->getFamilyName(),
-			'weight' => $this->font->getWight(),
-			'style' => $this->font->getStyle(),
+			'name' => $useFamily ? $this->font->getFamilyName() : $this->font->getName(),
+			'weight' => $useFamily ? $this->font->getWight() : 'normal',
+			'style' => $useFamily ? $this->font->getStyle() : 'normal',
 			'local' => $this->options['local'],
 			'localName' => $this->font->getFullName(),
 			'localPostScriptName' => $this->font->getName()

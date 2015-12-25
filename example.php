@@ -10,7 +10,8 @@ $manager = new FontManager([
 	'autohint' => true,
 	'demo_language' => 'ru',
 	'local' => true,
-	'base64' => true,
+	'base64' => false,
+	'font_family' => false,
 ]);
 $manager->loadFromDir(__DIR__ . '/fonts');
 $manager->process(__DIR__ . '/output');
