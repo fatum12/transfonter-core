@@ -47,7 +47,7 @@ class FontConverter
 
 	public function getCSS()
 	{
-		$useFamily = $this->options->get('font_family');
+		$useFamily = $this->options->get('fontFamily');
 
 		$data = [
 			'name' => $useFamily ? $this->font->getFamilyName() : $this->font->getName(),

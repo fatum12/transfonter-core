@@ -18,16 +18,16 @@ class FontManager
 	public function __construct(array $options = [])
 	{
 		$this->options = new Config(array_replace([
-			'stylesheet_name' => 'stylesheet.css',
-			'demo_name' => 'demo.html',
-			'demo_language' => 'en',
+			'stylesheetName' => 'stylesheet.css',
+			'demoName' => 'demo.html',
+			'demoLanguage' => 'en',
 			'formats' => [Font::TYPE_WOFF, Font::TYPE_WOFF2],
 			'autohint' => false,
-			'compress_svg' => false,
+			'compressSvg' => false,
 			'local' => false,
 			'base64' => false,
 			// family support in CSS
-			'font_family' => true,
+			'fontFamily' => true,
 		], $options));
 	}
 
@@ -53,7 +53,7 @@ class FontManager
 		if (!is_writable($dest)) {
 			throw new ArgumentException("Directory {$dest} is not writable");
 		}
-		if ($this->options->get('demo_language') == 'ru') {
+		if ($this->options->get('demoLanguage') == 'ru') {
 			$demoLetters = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя <br />
 				АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ <br />
 				abcdefghijklmnopqrstuvwxyz <br />
@@ -88,12 +88,12 @@ class FontManager
 		}
 
 		// write css file
-		file_put_contents($dest . '/' . $this->options->get('stylesheet_name'), Template::render('stylesheet', [
+		file_put_contents($dest . '/' . $this->options->get('stylesheetName'), Template::render('stylesheet', [
 			'css' => implode("\n\n", $css)
 		]));
 		// write demo file
-		file_put_contents($dest . '/' . $this->options->get('demo_name'), Template::render('demo', [
-			'stylesheet' => $this->options->get('stylesheet_name'),
+		file_put_contents($dest . '/' . $this->options->get('demoName'), Template::render('demo', [
+			'stylesheet' => $this->options->get('stylesheetName'),
 			'styles' => implode("\n", $demoStyles),
 			'text' => implode("\n", $demoTexts),
 		]));
