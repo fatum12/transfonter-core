@@ -9,22 +9,20 @@ class FontConverter
 {
 	protected $font;
 	protected $dest;
-	protected $options = [];
+	/**
+	 * @var Config
+	 */
+	protected $options;
+	/**
+	 * @var array
+	 */
 	protected $files = [];
 
-	public function __construct(Font $font, $dest, $options = [])
+	public function __construct(Font $font, $dest, Config $options)
 	{
 		$this->font = $font;
 		$this->dest = $dest;
-		$this->options = array_replace([
-			'formats' => [Font::TYPE_WOFF, Font::TYPE_WOFF2],
-			'autohint' => false,
-			'compress_svg' => false,
-			'local' => false,
-			'base64' => false,
-			// family support in CSS
-			'font_family' => true,
-		], $options);
+		$this->options = $options;
 	}
 
 	public function convert()
@@ -32,36 +30,36 @@ class FontConverter
 		// ttf and eot by default
 		$this->toTTF();
 		$this->subsets();
-		if ($this->options['autohint']) {
+		if ($this->options->get('autohint')) {
 			$this->autohint();
 		}
 		$this->toEOT();
-		if (in_array(Font::TYPE_WOFF, $this->options['formats'])) {
+		if (in_array(Font::TYPE_WOFF, $this->options->get('formats'))) {
 			$this->toWOFF();
 		}
-		if (in_array(Font::TYPE_WOFF2, $this->options['formats'])) {
+		if (in_array(Font::TYPE_WOFF2, $this->options->get('formats'))) {
 			$this->toWOFF2();
 		}
-		if (in_array(Font::TYPE_SVG, $this->options['formats'])) {
+		if (in_array(Font::TYPE_SVG, $this->options->get('formats'))) {
 			$this->toSVG();
 		}
 	}
 
 	public function getCSS()
 	{
-		$useFamily = $this->options['font_family'];
+		$useFamily = $this->options->get('font_family');
 
 		$data = [
 			'name' => $useFamily ? $this->font->getFamilyName() : $this->font->getName(),
 			'weight' => $useFamily ? $this->font->getWight() : 'normal',
 			'style' => $useFamily ? $this->font->getStyle() : 'normal',
-			'local' => $this->options['local'],
+			'local' => $this->options->get('local'),
 			'localName' => $this->font->getFullName(),
 			'localPostScriptName' => $this->font->getName()
 		];
 
 		foreach ($this->files as $format => $file) {
-			if ($this->options['base64']) {
+			if ($this->options->get('base64')) {
 				if (in_array($format, [Font::TYPE_WOFF, Font::TYPE_WOFF2])) {
 					$data[$format] = $this->base64($file);
 				} elseif ($format == Font::TYPE_TTF && !isset($this->files[Font::TYPE_WOFF]) &&
@@ -79,7 +77,7 @@ class FontConverter
 			$data['svgId'] = $this->getSVGID();
 		}
 
-		return Template::render($this->options['base64'] ? 'font_face_base64' : 'font_face', $data);
+		return Template::render($this->options->get('base64') ? 'font_face_base64' : 'font_face', $data);
 	}
 
 	protected function toTTF()
@@ -173,11 +171,11 @@ class FontConverter
 
 	protected function subsets()
 	{
-		if (!isset($this->options['subsets']) || !is_array($this->options['subsets']) || empty($this->options['subsets'])) {
+		if (!is_array($this->options->get('subsets')) || empty($this->options->get('subsets'))) {
 			return;
 		}
 		$target = $this->dest . '/subset-' . basename($this->files[Font::TYPE_TTF]);
-		$command = sprintf('python %s/subset.py --subset=%s --nmr --null --roundtrip --script "%s" "%s"', \TRANSFONTER_CORE_TOOLS, implode('+', $this->options['subsets']), $this->files[Font::TYPE_TTF], $target);
+		$command = sprintf('python %s/subset.py --subset=%s --nmr --null --roundtrip --script "%s" "%s"', \TRANSFONTER_CORE_TOOLS, implode('+', $this->options->get('subsets')), $this->files[Font::TYPE_TTF], $target);
 		Shell::exec($command);
 
 		if (file_exists($target)) {
