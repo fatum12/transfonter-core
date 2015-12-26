@@ -21,10 +21,12 @@ class FontManager
 			'stylesheetName' => 'stylesheet.css',
 			'demoName' => 'demo.html',
 			'demoLanguage' => 'en',
-			'formats' => [Font::TYPE_WOFF, Font::TYPE_WOFF2],
+			'formats' => [Font::TYPE_WOFF, Font::TYPE_EOT, Font::TYPE_TTF],
 			'autohint' => false,
 			'compressSvg' => false,
+			// add local rule
 			'local' => false,
+			// embed font in CSS
 			'base64' => false,
 			// family support in CSS
 			'fontFamily' => true,

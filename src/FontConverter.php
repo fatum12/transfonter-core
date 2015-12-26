@@ -27,13 +27,15 @@ class FontConverter
 
 	public function convert()
 	{
-		// ttf and eot by default
+		// ttf by default
 		$this->toTTF();
 		$this->subsets();
 		if ($this->options->get('autohint')) {
 			$this->autohint();
 		}
-		$this->toEOT();
+		if (in_array(Font::TYPE_EOT, $this->options->get('formats'))) {
+			$this->toEOT();
+		}
 		if (in_array(Font::TYPE_WOFF, $this->options->get('formats'))) {
 			$this->toWOFF();
 		}
@@ -55,10 +57,14 @@ class FontConverter
 			'style' => $useFamily ? $this->font->getStyle() : 'normal',
 			'local' => $this->options->get('local'),
 			'localName' => $this->font->getFullName(),
-			'localPostScriptName' => $this->font->getName()
+			'localPostScriptName' => $this->font->getName(),
+			'eotOnly' => count($this->options->get('formats')) == 1 && in_array(Font::TYPE_EOT, $this->options->get('formats'))
 		];
 
 		foreach ($this->files as $format => $file) {
+			if ($format == Font::TYPE_TTF && !in_array(Font::TYPE_TTF, $this->options->get('formats'))) {
+				continue;
+			}
 			if ($this->options->get('base64')) {
 				if (in_array($format, [Font::TYPE_WOFF, Font::TYPE_WOFF2])) {
 					$data[$format] = $this->base64($file);
