@@ -38,4 +38,5 @@ if (isset($svg)) {
 	src: <?= implode(",\n\t\t", $rules) ?>;
 	font-weight: <?= $weight ?>;
 	font-style: <?= $style ?>;
-}<?php endif;?>
+}
+<?php endif;?>
