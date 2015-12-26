@@ -8,10 +8,10 @@ use Fatum12\TransfonterCore\TTCUnpacker;
 $manager = new FontManager([
 	'formats' => [Font::TYPE_WOFF],
 	'autohint' => false,
-	'demo_language' => 'ru',
+	'demoLanguage' => 'ru',
 	'local' => true,
 	'base64' => false,
-	'font_family' => true,
+	'fontFamily' => true,
 ]);
 $manager->loadFromDir(__DIR__ . '/fonts');
 $manager->process(__DIR__ . '/output');
