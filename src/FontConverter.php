@@ -53,7 +53,7 @@ class FontConverter
 
 		$data = [
 			'name' => $useFamily ? $this->font->getFamilyName() : $this->font->getName(),
-			'weight' => $useFamily ? $this->font->getWight() : 'normal',
+			'weight' => $useFamily ? $this->font->getWeight() : 'normal',
 			'style' => $useFamily ? $this->font->getStyle() : 'normal',
 			'local' => $this->options->get('local'),
 			'localName' => $this->font->getFullName(),

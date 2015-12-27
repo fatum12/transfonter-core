@@ -119,7 +119,7 @@ class Font
 		return $familyName;
 	}
 
-	public function getWight()
+	public function getWeight()
 	{
 		$fontInfo = $this->getInfo();
 

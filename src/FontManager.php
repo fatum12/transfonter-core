@@ -81,7 +81,7 @@ class FontManager
 			$demoStyles[] = Template::render('demo_style', [
 				'index' => $index,
 				'fontName' => $font->getFamilyName(),
-				'weight' => $font->getWight(),
+				'weight' => $font->getWeight(),
 				'style' => $font->getStyle()
 			]);
 			$demoTexts[] = Template::render('demo_item', [
