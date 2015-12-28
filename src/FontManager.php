@@ -80,9 +80,9 @@ class FontManager
 			fwrite($cssFile, $converter->getCSS());
 			$demoStyles[] = Template::render('demo_style', [
 				'index' => $index,
-				'fontName' => $font->getFamilyName(),
-				'weight' => $font->getWeight(),
-				'style' => $font->getStyle()
+				'fontName' => $this->options->get('fontFamily') ? $font->getFamilyName() : $font->getName(),
+				'weight' => $this->options->get('fontFamily') ? $font->getWeight() : 'normal',
+				'style' => $this->options->get('fontFamily') ? $font->getStyle() : 'normal'
 			]);
 			$demoTexts[] = Template::render('demo_item', [
 				'index' => $index,
