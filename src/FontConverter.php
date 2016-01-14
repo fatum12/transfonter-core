@@ -18,15 +18,21 @@ class FontConverter
 	 */
 	protected $files = [];
 
-	public function __construct(Font $font, $dest, Config $options)
+	public function __construct(Config $options)
 	{
-		$this->font = $font;
-		$this->dest = $dest;
 		$this->options = $options;
 	}
 
-	public function convert()
+	/**
+	 * @param Font $font Source font file
+	 * @param $dest Destination directory
+	 */
+	public function convert(Font $font, $dest)
 	{
+		$this->font = $font;
+		$this->dest = $dest;
+		$this->files = [];
+
 		// ttf by default
 		$this->toTTF();
 		$this->subsets();
@@ -92,8 +98,7 @@ class FontConverter
 		if ($this->font->getType() == Font::TYPE_TTF) {
 			// font is TTF - copy to new path
 			copy($this->font->getPath(), $target);
-		}
-		else {
+		} else {
 			// convert to TTF
 			$command = sprintf('fontforge -script "%s/2format.pe" "%s" "%s"', \TRANSFONTER_CORE_FONTFORGE_COMMANDS, $this->font->getPath(), $target);
 			Shell::exec($command);

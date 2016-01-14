@@ -8,9 +8,9 @@ use Fatum12\TransfonterCore\TTCUnpacker;
 $timeStart = microtime(true);
 
 $manager = new FontManager([
-	'formats' => [Font::TYPE_TTF, Font::TYPE_EOT, Font::TYPE_WOFF, Font::TYPE_WOFF2],
-	'autohint' => false,
-	'demoLanguage' => 'ru',
+	'formats' => [Font::TYPE_TTF, Font::TYPE_EOT, Font::TYPE_WOFF, Font::TYPE_WOFF2, Font::TYPE_SVG],
+	'autohint' => true,
+	'demoLanguage' => 'en',
 	'local' => true,
 	'base64' => false,
 	'fontFamily' => true,
