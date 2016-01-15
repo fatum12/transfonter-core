@@ -111,7 +111,12 @@ class FontConverter
 
 	protected function autohint()
 	{
-		$hinted = $this->dest . '/hinted-' . basename($this->files[Font::TYPE_TTF]);
+		$originalName = basename($this->files[Font::TYPE_TTF]);
+		// prevent double hinting
+		if (strpos($originalName, 'hinted-') === 0) {
+			return;
+		}
+		$hinted = $this->dest . '/hinted-' . $originalName;
 		$command = sprintf('ttfautohint --strong-stem-width="" --windows-compatibility --composites -i "%s" "%s"', $this->files[Font::TYPE_TTF], $hinted);
 		Shell::exec($command);
 
