@@ -9,6 +9,7 @@ $timeStart = microtime(true);
 
 $manager = new FontManager([
 	'formats' => [Font::TYPE_TTF, Font::TYPE_EOT, Font::TYPE_WOFF, Font::TYPE_WOFF2, Font::TYPE_SVG],
+	'subsets' => [],
 	'autohint' => true,
 	'demoLanguage' => 'en',
 	'local' => true,

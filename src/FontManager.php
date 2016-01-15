@@ -22,6 +22,7 @@ class FontManager
 			'demoName' => 'demo.html',
 			'demoLanguage' => 'en',
 			'formats' => [Font::TYPE_WOFF, Font::TYPE_EOT, Font::TYPE_TTF],
+			'subsets' => [],
 			'autohint' => false,
 			'compressSvg' => false,
 			// add local rule

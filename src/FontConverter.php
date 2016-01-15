@@ -185,8 +185,15 @@ class FontConverter
 		if (!is_array($this->options->get('subsets')) || empty($this->options->get('subsets'))) {
 			return;
 		}
+		$unicodes = [];
+		foreach ($this->options->get('subsets') as $subsetName) {
+			$unicodes = array_merge($unicodes, Font::$unicodeRanges[$subsetName]);
+		}
 		$target = $this->dest . '/subset-' . basename($this->files[Font::TYPE_TTF]);
-		$command = sprintf('python %s/subset.py --subset=%s --nmr --null --roundtrip --script "%s" "%s"', \TRANSFONTER_CORE_TOOLS, implode('+', $this->options->get('subsets')), $this->files[Font::TYPE_TTF], $target);
+		$command = sprintf("pyftsubset '%s' --unicodes=%s --ignore-missing-unicodes --output-file='%s' " .
+			"--glyph-names --symbol-cmap --legacy-cmap --notdef-glyph --notdef-outline " .
+			"--recommended-glyphs --name-IDs='*' --name-legacy --name-languages='*'", $this->files[Font::TYPE_TTF],
+			implode(',', $unicodes), $target);
 		Shell::exec($command);
 
 		if (file_exists($target)) {
