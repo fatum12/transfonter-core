@@ -1,8 +1,8 @@
 # @font-face generator
 
-Work in progress. Not ready for production. Port from https://github.com/zoltan-dulac/css3FontConverter
+Modern and simple css @font-face generator and subsetter. Based on https://github.com/zoltan-dulac/css3FontConverter
 
-This component will be use on http://transfonter.org
+This component used on http://transfonter.org
 
 Used software:
 
@@ -11,4 +11,4 @@ Used software:
 * [sfnt2woff](http://people.mozilla.org/~jkew/woff/)
 * [woff2_compress](https://github.com/google/woff2)
 * [ttfautohint](http://www.freetype.org/ttfautohint/)
-* Google subset.py script
+* [pyftsubset](https://github.com/behdad/fonttools)
