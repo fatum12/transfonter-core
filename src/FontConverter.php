@@ -203,15 +203,17 @@ class FontConverter
 			$unicodes = array_merge($unicodes, Font::$unicodeRanges[$subsetName]);
 		}
 		$target = $this->dest . '/subset-' . basename($this->files[Font::TYPE_TTF]);
+
 		$command = sprintf(
 			"pyftsubset '%s' --unicodes='%s' --text='%s' --ignore-missing-unicodes --ignore-missing-glyphs " .
 			"--output-file='%s' --glyph-names --symbol-cmap --legacy-cmap --notdef-glyph --notdef-outline " .
 			"--recommended-glyphs --name-IDs='*' --name-legacy --name-languages='*'",
 			$this->files[Font::TYPE_TTF],
 			implode(',', $unicodes),
-			$this->options->get('text', ''),
+			str_replace("'", "'\\''", $this->options->get('text', '')),
 			$target
 		);
+
 		Shell::exec($command);
 
 		if (file_exists($target)) {
