@@ -1,6 +1,7 @@
 <?php
 namespace Fatum12\TransfonterCore;
 
+use Fatum12\TransfonterCore\Exception\CommandError;
 use Fatum12\TransfonterCore\Util\Path;
 use Fatum12\TransfonterCore\Util\Shell;
 use Fatum12\TransfonterCore\Util\Template;
@@ -118,7 +119,13 @@ class FontConverter
 		}
 		$hinted = $this->dest . '/hinted-' . $originalName;
 		$command = sprintf('ttfautohint --strong-stem-width="" --windows-compatibility --composites -i "%s" "%s"', $this->files[Font::TYPE_TTF], $hinted);
-		Shell::exec($command);
+		// ignore autohint errors
+		try {
+			Shell::exec($command);
+		} catch (CommandError $e) {
+			@unlink($hinted);
+			return;
+		}
 
 		if (file_exists($hinted)) {
 			unlink($this->files[Font::TYPE_TTF]);
@@ -187,18 +194,24 @@ class FontConverter
 
 	protected function subsets()
 	{
-		if (!is_array($this->options->get('subsets')) || empty($this->options->get('subsets'))) {
+		if ((!is_array($this->options->get('subsets')) || empty($this->options->get('subsets'))) &&
+			$this->options->get('text', '') === '') {
 			return;
 		}
 		$unicodes = [];
-		foreach ($this->options->get('subsets') as $subsetName) {
+		foreach ($this->options->get('subsets', []) as $subsetName) {
 			$unicodes = array_merge($unicodes, Font::$unicodeRanges[$subsetName]);
 		}
 		$target = $this->dest . '/subset-' . basename($this->files[Font::TYPE_TTF]);
-		$command = sprintf("pyftsubset '%s' --unicodes=%s --ignore-missing-unicodes --output-file='%s' " .
-			"--glyph-names --symbol-cmap --legacy-cmap --notdef-glyph --notdef-outline " .
-			"--recommended-glyphs --name-IDs='*' --name-legacy --name-languages='*'", $this->files[Font::TYPE_TTF],
-			implode(',', $unicodes), $target);
+		$command = sprintf(
+			"pyftsubset '%s' --unicodes='%s' --text='%s' --ignore-missing-unicodes --ignore-missing-glyphs " .
+			"--output-file='%s' --glyph-names --symbol-cmap --legacy-cmap --notdef-glyph --notdef-outline " .
+			"--recommended-glyphs --name-IDs='*' --name-legacy --name-languages='*'",
+			$this->files[Font::TYPE_TTF],
+			implode(',', $unicodes),
+			$this->options->get('text', ''),
+			$target
+		);
 		Shell::exec($command);
 
 		if (file_exists($target)) {
