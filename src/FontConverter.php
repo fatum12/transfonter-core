@@ -210,7 +210,7 @@ class FontConverter
 			"--recommended-glyphs --name-IDs='*' --name-legacy --name-languages='*'",
 			$this->files[Font::TYPE_TTF],
 			implode(',', $unicodes),
-			str_replace("'", "'\\''", $this->options->get('text', '')),
+			Shell::escapeArg($this->options->get('text', '')),
 			$target
 		);
 

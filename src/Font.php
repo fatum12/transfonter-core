@@ -145,7 +145,10 @@ class Font
 
 	public function getSafeName()
 	{
-		return str_replace(' ', '_', $this->getName());
+		$safeName = str_replace(' ', '_', $this->getName());
+		$safeName = str_replace("'", '', $safeName);
+
+		return $safeName;
 	}
 
 	public function getFullName()

@@ -18,4 +18,9 @@ class Shell
 
 		return trim(implode("\n", $output));
 	}
+
+	public static function escapeArg($arg)
+	{
+		return str_replace("'", "'\\''", $arg);
+	}
 }
