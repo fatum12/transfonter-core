@@ -9,8 +9,9 @@ class Path
 		$info = pathinfo($path);
 
 		$newPath = $path;
-		$index = 1;
+		$index = 0;
 		while (file_exists($newPath)) {
+			$index++;
 			$newPath = $info['dirname'] . '/' . $info['filename'] . '_' . $index . '.' . $info['extension'];
 		}
 
