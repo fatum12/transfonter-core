@@ -158,7 +158,8 @@ class FontConverter
 	protected function toWOFF2()
 	{
 		$target = $this->dest . '/' . Path::filename($this->files[Font::TYPE_TTF]) . '.woff2';
-		$command = sprintf('woff2_compress "%s"', $this->files[Font::TYPE_TTF]);
+		// lower CPU priority
+		$command = sprintf('nice woff2_compress "%s"', $this->files[Font::TYPE_TTF]);
 		Shell::exec($command);
 
 		if (file_exists($target)) {
