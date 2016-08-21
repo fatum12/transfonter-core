@@ -178,7 +178,7 @@ class FontConverter
 		}
 	}
 
-	// TODO: compress svg font with svgo
+	// TODO: compress svg font using svgo
 	protected function compressSVG()
 	{
 
@@ -195,14 +195,21 @@ class FontConverter
 
 	protected function subsets()
 	{
-		if ((!is_array($this->options->get('subsets')) || empty($this->options->get('subsets'))) &&
-			$this->options->get('text', '') === '') {
+		$subsets = $this->options->get('subsets', []);
+		$characters = $this->options->get('text', '');
+		if (
+			empty($subsets) &&
+			$characters === ''
+		) {
 			return;
 		}
 		$unicodes = [];
-		foreach ($this->options->get('subsets', []) as $subsetName) {
+		foreach ($subsets as $subsetName) {
 			$unicodes = array_merge($unicodes, Font::$unicodeRanges[$subsetName]);
 		}
+		// always include space and newline characters
+		$characters .= " \n";
+
 		$target = $this->dest . '/subset-' . basename($this->files[Font::TYPE_TTF]);
 
 		$command = sprintf(
@@ -211,7 +218,7 @@ class FontConverter
 			"--recommended-glyphs --name-IDs='*' --name-legacy --name-languages='*'",
 			$this->files[Font::TYPE_TTF],
 			implode(',', $unicodes),
-			Shell::escapeArg($this->options->get('text', '')),
+			Shell::escapeArg($characters),
 			$target
 		);
 
