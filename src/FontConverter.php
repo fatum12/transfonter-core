@@ -119,10 +119,11 @@ class FontConverter
 		}
 		$hinted = $this->dest . '/hinted-' . $originalName;
 		$command = sprintf('ttfautohint --strong-stem-width="" --windows-compatibility --composites -i "%s" "%s"', $this->files[Font::TYPE_TTF], $hinted);
-		// ignore autohint errors
+
 		try {
 			Shell::exec($command);
 		} catch (CommandError $e) {
+			// ignore autohint errors
 			@unlink($hinted);
 			return;
 		}
@@ -222,7 +223,13 @@ class FontConverter
 			$target
 		);
 
-		Shell::exec($command);
+		try {
+			Shell::exec($command);
+		} catch (CommandError $e) {
+			// ignore subsetting errors
+			@unlink($target);
+			return;
+		}
 
 		if (file_exists($target)) {
 			unlink($this->files[Font::TYPE_TTF]);
