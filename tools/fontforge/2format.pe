@@ -1,4 +1,4 @@
-Open($1)
+Open($1, 1)
 # SetFontNames($1:r,$1:r,$1:r)
 Generate($2)
 Close()

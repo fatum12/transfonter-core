@@ -2,7 +2,7 @@ fonts = FontsInFile($1)
 n = SizeOf(fonts)
 i = 0
 while (i < n)
-	Open($1 + "(" + fonts[i] + ")")
+	Open($1 + "(" + fonts[i] + ")", 1)
 	Generate($fontname + ".ttf")
 	Print($fontname + ".ttf")
 	Close()
