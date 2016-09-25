@@ -7,8 +7,8 @@ This component used on http://transfonter.org
 Used software:
 
 * [FontForge](http://fontforge.github.io/)
-* [ttf2eot](https://code.google.com/p/ttf2eot/)
-* [sfnt2woff](http://people.mozilla.org/~jkew/woff/)
+* [ttf2eot](https://github.com/fontello/ttf2eot)
+* [ttf2woff](https://github.com/fontello/ttf2woff)
 * [woff2_compress](https://github.com/google/woff2)
 * [ttfautohint](http://www.freetype.org/ttfautohint/)
 * [pyftsubset](https://github.com/behdad/fonttools)
