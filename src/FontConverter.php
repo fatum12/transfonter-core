@@ -40,18 +40,16 @@ class FontConverter
 		if ($this->options->get('autohint')) {
 			$this->autohint();
 		}
-
-		$formats = $this->options->get('formats', []);
-		if (in_array(Font::TYPE_EOT, $formats)) {
+		if (in_array(Font::TYPE_EOT, $this->options->get('formats'))) {
 			$this->toEOT();
 		}
-		if (in_array(Font::TYPE_WOFF, $formats)) {
+		if (in_array(Font::TYPE_WOFF, $this->options->get('formats'))) {
 			$this->toWOFF();
 		}
-		if (in_array(Font::TYPE_WOFF2, $formats)) {
+		if (in_array(Font::TYPE_WOFF2, $this->options->get('formats'))) {
 			$this->toWOFF2();
 		}
-		if (in_array(Font::TYPE_SVG, $formats)) {
+		if (in_array(Font::TYPE_SVG, $this->options->get('formats'))) {
 			$this->toSVG();
 		}
 	}
@@ -139,7 +137,7 @@ class FontConverter
 	protected function toEOT()
 	{
 		$target = $this->dest . '/' . Path::filename($this->files[Font::TYPE_TTF]) . '.eot';
-		$command = sprintf('ttf2eot "%s" "%s"', $this->files[Font::TYPE_TTF], $target);
+		$command = sprintf('ttf2eot "%s" > "%s"', $this->files[Font::TYPE_TTF], $target);
 		Shell::exec($command);
 
 		if (file_exists($target)) {
@@ -150,7 +148,7 @@ class FontConverter
 	protected function toWOFF()
 	{
 		$target = $this->dest . '/' . Path::filename($this->files[Font::TYPE_TTF]) . '.woff';
-		$command = sprintf('ttf2woff "%s" "%s"', $this->files[Font::TYPE_TTF], $target);
+		$command = sprintf('sfnt2woff "%s"', $this->files[Font::TYPE_TTF]);
 		Shell::exec($command);
 
 		if (file_exists($target)) {
