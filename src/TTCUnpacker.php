@@ -1,6 +1,7 @@
 <?php
 namespace Fatum12\TransfonterCore;
 
+use Fatum12\TransfonterCore\Tools\FontForge;
 use Fatum12\TransfonterCore\Util\Shell;
 use Fatum12\TransfonterCore\Util\Path;
 
@@ -39,16 +40,11 @@ class TTCUnpacker
 	{
 		if ($dest === null) {
 			$dest = dirname($this->path);
-		}
-		else {
+		} else {
 			$dest = realpath($dest);
 		}
 
-		$oldDir = getcwd();
-		chdir($dest);
-		$command = sprintf('fontforge -script "%s/ttc2ttf.pe" "%s"', \TRANSFONTER_CORE_FONTFORGE_COMMANDS, $this->path);
-		$fonts = explode("\n", Shell::exec($command));
-		chdir($oldDir);
+		$fonts = FontForge::unpackTTC($this->path, $dest);
 
 		$files = [];
 		foreach ($fonts as $font) {

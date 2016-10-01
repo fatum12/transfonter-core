@@ -2,13 +2,25 @@
 namespace Fatum12\TransfonterCore;
 
 use Fatum12\TransfonterCore\Exception\CommandError;
+use Fatum12\TransfonterCore\Exception\FileNotFound;
+use Fatum12\TransfonterCore\Tools\FontForge;
+use Fatum12\TransfonterCore\Tools\Pyftsubset;
+use Fatum12\TransfonterCore\Tools\Sfnt2woff;
+use Fatum12\TransfonterCore\Tools\Ttf2eot;
+use Fatum12\TransfonterCore\Tools\Ttfautohint;
+use Fatum12\TransfonterCore\Tools\Woff2;
 use Fatum12\TransfonterCore\Util\Path;
-use Fatum12\TransfonterCore\Util\Shell;
 use Fatum12\TransfonterCore\Util\Template;
 
 class FontConverter
 {
+	/**
+	 * @var Font
+	 */
 	protected $font;
+	/**
+	 * @var string
+	 */
 	protected $dest;
 	/**
 	 * @var Config
@@ -40,16 +52,17 @@ class FontConverter
 		if ($this->options->get('autohint')) {
 			$this->autohint();
 		}
-		if (in_array(Font::TYPE_EOT, $this->options->get('formats'))) {
+		$formats = $this->options->get('formats', []);
+		if (in_array(Font::TYPE_EOT, $formats)) {
 			$this->toEOT();
 		}
-		if (in_array(Font::TYPE_WOFF, $this->options->get('formats'))) {
+		if (in_array(Font::TYPE_WOFF, $formats)) {
 			$this->toWOFF();
 		}
-		if (in_array(Font::TYPE_WOFF2, $this->options->get('formats'))) {
+		if (in_array(Font::TYPE_WOFF2, $formats)) {
 			$this->toWOFF2();
 		}
-		if (in_array(Font::TYPE_SVG, $this->options->get('formats'))) {
+		if (in_array(Font::TYPE_SVG, $formats)) {
 			$this->toSVG();
 		}
 	}
@@ -57,6 +70,7 @@ class FontConverter
 	public function getCSS()
 	{
 		$useFamily = $this->options->get('fontFamily');
+		$formats = $this->options->get('formats', []);
 
 		$data = [
 			'name' => $useFamily ? $this->font->getFamilyName() : $this->font->getName(),
@@ -65,11 +79,11 @@ class FontConverter
 			'local' => $this->options->get('local'),
 			'localName' => $this->font->getFullName(),
 			'localPostScriptName' => $this->font->getName(),
-			'eotOnly' => count($this->options->get('formats')) == 1 && in_array(Font::TYPE_EOT, $this->options->get('formats'))
+			'eotOnly' => count($formats) == 1 && in_array(Font::TYPE_EOT, $formats)
 		];
 
 		foreach ($this->files as $format => $file) {
-			if ($format == Font::TYPE_TTF && !in_array(Font::TYPE_TTF, $this->options->get('formats'))) {
+			if ($format == Font::TYPE_TTF && !in_array(Font::TYPE_TTF, $formats)) {
 				continue;
 			}
 			if ($this->options->get('base64')) {
@@ -101,13 +115,13 @@ class FontConverter
 			copy($this->font->getPath(), $target);
 		} else {
 			// convert to TTF
-			$command = sprintf('fontforge -script "%s/2format.pe" "%s" "%s"', \TRANSFONTER_CORE_FONTFORGE_COMMANDS, $this->font->getPath(), $target);
-			Shell::exec($command);
+			FontForge::convert($this->font->getPath(), $target);
 		}
 
-		if (file_exists($target)) {
-			$this->files[Font::TYPE_TTF] = $target;
+		if (!file_exists($target)) {
+			throw new FileNotFound($target);
 		}
+		$this->files[Font::TYPE_TTF] = $target;
 	}
 
 	protected function autohint()
@@ -118,10 +132,9 @@ class FontConverter
 			return;
 		}
 		$hinted = $this->dest . '/hinted-' . $originalName;
-		$command = sprintf('ttfautohint --strong-stem-width="" --windows-compatibility --composites -i "%s" "%s"', $this->files[Font::TYPE_TTF], $hinted);
 
 		try {
-			Shell::exec($command);
+			Ttfautohint::autohint($this->files[Font::TYPE_TTF], $hinted);
 		} catch (CommandError $e) {
 			// ignore autohint errors
 			@unlink($hinted);
@@ -137,8 +150,7 @@ class FontConverter
 	protected function toEOT()
 	{
 		$target = $this->dest . '/' . Path::filename($this->files[Font::TYPE_TTF]) . '.eot';
-		$command = sprintf('ttf2eot "%s" > "%s"', $this->files[Font::TYPE_TTF], $target);
-		Shell::exec($command);
+		Ttf2eot::convert($this->files[Font::TYPE_TTF], $target);
 
 		if (file_exists($target)) {
 			$this->files[Font::TYPE_EOT] = $target;
@@ -148,8 +160,7 @@ class FontConverter
 	protected function toWOFF()
 	{
 		$target = $this->dest . '/' . Path::filename($this->files[Font::TYPE_TTF]) . '.woff';
-		$command = sprintf('sfnt2woff "%s"', $this->files[Font::TYPE_TTF]);
-		Shell::exec($command);
+		Sfnt2woff::convert($this->files[Font::TYPE_TTF]);
 
 		if (file_exists($target)) {
 			$this->files[Font::TYPE_WOFF] = $target;
@@ -159,9 +170,7 @@ class FontConverter
 	protected function toWOFF2()
 	{
 		$target = $this->dest . '/' . Path::filename($this->files[Font::TYPE_TTF]) . '.woff2';
-		// lower CPU priority
-		$command = sprintf('nice woff2_compress "%s"', $this->files[Font::TYPE_TTF]);
-		Shell::exec($command);
+		Woff2::compress($this->files[Font::TYPE_TTF]);
 
 		if (file_exists($target)) {
 			$this->files[Font::TYPE_WOFF2] = $target;
@@ -171,8 +180,7 @@ class FontConverter
 	protected function toSVG()
 	{
 		$target = $this->dest . '/' . Path::filename($this->files[Font::TYPE_TTF]) . '.svg';
-		$command = sprintf('fontforge -script "%s/2format.pe" "%s" "%s"', \TRANSFONTER_CORE_FONTFORGE_COMMANDS, $this->files[Font::TYPE_TTF], $target);
-		Shell::exec($command);
+		FontForge::convert($this->files[Font::TYPE_TTF], $target);
 
 		if (file_exists($target)) {
 			$this->files[Font::TYPE_SVG] = $target;
@@ -187,17 +195,13 @@ class FontConverter
 
 	protected function getSVGID()
 	{
-		if (!isset($this->files[Font::TYPE_SVG])) {
-			return '';
-		}
-
 		return $this->font->getName();
 	}
 
 	protected function subsets()
 	{
 		$subsets = $this->options->get('subsets', []);
-		$characters = $this->options->get('text', '');
+		$characters = trim($this->options->get('text', ''));
 		if (
 			empty($subsets) &&
 			$characters === ''
@@ -213,25 +217,15 @@ class FontConverter
 
 		$target = $this->dest . '/subset-' . basename($this->files[Font::TYPE_TTF]);
 
-		$command = sprintf(
-			"pyftsubset '%s' --unicodes='%s' --text='%s' --ignore-missing-unicodes --ignore-missing-glyphs " .
-			"--output-file='%s' --glyph-names --symbol-cmap --legacy-cmap --notdef-glyph --notdef-outline " .
-			"--recommended-glyphs --name-IDs='*' --name-legacy --name-languages='*'",
-			$this->files[Font::TYPE_TTF],
-			implode(',', $unicodes),
-			Shell::escapeArg($characters),
-			$target
-		);
-
 		try {
-			Shell::exec($command);
+			Pyftsubset::subset($this->files[Font::TYPE_TTF], $target, $unicodes, $characters);
 		} catch (CommandError $e) {
 			// ignore subsetting errors
 			@unlink($target);
 			return;
 		}
 
-		if (file_exists($target)) {
+		if (file_exists($target) && filesize($target) > 0) {
 			unlink($this->files[Font::TYPE_TTF]);
 			$this->files[Font::TYPE_TTF] = $target;
 		}

@@ -3,7 +3,7 @@ namespace Fatum12\TransfonterCore;
 
 use Fatum12\TransfonterCore\Exception\FileNotFound;
 use Fatum12\TransfonterCore\Exception\ArgumentException;
-use Fatum12\TransfonterCore\Util\Shell;
+use Fatum12\TransfonterCore\Tools\FontForge;
 
 class Font
 {
@@ -122,7 +122,6 @@ class Font
 			self::SUBSET_TELUGU => 'Telugu',
 			self::SUBSET_THAI => 'Thai',
 			self::SUBSET_VIETNAMESE => 'Vietnamese',
-
 		];
 	}
 
@@ -184,10 +183,11 @@ class Font
 		$fontInfo = $this->getInfo();
 
 		foreach (self::$weights as $weightName => $weightValue) {
-			if ($weightName == strtolower($fontInfo['weight']) ||
+			if (
+				$weightName == strtolower($fontInfo['weight']) ||
 				stripos($fontInfo['font_name'], $weightName) ||
-				stripos($fontInfo['full_name'], $weightName)) {
-
+				stripos($fontInfo['full_name'], $weightName)
+			) {
 				return $weightValue;
 			}
 		}
@@ -199,10 +199,11 @@ class Font
 	{
 		$fontInfo = $this->getInfo();
 
-		if (stripos($fontInfo['font_name'], 'italic') ||
+		if (
+			stripos($fontInfo['font_name'], 'italic') ||
 			stripos($fontInfo['full_name'], 'italic') ||
-			$fontInfo['italic_angle'] != '0') {
-
+			$fontInfo['italic_angle'] != '0'
+		) {
 			return 'italic';
 		}
 
@@ -212,17 +213,7 @@ class Font
 	protected function getInfo()
 	{
 		if (!$this->info) {
-			$command = sprintf('fontforge -script "%s/getFontInfo.pe" "%s"', \TRANSFONTER_CORE_FONTFORGE_COMMANDS, $this->path);
-			$output = Shell::exec($command);
-			$rows = explode("\n", $output);
-			$this->info = [];
-			foreach ($rows as $row) {
-				$delimiterPos = strpos($row, ':');
-				$key = trim(substr($row, 0, $delimiterPos));
-				$value = trim(substr($row, $delimiterPos + 1));
-
-				$this->info[$key] = $value;
-			}
+			$this->info = FontForge::getFontInfo($this->getPath());
 		}
 
 		return $this->info;
