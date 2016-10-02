@@ -114,7 +114,7 @@ class FontConverter
 			// font is TTF - copy to new path
 			copy($this->font->getPath(), $target);
 		} else {
-			// convert to TTF
+			// try to convert to TTF
 			FontForge::convert($this->font->getPath(), $target);
 		}
 

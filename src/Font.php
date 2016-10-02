@@ -85,18 +85,21 @@ class Font
 
 	protected $path;
 	protected $type;
-	protected $name;
 	protected $info;
 
 	public function __construct($path)
+	{
+		$this->setPath($path);
+	}
+
+	public function setPath($path)
 	{
 		if (!is_file($path)) {
 			throw new FileNotFound("File not found: {$path}");
 		}
 		$this->path = realpath($path);
-		if (!in_array($this->getType(), [self::TYPE_TTF, self::TYPE_OTF])) {
-			throw new ArgumentException("Wrong font type: {$path}");
-		}
+		$this->type = null;
+		$this->info = null;
 	}
 
 	public static function getSubsetsList()
