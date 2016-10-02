@@ -48,8 +48,9 @@ class FontForge
 			self::COMMANDS_PATH,
 			$source
 		);
+		$output = Shell::exec($command);
 		chdir($oldDir);
 
-		return explode("\n", Shell::exec($command));
+		return explode("\n", $output);
 	}
 }
