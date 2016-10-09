@@ -161,7 +161,7 @@ class FontConverter
 	protected function toWOFF()
 	{
 		$target = $this->dest . '/' . Path::filename($this->files[Font::TYPE_TTF]) . '.woff';
-		Sfnt2woff::convert($this->files[Font::TYPE_TTF]);
+		FontForge::convert($this->files[Font::TYPE_TTF], $target);
 
 		if (file_exists($target)) {
 			$this->files[Font::TYPE_WOFF] = $target;
