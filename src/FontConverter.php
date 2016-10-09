@@ -121,6 +121,7 @@ class FontConverter
 		if (!file_exists($target)) {
 			throw new FileNotFound($target);
 		}
+		FontForge::fixMeta($target);
 		$this->files[Font::TYPE_TTF] = $target;
 	}
 
