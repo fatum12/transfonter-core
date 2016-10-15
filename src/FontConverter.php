@@ -71,12 +71,17 @@ class FontConverter
 	{
 		$useFamily = $this->options->get('fontFamily');
 		$formats = $this->options->get('formats', []);
+		$addLocalRule = $this->options->get('local', false);
+
+		if ($this->font->getType() == Font::TYPE_SVG) {
+			$addLocalRule = false;
+		}
 
 		$data = [
 			'name' => $useFamily ? $this->font->getFamilyName() : $this->font->getName(),
 			'weight' => $useFamily ? $this->font->getWeight() : 'normal',
 			'style' => $useFamily ? $this->font->getStyle() : 'normal',
-			'local' => $this->options->get('local'),
+			'local' => $addLocalRule,
 			'localName' => $this->font->getFullName(),
 			'localPostScriptName' => $this->font->getName(),
 			'eotOnly' => count($formats) == 1 && in_array(Font::TYPE_EOT, $formats)
