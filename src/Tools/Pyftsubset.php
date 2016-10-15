@@ -18,4 +18,16 @@ class Pyftsubset
 		);
 		Shell::exec($command);
 	}
+
+	public static function parseUnicodes($str)
+	{
+		$items = preg_split('/[\s\t\n,;]/', $str, -1, \PREG_SPLIT_NO_EMPTY);
+		$result = [];
+		foreach ($items as $item) {
+			if (preg_match('/^(u|U\+)?[0-9a-fA-F]{4}(\-[0-9a-fA-F]{4})?$/', $item)) {
+				$result[] = $item;
+			}
+		}
+		return $result;
+	}
 }

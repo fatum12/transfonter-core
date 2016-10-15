@@ -208,9 +208,11 @@ class FontConverter
 	{
 		$subsets = $this->options->get('subsets', []);
 		$characters = trim($this->options->get('text', ''));
+		$userUnicodes = Pyftsubset::parseUnicodes($this->options->get('unicodes', ''));
 		if (
 			empty($subsets) &&
-			$characters === ''
+			$characters === '' &&
+			empty($userUnicodes)
 		) {
 			return;
 		}
@@ -218,6 +220,7 @@ class FontConverter
 		foreach ($subsets as $subsetName) {
 			$unicodes = array_merge($unicodes, Font::$unicodeRanges[$subsetName]);
 		}
+		$unicodes = array_merge($unicodes, $userUnicodes);
 		// always include space and newline characters
 		$characters .= " \n";
 
