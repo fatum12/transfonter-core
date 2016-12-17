@@ -79,7 +79,7 @@
 			font-size: 32px;
 			color: #fff;
 			padding: 10px 20px;
-			margin: 0 -20px 10px -20px;
+			margin: 0 -20px 12px -20px;
 		}
 		.letters {
 			font-size: 25px;
@@ -127,6 +127,39 @@
 			font-style: normal;
 			color: #999;
 			padding-right: 6px;
+		}
+		pre {
+			display: block;
+			position: relative;
+			padding: 9px;
+			margin: 0 0 10px;
+			font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+			font-size: 13px;
+			line-height: 1.428571429;
+			color: #333;
+			font-weight: normal !important;
+			font-style: normal !important;
+			background-color: #f5f5f5;
+			border: 1px solid #ccc;
+			overflow-x: auto;
+			border-radius: 4px;
+		}
+		pre:after {
+			display: block;
+			position: absolute;
+			right: 0;
+			top: 0;
+			content: 'Usage';
+			line-height: 1;
+			padding: 5px 8px;
+			font-size: 12px;
+			color: #767676;
+			background-color: #fff;
+			border: 1px solid #ccc;
+			border-right: none;
+			border-top: none;
+			border-radius: 0 4px 0 4px;
+			z-index: 10;
 		}
 		/* responsive */
 		@media (max-width: 959px) {

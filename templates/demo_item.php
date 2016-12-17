@@ -1,5 +1,10 @@
 	<div class="demo-<?= $index ?>">
 		<h1><?= $fontName ?></h1>
+		<pre>.your-style {
+    font-family: '<?= $fontFamily ?>';
+    font-weight: <?= $fontWeight ?>;
+    font-style: <?= $fontStyle ?>;
+}</pre>
 		<div class="font-container">
 			<p class="letters">
 				<?= $letters ?>
