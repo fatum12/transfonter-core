@@ -60,7 +60,7 @@
 		}
 		.page {
 			background: #fff;
-			width: 940px;
+			width: 920px;
 			margin: 0 auto;
 			padding: 20px 20px 0 20px;
 			overflow: hidden;
@@ -127,6 +127,13 @@
 			font-style: normal;
 			color: #999;
 			padding-right: 6px;
+		}
+		/* responsive */
+		@media (max-width: 959px) {
+			.page {
+				width: auto;
+				margin: 0;
+			}
 		}
 		/* fonts demo styles */
 <?= $styles ?>
