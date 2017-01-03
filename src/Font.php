@@ -2,7 +2,6 @@
 namespace Fatum12\TransfonterCore;
 
 use Fatum12\TransfonterCore\Exception\FileNotFound;
-use Fatum12\TransfonterCore\Exception\ArgumentException;
 use Fatum12\TransfonterCore\Tools\FontForge;
 
 class Font
@@ -86,6 +85,18 @@ class Font
 	protected $path;
 	protected $type;
 	protected $info;
+
+	/**
+	 * Magic numbers
+	 * @var array
+	 */
+	protected static $magic = [
+		self::TYPE_TTF => "\x00\x01\x00\x00\x00",
+		self::TYPE_OTF => 'OTTO',
+		self::TYPE_WOFF => 'wOFF',
+		self::TYPE_WOFF2 => 'wOF2',
+		self::TYPE_SVG => '<?xml',
+	];
 
 	public function __construct($path)
 	{
@@ -211,6 +222,25 @@ class Font
 		}
 
 		return 'normal';
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isValid()
+	{
+		$type = $this->getType();
+
+		if (isset(self::$magic[$type])) {
+			$search = self::$magic[$type];
+			$fh = fopen($this->getPath(), 'rb');
+			$magic = fread($fh, strlen($search));
+			fclose($fh);
+
+			return $search === $magic;
+		}
+
+		return false;
 	}
 
 	protected function getInfo()
