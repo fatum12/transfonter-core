@@ -48,7 +48,7 @@ class FontManager
 		}
 		$dir = rtrim($dir, '/\\');
 
-		foreach (glob($dir . '/*.{ttf,otf,svg,woff,woff2}', \GLOB_BRACE) as $file) {
+		foreach (glob($dir . '/*.{ttf,otf,svg,woff,woff2}', \GLOB_BRACE | \GLOB_NOSORT) as $file) {
 			$this->files[] = $file;
 		}
 	}
