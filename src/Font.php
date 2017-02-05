@@ -171,8 +171,11 @@ class Font
 
 	public function getSafeName()
 	{
-		$safeName = str_replace(' ', '_', $this->getName());
-		$safeName = str_replace("'", '', $safeName);
+		$safeName = trim(preg_replace('/[^a-zA-Z0-9\s_\-]/', '', $this->getName()));
+		$safeName = preg_replace('/\s+/', '_', $safeName);
+		if ($safeName === '') {
+			$safeName = md5(uniqid());
+		}
 
 		return $safeName;
 	}
