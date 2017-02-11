@@ -4,11 +4,10 @@ Modern and simple css @font-face generator and subsetter. Based on https://githu
 
 This component used on http://transfonter.org
 
-Used software:
+## Dependencies
 
 * [FontForge](http://fontforge.github.io/)
 * [ttf2eot](https://code.google.com/p/ttf2eot/)
-* [sfnt2woff](http://people.mozilla.org/~jkew/woff/)
 * [woff2_compress](https://github.com/google/woff2)
 * [ttfautohint](http://www.freetype.org/ttfautohint/)
 * [pyftsubset](https://github.com/behdad/fonttools)
