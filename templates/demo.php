@@ -136,7 +136,7 @@
 			position: relative;
 			padding: 9px;
 			margin: 0 0 10px;
-			font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+			font-family: Monaco, Menlo, Consolas, "Courier New", monospace !important;
 			font-size: 13px;
 			line-height: 1.428571429;
 			color: #333;
@@ -171,9 +171,6 @@
 				margin: 0;
 			}
 		}
-		/* fonts demo styles */
-<?= $styles ?>
-
 	</style>
 </head>
 <body>

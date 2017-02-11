@@ -2,8 +2,6 @@
 namespace Fatum12\TransfonterCore;
 
 use Fatum12\TransfonterCore\Tools\FontForge;
-use Fatum12\TransfonterCore\Util\Shell;
-use Fatum12\TransfonterCore\Util\Path;
 
 class TTCUnpacker
 {

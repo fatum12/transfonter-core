@@ -5,7 +5,6 @@ use Fatum12\TransfonterCore\Exception\CommandError;
 use Fatum12\TransfonterCore\Exception\FileNotFound;
 use Fatum12\TransfonterCore\Tools\FontForge;
 use Fatum12\TransfonterCore\Tools\Pyftsubset;
-use Fatum12\TransfonterCore\Tools\Sfnt2woff;
 use Fatum12\TransfonterCore\Tools\Ttf2eot;
 use Fatum12\TransfonterCore\Tools\Ttfautohint;
 use Fatum12\TransfonterCore\Tools\Woff2;

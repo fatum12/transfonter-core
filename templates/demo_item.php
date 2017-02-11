@@ -1,4 +1,4 @@
-	<div class="demo-<?= $index ?>">
+	<div class="demo" style="font-family: '<?= $fontFamily ?>'; font-weight: <?= $fontWeight ?>; font-style: <?= $fontStyle ?>;">
 		<h1><?= $fontName ?></h1>
 		<pre>.your-style {
     font-family: '<?= $fontFamily ?>';
