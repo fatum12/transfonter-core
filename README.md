@@ -2,7 +2,7 @@
 
 Modern and simple css @font-face generator and subsetter. Based on https://github.com/zoltan-dulac/css3FontConverter
 
-This component used on http://transfonter.org
+This component used on https://transfonter.org
 
 ## Dependencies
 
