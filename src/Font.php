@@ -4,7 +4,7 @@ namespace Fatum12\TransfonterCore;
 use Fatum12\TransfonterCore\Exception\FileNotFound;
 use Fatum12\TransfonterCore\Tools\FontForge;
 
-class Font
+class Font extends File
 {
 	const TYPE_TTF = 'ttf';
 	const TYPE_OTF = 'otf';
@@ -82,14 +82,8 @@ class Font
 		self::SUBSET_VIETNAMESE => ['U+0102-0103', 'U+1EA0-1EF1', 'U+20AB'],
 	];
 
-	protected $path;
-	protected $type;
 	protected $info;
 
-	/**
-	 * Magic numbers
-	 * @var array
-	 */
 	protected static $magic = [
 		self::TYPE_TTF => "\x00\x01\x00\x00\x00",
 		self::TYPE_OTF => 'OTTO',
@@ -137,31 +131,6 @@ class Font
 			self::SUBSET_THAI => 'Thai',
 			self::SUBSET_VIETNAMESE => 'Vietnamese',
 		];
-	}
-
-	/**
-	 * @return string Path to font
-	 */
-	public function getPath()
-	{
-		return $this->path;
-	}
-
-	public function getFileName()
-	{
-		return basename($this->getPath());
-	}
-
-	/**
-	 * @return string Font type
-	 */
-	public function getType()
-	{
-		if (!$this->type) {
-			$this->type = strtolower(pathinfo($this->path, \PATHINFO_EXTENSION));
-		}
-
-		return $this->type;
 	}
 
 	public function getName()
@@ -225,25 +194,6 @@ class Font
 		}
 
 		return 'normal';
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isValid()
-	{
-		$type = $this->getType();
-
-		if (isset(self::$magic[$type])) {
-			$search = self::$magic[$type];
-			$fh = fopen($this->getPath(), 'rb');
-			$magic = fread($fh, strlen($search));
-			fclose($fh);
-
-			return $search === $magic;
-		}
-
-		return false;
 	}
 
 	protected function getInfo()
