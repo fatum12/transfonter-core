@@ -3,11 +3,18 @@ n = SizeOf(fonts)
 i = 0
 while (i < n)
 	Open($1 + "(" + fonts[i] + ")", 1)
+
 	index = ToString(i)
 	if (i < 10)
         index = "0" + index
 	endif
-	filename = index + "-" + $fontname + ".ttf"
+
+	ext = ".ttf"
+	if ($order == 3)
+	    ext = ".otf"
+	endif
+
+	filename = index + "-" + $fontname + ext
 	Generate(filename)
 	Print(filename)
 	Close()
