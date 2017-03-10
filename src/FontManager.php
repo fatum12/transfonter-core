@@ -19,7 +19,7 @@ class FontManager
     /**
      * @var array
      */
-	protected $strings = [];
+	protected $strings;
 
 	public function __construct(array $options = [])
 	{

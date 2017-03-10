@@ -37,7 +37,7 @@ class FontConverter
 
 	/**
 	 * @param Font $font Source font file
-	 * @param $dest Destination directory
+	 * @param string $dest Destination directory
 	 */
 	public function convert(Font $font, $dest)
 	{
@@ -217,7 +217,7 @@ class FontConverter
 		}
 		$unicodes = [];
 		foreach ($subsets as $subsetName) {
-			$unicodes = array_merge($unicodes, Font::$unicodeRanges[$subsetName]);
+			$unicodes = array_merge($unicodes, Language::$unicodeRanges[$subsetName]);
 		}
 		$unicodes = array_merge($unicodes, $userUnicodes);
 		// always include space and newline characters
