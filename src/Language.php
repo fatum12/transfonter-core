@@ -98,7 +98,7 @@ class Language
         ];
     }
 
-    public function isValidSubset($subset)
+    public static function isValidSubset($subset)
     {
         return in_array($subset, array_keys(self::getSubsetsList()));
     }
