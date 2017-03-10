@@ -1,0 +1,18 @@
+{
+  "en": {
+    "letters": [
+      "abcdefghijklmnopqrstuvwxyz",
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    ],
+    "pangram": "The quick brown fox jumps over the lazy dog."
+  },
+  "ru": {
+    "letters": [
+      "абвгдеёжзийклмнопрстуфхцчшщъыьэюя",
+      "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ",
+      "abcdefghijklmnopqrstuvwxyz",
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    ],
+    "pangram": "Съешь же ещё этих мягких французских булок, да выпей чаю."
+  }
+}

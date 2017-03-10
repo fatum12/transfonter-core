@@ -4,6 +4,7 @@ require __DIR__ . '/vendor/autoload.php';
 use Fatum12\TransfonterCore\FontManager;
 use Fatum12\TransfonterCore\Font;
 use Fatum12\TransfonterCore\TTCUnpacker;
+use Fatum12\TransfonterCore\Language;
 
 $timeStart = microtime(true);
 
@@ -11,7 +12,7 @@ $manager = new FontManager([
 	'formats' => [Font::TYPE_TTF, Font::TYPE_EOT, Font::TYPE_WOFF, Font::TYPE_WOFF2, Font::TYPE_SVG],
 	'subsets' => [Font::SUBSET_CYRILLIC, Font::SUBSET_LATIN],
 	'autohint' => true,
-	'demoLanguage' => 'en',
+	'demoLanguage' => Language::LANG_EN,
 	'local' => true,
 	'base64' => false,
 	'fontFamily' => true,

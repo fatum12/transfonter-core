@@ -16,14 +16,18 @@ class FontManager
 	 * @var array Source files
 	 */
 	protected $files = [];
+    /**
+     * @var array
+     */
+	protected $strings = [];
 
 	public function __construct(array $options = [])
 	{
 		$this->options = new Config(array_replace([
 			'stylesheetName' => 'stylesheet.css',
 			'demoName' => 'demo.html',
-			'demoLanguage' => 'en',
-			'formats' => [Font::TYPE_WOFF, Font::TYPE_EOT, Font::TYPE_TTF],
+			'demoLanguage' => Language::LANG_EN,
+			'formats' => [Font::TYPE_WOFF, Font::TYPE_WOFF2],
 			'subsets' => [],
 			'autohint' => false,
 			'compressSvg' => false,
@@ -34,6 +38,8 @@ class FontManager
 			// family support in CSS
 			'fontFamily' => true,
 		], $options));
+
+		$this->strings = json_decode(file_get_contents(__DIR__ . '/strings.json'), true);
 	}
 
 	public function add($path)
@@ -59,17 +65,13 @@ class FontManager
 			throw new ArgumentException("Directory {$dest} is not writable");
 		}
 
-		if ($this->options->get('demoLanguage') == 'ru') {
-			$demoLetters = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя <br />
-				АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ <br />
-				abcdefghijklmnopqrstuvwxyz <br />
-				ABCDEFGHIJKLMNOPQRSTUVWXYZ <br />';
-			$demoString = 'Съешь же ещё этих мягких французских булок, да выпей чаю.';
-		} else {
-			$demoLetters = 'abcdefghijklmnopqrstuvwxyz <br />
-				ABCDEFGHIJKLMNOPQRSTUVWXYZ <br />';
-			$demoString = 'The quick brown fox jumps over the lazy dog.';
-		}
+		$lang = $this->options->get('demoLanguage');
+		if (!Language::isValidLang($lang)) {
+		    $lang = Language::LANG_EN;
+        }
+
+        $demoLetters = $this->strings[$lang]['letters'];
+        $demoString = $this->strings[$lang]['pangram'];
 
 		$cssFile = fopen($dest . '/' . $this->options->get('stylesheetName'), 'w');
 
@@ -78,6 +80,8 @@ class FontManager
 
 		$demoTexts = [];
 		$converter = new FontConverter($this->options);
+
+		$useFontFamily = $this->options->get('fontFamily', false);
 
 		foreach ($this->files as $index => $file) {
 			$font = new Font($file);
@@ -98,9 +102,9 @@ class FontManager
 					'fontName' => $font->getFullName(),
 					'letters' => $demoLetters,
 					'string' => $demoString,
-					'fontFamily' => $this->options->get('fontFamily') ? $font->getFamilyName() : $font->getName(),
-					'fontWeight' => $this->options->get('fontFamily') ? $font->getWeight() : 'normal',
-					'fontStyle' => $this->options->get('fontFamily') ? $font->getStyle() : 'normal',
+					'fontFamily' => $useFontFamily ? $font->getFamilyName() : $font->getName(),
+					'fontWeight' => $useFontFamily ? $font->getWeight() : 'normal',
+					'fontStyle' => $useFontFamily ? $font->getStyle() : 'normal',
 				]);
 			} finally {
 				if ($isWoff2) {
