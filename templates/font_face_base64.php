@@ -35,7 +35,7 @@ if (isset($svg)) {
 <?php if (!empty($rules) && !$eotOnly):?>
 @font-face {
     font-family: '<?= $name ?>';
-    src: <?= implode(",\n\t\t", $rules) ?>;
+    src: <?= implode(",\n        ", $rules) ?>;
     font-weight: <?= $weight ?>;
     font-style: <?= $style ?>;
 }

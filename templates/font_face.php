@@ -29,7 +29,7 @@ if (isset($svg)) {
     src: url('<?= $eot ?>');
 <?php endif;?>
 <?php if (!empty($rules) && !$eotOnly):?>
-    src: <?= implode(",\n\t\t", $rules) ?>;
+    src: <?= implode(",\n        ", $rules) ?>;
 <?php endif;?>
     font-weight: <?= $weight ?>;
     font-style: <?= $style ?>;
