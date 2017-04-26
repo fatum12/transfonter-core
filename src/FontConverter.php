@@ -5,6 +5,7 @@ use Fatum12\TransfonterCore\Exception\CommandError;
 use Fatum12\TransfonterCore\Exception\FileNotFound;
 use Fatum12\TransfonterCore\Tools\FontForge;
 use Fatum12\TransfonterCore\Tools\Pyftsubset;
+use Fatum12\TransfonterCore\Tools\Sfnt2woff;
 use Fatum12\TransfonterCore\Tools\Ttf2eot;
 use Fatum12\TransfonterCore\Tools\Ttfautohint;
 use Fatum12\TransfonterCore\Tools\Woff2;
@@ -165,7 +166,13 @@ class FontConverter
     protected function toWOFF()
     {
         $target = $this->dest . '/' . Path::filename($this->files[Font::TYPE_TTF]) . '.woff';
-        FontForge::convert($this->files[Font::TYPE_TTF], $target);
+        try {
+            Sfnt2woff::convert($this->files[Font::TYPE_TTF]);
+        } catch (CommandError $e) {
+            // fallback
+            @unlink($target);
+            FontForge::convert($this->files[Font::TYPE_TTF], $target);
+        }
 
         if (file_exists($target)) {
             $this->files[Font::TYPE_WOFF] = $target;
