@@ -5,13 +5,13 @@ use Fatum12\TransfonterCore\Util\Shell;
 
 class Ttf2eot
 {
-	public static function convert($source, $target)
-	{
-		$command = sprintf(
-			'ttf2eot "%s" > "%s"',
-			$source,
-			$target
-		);
-		Shell::exec($command);
-	}
+    public static function convert($source, $target)
+    {
+        $command = sprintf(
+            'ttf2eot "%s" > "%s"',
+            $source,
+            $target
+        );
+        Shell::exec($command);
+    }
 }

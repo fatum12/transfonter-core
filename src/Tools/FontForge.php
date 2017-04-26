@@ -5,62 +5,62 @@ use Fatum12\TransfonterCore\Util\Shell;
 
 class FontForge
 {
-	const COMMANDS_PATH = __DIR__ . '/fontforge';
+    const COMMANDS_PATH = __DIR__ . '/fontforge';
 
-	public static function convert($source, $target)
-	{
-		$command = sprintf(
-			'fontforge -script "%s/2format.pe" "%s" "%s"',
-			self::COMMANDS_PATH,
-			$source,
-			$target
-		);
-		Shell::exec($command);
-	}
+    public static function convert($source, $target)
+    {
+        $command = sprintf(
+            'fontforge -script "%s/2format.pe" "%s" "%s"',
+            self::COMMANDS_PATH,
+            $source,
+            $target
+        );
+        Shell::exec($command);
+    }
 
-	public static function getFontInfo($fontPath)
-	{
-		$command = sprintf(
-			'fontforge -script "%s/getFontInfo.pe" "%s"',
-			self::COMMANDS_PATH,
-			$fontPath
-		);
-		$output = Shell::exec($command);
+    public static function getFontInfo($fontPath)
+    {
+        $command = sprintf(
+            'fontforge -script "%s/getFontInfo.pe" "%s"',
+            self::COMMANDS_PATH,
+            $fontPath
+        );
+        $output = Shell::exec($command);
 
-		$rows = explode("\n", $output);
-		$result = [];
-		foreach ($rows as $row) {
-			$delimiterPos = strpos($row, ':');
-			$key = trim(substr($row, 0, $delimiterPos));
-			$value = trim(substr($row, $delimiterPos + 1));
+        $rows = explode("\n", $output);
+        $result = [];
+        foreach ($rows as $row) {
+            $delimiterPos = strpos($row, ':');
+            $key = trim(substr($row, 0, $delimiterPos));
+            $value = trim(substr($row, $delimiterPos + 1));
 
-			$result[$key] = $value;
-		}
-		return $result;
-	}
+            $result[$key] = $value;
+        }
+        return $result;
+    }
 
-	public static function unpackTTC($source, $targetDir)
-	{
-		$oldDir = getcwd();
-		chdir($targetDir);
-		$command = sprintf(
-			'fontforge -script "%s/ttc2ttf.pe" "%s"',
-			self::COMMANDS_PATH,
-			$source
-		);
-		$output = Shell::exec($command);
-		chdir($oldDir);
+    public static function unpackTTC($source, $targetDir)
+    {
+        $oldDir = getcwd();
+        chdir($targetDir);
+        $command = sprintf(
+            'fontforge -script "%s/ttc2ttf.pe" "%s"',
+            self::COMMANDS_PATH,
+            $source
+        );
+        $output = Shell::exec($command);
+        chdir($oldDir);
 
-		return explode("\n", $output);
-	}
+        return explode("\n", $output);
+    }
 
-	public static function fixMeta($fontPath)
-	{
-		$command = sprintf(
-			'fontforge -script "%s/fixMeta.pe" "%s"',
-			self::COMMANDS_PATH,
-			$fontPath
-		);
-		Shell::exec($command);
-	}
+    public static function fixMeta($fontPath)
+    {
+        $command = sprintf(
+            'fontforge -script "%s/fixMeta.pe" "%s"',
+            self::COMMANDS_PATH,
+            $fontPath
+        );
+        Shell::exec($command);
+    }
 }
