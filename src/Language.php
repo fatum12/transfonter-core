@@ -100,6 +100,6 @@ class Language
 
     public static function isValidSubset($subset)
     {
-        return in_array($subset, array_keys(self::getSubsetsList()));
+        return array_key_exists($subset, self::getSubsetsList());
     }
 }
