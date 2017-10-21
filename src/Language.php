@@ -71,7 +71,7 @@ class Language
 
     public static function isValidLang($lang)
     {
-        return in_array($lang, array_keys(self::getLangList()));
+        return array_key_exists($lang, self::getLangList());
     }
 
     public static function getSubsetsList()
