@@ -23,6 +23,7 @@ class Language
     const SUBSET_LATIN = 'latin';
     const SUBSET_LATIN_EXT = 'latin-ext';
     const SUBSET_MALAYALAM = 'malayalam';
+    const SUBSET_MYANMAR = 'myanmar';
     const SUBSET_ORIYA = 'oriya';
     const SUBSET_TAMIL = 'tamil';
     const SUBSET_TELUGU = 'telugu';
@@ -52,11 +53,12 @@ class Language
         self::SUBSET_LATIN_EXT => ['U+0100-024F', 'U+1E00-1EFF', 'U+20A0-20AB', 'U+20AD-20CF', 'U+2C60-2C7F',
             'U+A720-A7FF'],
         self::SUBSET_MALAYALAM => ['U+0307', 'U+0323', 'U+0964-0965', 'U+0D02-0D7F', 'U+200B-200D', 'U+20B9', 'U+25CC'],
-        self::SUBSET_ORIYA => [''],
+        self::SUBSET_MYANMAR => ['U+1000-109F', 'U+200B-200D', 'U+25CC'],
+        self::SUBSET_ORIYA => ['U+0964-0965', 'U+0B01-0B77', 'U+200B-200D', 'U+20B9', 'U+25CC'],
         self::SUBSET_TAMIL => ['U+0964-0965', 'U+0B82-0BFA', 'U+200B-200D', 'U+20B9', 'U+25CC'],
         self::SUBSET_TELUGU => ['U+0951-0952', 'U+0964-0965', 'U+0C00-0C7F', 'U+1CDA', 'U+200C-200D', 'U+25CC'],
         self::SUBSET_THAI => ['U+0E01-0E5B', 'U+200B-200D', 'U+25CC'],
-        self::SUBSET_VIETNAMESE => ['U+0102-0103', 'U+1EA0-1EF1', 'U+20AB'],
+        self::SUBSET_VIETNAMESE => ['U+0102-0103', 'U+1EA0-1EF9', 'U+20AB'],
     ];
 
     public static function getLangList()
@@ -90,6 +92,7 @@ class Language
             self::SUBSET_KANNADA => 'Kannada',
             self::SUBSET_KHMER => 'Khmer',
             self::SUBSET_MALAYALAM => 'Malayalam',
+            self::SUBSET_MYANMAR => 'Myanmar',
             self::SUBSET_ORIYA => 'Oriya',
             self::SUBSET_TAMIL => 'Tamil',
             self::SUBSET_TELUGU => 'Telugu',
