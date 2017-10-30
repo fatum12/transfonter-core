@@ -8,7 +8,7 @@ class Ttfautohint
     public static function autohint($source, $target)
     {
         $command = sprintf(
-            'ttfautohint --strong-stem-width="" --windows-compatibility --composites -i "%s" "%s"',
+            'ttfautohint --windows-compatibility --composites -i "%s" "%s"',
             $source,
             $target
         );
