@@ -1,7 +1,6 @@
 <?php
 namespace Fatum12\TransfonterCore\Util;
 
-
 class Path
 {
     public static function uniqueFileName($path)
