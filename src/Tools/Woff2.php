@@ -14,7 +14,6 @@ class Woff2
 
     public static function decompress($source, $target = null)
     {
-        // lower CPU priority
         $command = sprintf('woff2_decompress "%s"', $source);
         Shell::exec($command);
         if ($target) {

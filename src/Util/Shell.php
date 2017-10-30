@@ -6,16 +6,16 @@ use Fatum12\TransfonterCore\Exception\CommandError;
 
 class Shell
 {
-	/**
-	 * @var callable[]
-	 */
-	private static $modifiers = [];
+    /**
+     * @var callable[]
+     */
+    private static $modifiers = [];
 
     public static function exec($command)
     {
-    	foreach (self::$modifiers as $modifier) {
-    		$command = $modifier($command);
-		}
+        foreach (self::$modifiers as $modifier) {
+            $command = $modifier($command);
+        }
 
         exec($command . ' 2> /dev/null', $output, $result);
 
@@ -34,7 +34,7 @@ class Shell
     }
 
     public function addModifier(callable $modifier)
-	{
-		self::$modifiers[] = $modifier;
-	}
+    {
+        self::$modifiers[] = $modifier;
+    }
 }
