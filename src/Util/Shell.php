@@ -33,7 +33,7 @@ class Shell
         return str_replace("'", "'\\''", $arg);
     }
 
-    public function addModifier(callable $modifier)
+    public static function addModifier(callable $modifier)
     {
         self::$modifiers[] = $modifier;
     }
