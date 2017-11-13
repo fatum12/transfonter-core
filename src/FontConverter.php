@@ -30,10 +30,15 @@ class FontConverter
      * @var array
      */
     protected $files = [];
+    /**
+     * @var ProgressTrigger
+     */
+    private $progressTrigger;
 
-    public function __construct(Config $options)
+    public function __construct(Config $options, ProgressTrigger $progressTrigger)
     {
         $this->options = $options;
+        $this->progressTrigger = $progressTrigger;
     }
 
     /**
@@ -52,18 +57,24 @@ class FontConverter
         if ($this->options->get('autohint')) {
             $this->autohint();
         }
+        $this->progressTrigger->nextStep();
+
         $formats = $this->options->get('formats', []);
         if (in_array(Font::TYPE_EOT, $formats)) {
             $this->toEOT();
+            $this->progressTrigger->nextStep();
         }
         if (in_array(Font::TYPE_WOFF, $formats)) {
             $this->toWOFF();
+            $this->progressTrigger->nextStep();
         }
         if (in_array(Font::TYPE_WOFF2, $formats)) {
             $this->toWOFF2();
+            $this->progressTrigger->nextStep();
         }
         if (in_array(Font::TYPE_SVG, $formats)) {
             $this->toSVG();
+            $this->progressTrigger->nextStep();
         }
     }
 
@@ -197,12 +208,6 @@ class FontConverter
         if (file_exists($target)) {
             $this->files[Font::TYPE_SVG] = $target;
         }
-    }
-
-    // TODO: compress svg font using svgo
-    protected function compressSVG()
-    {
-
     }
 
     protected function getSVGID()

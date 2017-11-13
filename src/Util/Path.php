@@ -18,7 +18,7 @@ class Path
     }
 
     /**
-     * @param $file Path to file
+     * @param string $file Path to file
      * @return string Name of the file without extension
      */
     public static function filename($file)
