@@ -60,6 +60,7 @@ class FontConverter
         $this->progressTrigger->nextStep();
 
         $formats = $this->options->get('formats', []);
+
         if (in_array(Font::TYPE_EOT, $formats)) {
             $this->toEOT();
             $this->progressTrigger->nextStep();
@@ -75,6 +76,11 @@ class FontConverter
         if (in_array(Font::TYPE_SVG, $formats)) {
             $this->toSVG();
             $this->progressTrigger->nextStep();
+        }
+
+        if (!in_array(Font::TYPE_TTF, $formats)) {
+            unlink($this->files[Font::TYPE_TTF]);
+            unset($this->files[Font::TYPE_TTF]);
         }
     }
 
@@ -105,8 +111,11 @@ class FontConverter
             if ($this->options->get('base64')) {
                 if (in_array($format, [Font::TYPE_WOFF, Font::TYPE_WOFF2])) {
                     $data[$format] = $this->base64($file);
-                } elseif ($format == Font::TYPE_TTF && !isset($this->files[Font::TYPE_WOFF]) &&
-                    !isset($this->files[Font::TYPE_WOFF2])) {
+                } elseif (
+                    $format == Font::TYPE_TTF &&
+                    !isset($this->files[Font::TYPE_WOFF]) &&
+                    !isset($this->files[Font::TYPE_WOFF2])
+                ) {
                     $data[$format] = $this->base64($file);
                 } else {
                     $data[$format] = basename($file);
@@ -135,7 +144,7 @@ class FontConverter
         }
 
         if (!file_exists($target)) {
-            throw new FileNotFound($target);
+            throw new FileNotFound("Can't convert to ttf: $target");
         }
         FontForge::fixMeta($target);
         $this->files[Font::TYPE_TTF] = $target;
