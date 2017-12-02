@@ -4,7 +4,7 @@ namespace Fatum12\TransfonterCore;
 use Fatum12\TransfonterCore\Exception\CommandError;
 use Fatum12\TransfonterCore\Exception\FileNotFound;
 use Fatum12\TransfonterCore\Tools\FontForge;
-use Fatum12\TransfonterCore\Tools\Pyftsubset;
+use Fatum12\TransfonterCore\Tools\FontTools;
 use Fatum12\TransfonterCore\Tools\Sfnt2woff;
 use Fatum12\TransfonterCore\Tools\Ttf2eot;
 use Fatum12\TransfonterCore\Tools\Ttfautohint;
@@ -54,6 +54,9 @@ class FontConverter
         // ttf by default
         $this->toTTF();
         $this->subsets();
+        if ($this->options->get('fixVerticalMetrics')) {
+            $this->fixVerticalMetrics();
+        }
         if ($this->options->get('autohint')) {
             $this->autohint();
         }
@@ -228,7 +231,7 @@ class FontConverter
     {
         $subsets = $this->options->get('subsets', []);
         $characters = trim($this->options->get('text', ''));
-        $userUnicodes = Pyftsubset::parseUnicodes($this->options->get('unicodes', ''));
+        $userUnicodes = FontTools::parseUnicodes($this->options->get('unicodes', ''));
         if (
             empty($subsets) &&
             $characters === '' &&
@@ -247,7 +250,7 @@ class FontConverter
         $target = $this->dest . '/subset-' . basename($this->files[Font::TYPE_TTF]);
 
         try {
-            Pyftsubset::subset($this->files[Font::TYPE_TTF], $target, $unicodes, $characters);
+            FontTools::subset($this->files[Font::TYPE_TTF], $target, $unicodes, $characters);
         } catch (CommandError $e) {
             // ignore subsetting errors
             @unlink($target);
@@ -263,5 +266,14 @@ class FontConverter
     protected function base64($file)
     {
         return base64_encode(file_get_contents($file));
+    }
+
+    protected function fixVerticalMetrics()
+    {
+        try {
+            FontTools::fixVerticalMetrics($this->files[Font::TYPE_TTF]);
+        } catch (CommandError $e) {
+            // ignore errors
+        }
     }
 }

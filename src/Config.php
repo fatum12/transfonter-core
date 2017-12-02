@@ -1,7 +1,6 @@
 <?php
 namespace Fatum12\TransfonterCore;
 
-
 class Config
 {
     protected $config;

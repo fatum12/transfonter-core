@@ -3,7 +3,7 @@ namespace Fatum12\TransfonterCore\Tools;
 
 use Fatum12\TransfonterCore\Util\Shell;
 
-class Pyftsubset
+class FontTools
 {
     public static function subset($source, $target, array $unicodes = [], $characters = '')
     {
@@ -29,5 +29,15 @@ class Pyftsubset
             }
         }
         return $result;
+    }
+
+    public static function fixVerticalMetrics($source)
+    {
+        $command = sprintf(
+            "%s --autofix '%s'",
+            __DIR__ . '/bin/gftools-fix-vertical-metrics.py',
+            $source
+        );
+        Shell::exec($command);
     }
 }

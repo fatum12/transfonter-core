@@ -41,6 +41,7 @@ class FontManager
             'base64' => false,
             // family support in CSS
             'fontFamily' => true,
+            'fixVerticalMetrics' => false,
         ], $options));
 
         $this->strings = json_decode(file_get_contents(__DIR__ . '/strings.json'), true);

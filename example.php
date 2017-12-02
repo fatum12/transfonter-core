@@ -16,6 +16,7 @@ $manager = new FontManager([
     'local' => true,
     'base64' => false,
     'fontFamily' => true,
+    'fixVerticalMetrics' => true,
 ]);
 $manager->loadFromDir(__DIR__ . '/fonts');
 $manager->process(__DIR__ . '/output');
