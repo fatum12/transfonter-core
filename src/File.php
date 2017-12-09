@@ -62,6 +62,6 @@ class File
             return $search === $magic;
         }
 
-        return false;
+        return true;
     }
 }

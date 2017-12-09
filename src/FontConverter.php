@@ -54,11 +54,11 @@ class FontConverter
         // ttf by default
         $this->toTTF();
         $this->subsets();
-        if ($this->options->get('fixVerticalMetrics')) {
-            $this->fixVerticalMetrics();
-        }
         if ($this->options->get('autohint')) {
             $this->autohint();
+        }
+        if ($this->options->get('fixVerticalMetrics')) {
+            $this->fixVerticalMetrics();
         }
         $this->progressTrigger->nextStep();
 
