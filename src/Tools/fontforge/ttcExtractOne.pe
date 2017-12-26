@@ -1,0 +1,14 @@
+# $1 - path to TTC file
+# $2 - font name
+# $3 - index
+Open($1 + "(" + $2 + ")", 1)
+
+ext = ".ttf"
+if ($order == 3)
+    ext = ".otf"
+endif
+
+filename = $fontname + "-" + $3 + ext
+Generate(filename)
+Print(filename)
+Close()

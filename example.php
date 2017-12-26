@@ -7,7 +7,7 @@ use Fatum12\TransfonterCore\TTCUnpacker;
 use Fatum12\TransfonterCore\Language;
 
 $timeStart = microtime(true);
-
+/*
 $manager = new FontManager([
     'formats' => [Font::TYPE_TTF, Font::TYPE_EOT, Font::TYPE_WOFF, Font::TYPE_WOFF2, Font::TYPE_SVG],
     'subsets' => [Language::SUBSET_CYRILLIC, Language::SUBSET_LATIN],
@@ -19,12 +19,12 @@ $manager = new FontManager([
     'fixVerticalMetrics' => true,
 ]);
 $manager->loadFromDir(__DIR__ . '/fonts');
-$manager->process(__DIR__ . '/output');
+$manager->process(__DIR__ . '/output');*/
 
-/*
-$ttc = new TTCUnpacker(__DIR__ . '/fonts/Avenir Next.ttc');
+
+$ttc = new TTCUnpacker(__DIR__ . '/fonts/Iowan Old Style.ttc');
 $ttc->unpack(__DIR__ . '/output');
-*/
+
 
 $timeEnd = microtime(true);
 

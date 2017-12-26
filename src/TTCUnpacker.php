@@ -1,6 +1,8 @@
 <?php
 namespace Fatum12\TransfonterCore;
 
+use Fatum12\TransfonterCore\Exception\ArgumentException;
+use Fatum12\TransfonterCore\Exception\FileNotFound;
 use Fatum12\TransfonterCore\Tools\FontForge;
 
 class TTCUnpacker extends File

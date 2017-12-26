@@ -1,6 +1,7 @@
 <?php
 namespace Fatum12\TransfonterCore\Tools;
 
+use Fatum12\TransfonterCore\Exception\CommandError;
 use Fatum12\TransfonterCore\Util\Shell;
 
 class FontForge
@@ -43,13 +44,55 @@ class FontForge
     {
         $oldDir = getcwd();
         chdir($targetDir);
+
+        try {
+            $command = sprintf(
+                'fontforge -script "%s/ttc2ttf.pe" "%s"',
+                self::COMMANDS_PATH,
+                $source
+            );
+            $output = Shell::exec($command);
+        } catch (CommandError $e) {
+            if ($e->getCode() == Shell::STATUS_TIMEOUT) {
+                throw $e;
+            }
+            return self::unpackTTCAlter($source);
+        } finally {
+            chdir($oldDir);
+        }
+
+        return explode("\n", $output);
+    }
+
+    private static function unpackTTCAlter($source)
+    {
+        $fonts = self::fontsInFile($source);
+        $result = [];
+
+        foreach ($fonts as $key => $font) {
+            try {
+                $command = sprintf(
+                    'fontforge -script "%s/ttcExtractOne.pe" "%s" "%s" %s',
+                    self::COMMANDS_PATH,
+                    $source,
+                    $font,
+                    str_pad($key + 1, 2, '0', \STR_PAD_LEFT)
+                );
+                $result[] = Shell::exec($command);
+            } catch (CommandError $e) {}
+        }
+
+        return $result;
+    }
+
+    public static function fontsInFile($source)
+    {
         $command = sprintf(
-            'fontforge -script "%s/ttc2ttf.pe" "%s"',
+            'fontforge -script "%s/ttcFontsList.pe" "%s"',
             self::COMMANDS_PATH,
             $source
         );
         $output = Shell::exec($command);
-        chdir($oldDir);
 
         return explode("\n", $output);
     }
