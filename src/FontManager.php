@@ -114,7 +114,9 @@ class FontManager
         if (in_array(Font::TYPE_SVG, $formats)) {
             $converter->add(new SvgProcessor());
         }
-        $converter->add(new DropTtfProcessor());
+        if (!in_array(Font::TYPE_TTF, $formats)) {
+            $converter->add(new DropTtfProcessor());
+        }
 
         $cssFile = fopen($dest . '/' . $this->options->get('stylesheetName'), 'w');
         // write header

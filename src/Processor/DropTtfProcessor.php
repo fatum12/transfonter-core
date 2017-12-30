@@ -8,9 +8,7 @@ class DropTtfProcessor implements Processor
 {
     public function process(Font $font, $dest, Storage $options, Storage $result)
     {
-        if (!in_array(Font::TYPE_TTF, $options->get('formats', []))) {
-            unlink($result->get(Font::TYPE_TTF));
-            $result->drop(Font::TYPE_TTF);
-        }
+        unlink($result->get(Font::TYPE_TTF));
+        $result->drop(Font::TYPE_TTF);
     }
 }
