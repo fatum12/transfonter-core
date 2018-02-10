@@ -52,12 +52,12 @@ class FontForge
                 $source
             );
             $output = Shell::exec($command);
-        } /*catch (CommandError $e) {
-            if ($e->getCode() == Shell::STATUS_TIMEOUT) {
-                throw $e;
+        } catch (CommandError $e) {
+            if ($e->getCode() != Shell::STATUS_TIMEOUT && filesize($source) <= 10 * 1000 * 1000) {
+                return self::unpackTTCAlter($source);
             }
-            return self::unpackTTCAlter($source);
-        }*/ finally {
+            throw $e;
+        } finally {
             chdir($oldDir);
         }
 
