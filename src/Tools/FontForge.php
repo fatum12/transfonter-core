@@ -53,7 +53,7 @@ class FontForge
             );
             $output = Shell::exec($command);
         } catch (CommandError $e) {
-            if ($e->getCode() != Shell::STATUS_TIMEOUT && filesize($source) <= 10 * 1000 * 1000) {
+            if ($e->getCode() != Shell::STATUS_TIMEOUT && filesize($source) <= 15 * 1000 * 1000) {
                 return self::unpackTTCAlter($source);
             }
             throw $e;
