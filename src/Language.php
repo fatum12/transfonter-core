@@ -23,6 +23,7 @@ class Language
     const SUBSET_MALAYALAM = 'malayalam';
     const SUBSET_MYANMAR = 'myanmar';
     const SUBSET_ORIYA = 'oriya';
+    const SUBSET_SINHALA = 'sinhala';
     const SUBSET_TAMIL = 'tamil';
     const SUBSET_TELUGU = 'telugu';
     const SUBSET_THAI = 'thai';
@@ -53,6 +54,7 @@ class Language
         self::SUBSET_MALAYALAM => ['U+0307', 'U+0323', 'U+0964-0965', 'U+0D02-0D7F', 'U+200B-200D', 'U+20B9', 'U+25CC'],
         self::SUBSET_MYANMAR => ['U+1000-109F', 'U+200B-200D', 'U+25CC'],
         self::SUBSET_ORIYA => ['U+0964-0965', 'U+0B01-0B77', 'U+200B-200D', 'U+20B9', 'U+25CC'],
+        self::SUBSET_SINHALA => ['U+0964-0965', 'U+0D82-0DF4', 'U+200C-200D', 'U+25CC'],
         self::SUBSET_TAMIL => ['U+0964-0965', 'U+0B82-0BFA', 'U+200B-200D', 'U+20B9', 'U+25CC'],
         self::SUBSET_TELUGU => ['U+0951-0952', 'U+0964-0965', 'U+0C00-0C7F', 'U+1CDA', 'U+200C-200D', 'U+25CC'],
         self::SUBSET_THAI => ['U+0E01-0E5B', 'U+200B-200D', 'U+25CC'],
@@ -92,6 +94,7 @@ class Language
             self::SUBSET_MALAYALAM => 'Malayalam',
             self::SUBSET_MYANMAR => 'Myanmar',
             self::SUBSET_ORIYA => 'Oriya',
+            self::SUBSET_SINHALA => 'Sinhala',
             self::SUBSET_TAMIL => 'Tamil',
             self::SUBSET_TELUGU => 'Telugu',
             self::SUBSET_THAI => 'Thai',
