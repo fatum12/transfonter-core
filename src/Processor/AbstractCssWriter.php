@@ -48,8 +48,8 @@ abstract class AbstractCssWriter implements Processor
             $data['svgId'] = $this->getSvgId($font);
         }
 
-        fwrite($this->file, "\n");
         fwrite($this->file, Template::render($this->getTemplateName(), $data));
+        fwrite($this->file, "\n");
     }
 
     /**

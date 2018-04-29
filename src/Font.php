@@ -81,7 +81,7 @@ class Font extends File
     public function getFamilyName()
     {
         $fontInfo = $this->getInfo();
-        $rule = implode('|', array_keys(self::$weights)) . '|italic|regular';
+        $rule = '(italic(\s|-)*)?(' . implode('|', array_keys(self::$weights)) . ')((\s|-)*italic)?|italic|regular';
         $familyName = preg_replace('/\b(' . $rule . ')$/i', '', $fontInfo['family_name']);
         $familyName = trim($familyName, ' -_');
 
