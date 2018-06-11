@@ -5,6 +5,7 @@ class Language
 {
     const LANG_EN = 'en';
     const LANG_RU = 'ru';
+    const LANG_KA = 'ka';
 
     const SUBSET_ARABIC = 'arabic';
     const SUBSET_BENGALI = 'bengali';
@@ -66,6 +67,7 @@ class Language
         return [
             self::LANG_EN => 'English',
             self::LANG_RU => 'Russian',
+            self::LANG_KA => 'Georgian',
         ];
     }
 
