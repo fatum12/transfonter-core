@@ -1,8 +1,8 @@
 # @font-face generator
 
-Modern and simple css @font-face generator and subsetter. Based on https://github.com/zoltan-dulac/css3FontConverter
+Modern and simple css @font-face generator and subsetter. Inspirited by https://github.com/zoltan-dulac/css3FontConverter
 
-This component used on https://transfonter.org
+This package is part of https://transfonter.org
 
 ## Dependencies
 
@@ -10,7 +10,7 @@ This component used on https://transfonter.org
 * [ttf2eot](https://code.google.com/p/ttf2eot/)
 * [woff2_compress](https://github.com/google/woff2)
 * [ttfautohint](http://www.freetype.org/ttfautohint/)
-* [pyftsubset](https://github.com/behdad/fonttools)
+* [pyftsubset](https://github.com/fonttools/fonttools)
 
 ## Installation
 
