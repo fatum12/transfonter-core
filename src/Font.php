@@ -1,4 +1,5 @@
 <?php
+
 namespace Fatum12\TransfonterCore;
 
 use Fatum12\TransfonterCore\Exception\FileNotFound;

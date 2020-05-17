@@ -1,7 +1,9 @@
 <?php
+
 namespace Fatum12\TransfonterCore;
 
 use Fatum12\TransfonterCore\Processor\Processor;
+use Psr\Log\LoggerInterface;
 
 class FontConverter
 {
@@ -13,10 +15,15 @@ class FontConverter
      * @var Processor[]
      */
     private $processors = [];
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
-    public function __construct(ProgressTrigger $progressTrigger)
+    public function __construct(ProgressTrigger $progressTrigger, LoggerInterface $logger)
     {
         $this->progressTrigger = $progressTrigger;
+        $this->logger = $logger;
     }
 
     /**
@@ -45,8 +52,14 @@ class FontConverter
         $result = new Storage();
 
         foreach ($this->processors as $processor) {
+            $this->logger->info('start processor ' . get_class($processor));
+
             $processor->process($font, $dest, $options, $result);
             $this->progressTrigger->nextStep();
+
+            $this->logger->info('end processor', [
+                'result' => $result->getAll(),
+            ]);
         }
     }
 }

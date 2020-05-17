@@ -1,4 +1,5 @@
 <?php
+
 namespace Fatum12\TransfonterCore\Util;
 
 use Fatum12\TransfonterCore\Exception\CommandNotFound;

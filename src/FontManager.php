@@ -1,4 +1,5 @@
 <?php
+
 namespace Fatum12\TransfonterCore;
 
 use Fatum12\TransfonterCore\Exception\ArgumentException;
@@ -17,9 +18,13 @@ use Fatum12\TransfonterCore\Processor\WoffProcessor;
 use Fatum12\TransfonterCore\Util\Template;
 use Fatum12\TransfonterCore\Tools\Woff2;
 use Fatum12\TransfonterCore\Util\Path;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
 class FontManager
 {
+    use LoggerAwareTrait;
+
     /**
      * @var Storage
      */
@@ -61,6 +66,8 @@ class FontManager
         if (!is_null($onProgress)) {
             $this->progressTrigger->onProgress($onProgress);
         }
+
+        $this->logger = new NullLogger();
     }
 
     public function add($path)
@@ -71,12 +78,12 @@ class FontManager
     public function loadFromDir($dir)
     {
         if (!is_dir($dir)) {
-            throw new ArgumentException("Wrong directory: {$dir}");
+            throw new ArgumentException("Directory not found: {$dir}");
         }
         $dir = rtrim($dir, '/\\');
 
         foreach (glob($dir . '/*.{ttf,otf,svg,woff,woff2}', \GLOB_BRACE) as $file) {
-            $this->files[] = $file;
+            $this->add($file);
         }
     }
 
@@ -85,8 +92,12 @@ class FontManager
         if (!is_writable($dest)) {
             throw new ArgumentException("Directory $dest is not writable");
         }
+        $this->logger->info('start processing', [
+            'options' => $this->options->getAll(),
+            'files' => $this->files,
+        ]);
 
-        $converter = new FontConverter($this->progressTrigger);
+        $converter = new FontConverter($this->progressTrigger, $this->logger);
 
         $converter
             ->add(new TtfProcessor())
@@ -144,11 +155,20 @@ class FontManager
 
         foreach ($this->files as $file) {
             $font = new Font($file);
+            $this->logger->info('process font', [
+                'name' => $font->getName(),
+                'path' => $font->getPath(),
+            ]);
+
             $isWoff2 = $font->getType() == Font::TYPE_WOFF2;
             if ($isWoff2) {
                 // fontforge can't work with woff2, so we need to decompress it first
-                Woff2::decompress($font->getPath());
                 $ttfFromWoff2 = dirname($font->getPath()) . '/' . Path::filename($font->getPath()) . '.ttf';
+                $this->logger->info('decompress woff2', [
+                    'source' => $font->getPath(),
+                    'target' => $ttfFromWoff2,
+                ]);
+                Woff2::decompress($font->getPath());
                 $font->setPath($ttfFromWoff2);
             }
             try {
@@ -165,16 +185,22 @@ class FontManager
             } finally {
                 if ($isWoff2) {
                     // remove decompressed woff2
+                    $this->logger->info('unlink source woff2');
                     @unlink($font->getPath());
                 }
             }
         }
 
         fclose($cssFile);
+
         // write demo file
-        file_put_contents($dest . '/' . $this->options->get('demoName'), Template::render('demo', [
+        $demoPath = $dest . '/' . $this->options->get('demoName');
+        $this->logger->info('write demo html ' . $demoPath);
+        file_put_contents($demoPath, Template::render('demo', [
             'stylesheet' => $this->options->get('stylesheetName'),
             'text' => implode("\n", $demoTexts),
         ]));
+
+        $this->logger->info('end processing');
     }
 }

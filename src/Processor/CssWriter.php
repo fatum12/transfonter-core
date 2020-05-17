@@ -1,4 +1,5 @@
 <?php
+
 namespace Fatum12\TransfonterCore\Processor;
 
 use Fatum12\TransfonterCore\Storage;
