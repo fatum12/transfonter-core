@@ -5,7 +5,19 @@ use Fatum12\TransfonterCore\FontManager;
 use Fatum12\TransfonterCore\Font;
 use Fatum12\TransfonterCore\TTCUnpacker;
 use Fatum12\TransfonterCore\Language;
+use Psr\Log\AbstractLogger;
 
+$logger = new class extends AbstractLogger {
+    public function log($level, $message, array $context = array())
+    {
+        $msg = strtoupper($level) . ': ' . $message;
+        if ($context) {
+            $msg .= ' ' . json_encode($context, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        }
+        fwrite(STDOUT,  $msg);
+        fwrite(STDOUT,  "\n");
+    }
+};
 $timeStart = microtime(true);
 
 $manager = new FontManager([
@@ -18,6 +30,7 @@ $manager = new FontManager([
     'fontFamily' => true,
     'fixVerticalMetrics' => true,
 ]);
+$manager->setLogger($logger);
 $manager->loadFromDir(__DIR__ . '/fonts');
 $manager->process(__DIR__ . '/output');
 
@@ -28,5 +41,5 @@ $ttc->unpack(__DIR__ . '/output');
 
 $timeEnd = microtime(true);
 
-echo 'Peak memory usage: ' . (memory_get_peak_usage(true) / 1000) . " KB\n";
-echo 'Execution time: ' . ($timeEnd - $timeStart) . "\n";
+$logger->info('Peak memory usage: ' . (memory_get_peak_usage(true) / 1000) . ' KB');
+$logger->info('Execution time: ' . ($timeEnd - $timeStart) . ' s');

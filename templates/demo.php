@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -57,9 +57,9 @@
             border-collapse: collapse;
             border-spacing: 0;
         }
-        /* common styles */
+        /* demo styles */
         body {
-            background: #f1f1f1;
+            background: #f0f0f0;
             color: #000;
         }
         .page {
@@ -137,12 +137,12 @@
             position: relative;
             padding: 9px;
             margin: 0 0 10px;
-            font-family: Monaco, Menlo, Consolas, "Courier New", monospace !important;
+            font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
             font-size: 13px;
             line-height: 1.428571429;
             color: #333;
-            font-weight: normal !important;
-            font-style: normal !important;
+            font-weight: normal;
+            font-style: normal;
             background-color: #f5f5f5;
             border: 1px solid #ccc;
             overflow-x: auto;
