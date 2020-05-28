@@ -3,6 +3,7 @@
 namespace Fatum12\TransfonterCore\Processor;
 
 use Fatum12\TransfonterCore\Font;
+use Fatum12\TransfonterCore\FontDisplay;
 use Fatum12\TransfonterCore\Storage;
 use Fatum12\TransfonterCore\Util\Template;
 
@@ -47,6 +48,11 @@ abstract class AbstractCssWriter implements Processor
 
         if ($result->has(Font::TYPE_SVG)) {
             $data['svgId'] = $this->getSvgId($font);
+        }
+
+        $fontDisplay = $options->get('fontDisplay');
+        if ($fontDisplay && $fontDisplay != FontDisplay::AUTO) {
+            $data['display'] = $fontDisplay;
         }
 
         fwrite($this->file, Template::render($this->getTemplateName(), $data));

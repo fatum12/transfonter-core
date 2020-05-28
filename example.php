@@ -5,6 +5,7 @@ use Fatum12\TransfonterCore\FontManager;
 use Fatum12\TransfonterCore\Font;
 use Fatum12\TransfonterCore\TTCUnpacker;
 use Fatum12\TransfonterCore\Language;
+use Fatum12\TransfonterCore\FontDisplay;
 use Psr\Log\AbstractLogger;
 
 $logger = new class extends AbstractLogger {
@@ -29,6 +30,7 @@ $manager = new FontManager([
     'base64' => false,
     'fontFamily' => true,
     'fixVerticalMetrics' => true,
+    'fontDisplay' => FontDisplay::SWAP,
 ]);
 $manager->setLogger($logger);
 $manager->loadFromDir(__DIR__ . '/fonts');

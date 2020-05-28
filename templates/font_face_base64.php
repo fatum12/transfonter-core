@@ -38,5 +38,8 @@ if (isset($svg)) {
     src: <?= implode(",\n        ", $rules) ?>;
     font-weight: <?= $weight ?>;
     font-style: <?= $style ?>;
+<?php if (isset($display)):?>
+    font-display: <?= $display ?>;
+<?php endif;?>
 }
 <?php endif;?>

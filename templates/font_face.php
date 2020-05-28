@@ -33,4 +33,7 @@ if (isset($svg)) {
 <?php endif;?>
     font-weight: <?= $weight ?>;
     font-style: <?= $style ?>;
+<?php if (isset($display)):?>
+    font-display: <?= $display ?>;
+<?php endif;?>
 }

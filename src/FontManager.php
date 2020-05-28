@@ -58,6 +58,7 @@ class FontManager
             // family support in CSS
             'fontFamily' => true,
             'fixVerticalMetrics' => false,
+            'fontDisplay' => FontDisplay::AUTO,
         ], $options));
 
         $this->strings = json_decode(file_get_contents(__DIR__ . '/strings.json'), true);
