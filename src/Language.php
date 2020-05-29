@@ -13,6 +13,7 @@ class Language
     const SUBSET_CYRILLIC = 'cyrillic';
     const SUBSET_CYRILLIC_EXT = 'cyrillic-ext';
     const SUBSET_DEVANAGARI = 'devanagari';
+    const SUBSET_GEORGIAN = 'georgian';
     const SUBSET_GREEK = 'greek';
     const SUBSET_GREEK_EXT = 'greek-ext';
     const SUBSET_GUJARATI = 'gujarati';
@@ -41,6 +42,7 @@ class Language
         self::SUBSET_CYRILLIC => ['U+0400-045F', 'U+0490-0491', 'U+04B0-04B1', 'U+2116'],
         self::SUBSET_CYRILLIC_EXT => ['U+0460-052F', 'U+1C80-1C88', 'U+20B4', 'U+2DE0-2DFF', 'U+A640-A69F', 'U+FE2E-FE2F'],
         self::SUBSET_DEVANAGARI => ['U+0900-097F', 'U+1CD0-1CF6', 'U+1CF8-1CF9', 'U+200C-200D', 'U+20A8', 'U+20B9', 'U+25CC', 'U+A830-A839', 'U+A8E0-A8FB'],
+        self::SUBSET_GEORGIAN => ['U+10A0-10FF'],
         self::SUBSET_GREEK => ['U+0370-03FF'],
         self::SUBSET_GREEK_EXT => ['U+1F00-1FFF'],
         self::SUBSET_GUJARATI => ['U+0964-0965', 'U+0A80-0AFF', 'U+200C-200D', 'U+20B9', 'U+25CC', 'U+A830-A839'],
@@ -78,13 +80,12 @@ class Language
     public static function getSubsetsList()
     {
         return [
-            self::SUBSET_LATIN => 'Latin',
-            self::SUBSET_LATIN_EXT => 'Latin Extended',
             self::SUBSET_ARABIC => 'Arabic',
             self::SUBSET_BENGALI => 'Bengali',
             self::SUBSET_CYRILLIC => 'Cyrillic',
             self::SUBSET_CYRILLIC_EXT => 'Cyrillic Extended',
             self::SUBSET_DEVANAGARI => 'Devanagari',
+            self::SUBSET_GEORGIAN => 'Georgian',
             self::SUBSET_GREEK => 'Greek',
             self::SUBSET_GREEK_EXT => 'Greek Extended',
             self::SUBSET_GUJARATI => 'Gujarati',
@@ -92,6 +93,8 @@ class Language
             self::SUBSET_HEBREW => 'Hebrew',
             self::SUBSET_KANNADA => 'Kannada',
             self::SUBSET_KHMER => 'Khmer',
+            self::SUBSET_LATIN => 'Latin',
+            self::SUBSET_LATIN_EXT => 'Latin Extended',
             self::SUBSET_MALAYALAM => 'Malayalam',
             self::SUBSET_MYANMAR => 'Myanmar',
             self::SUBSET_ORIYA => 'Oriya',
