@@ -1,9 +1,11 @@
 <?php
+use function Fatum12\TransfonterCore\Util\escape;
+
 $rules = [];
 if ($local) {
-    $localStr = "local('{$localName}')";
+    $localStr = "local('" . escape($localName) . "')";
     if ($localPostScriptName != $localName) {
-        $localStr .= ", local('{$localPostScriptName}')";
+        $localStr .= ", local('" . escape($localPostScriptName) . "')";
     }
     $rules[] = $localStr;
 }
@@ -20,11 +22,11 @@ if (isset($ttf)) {
     $rules[] = "url('{$ttf}') format('truetype')";
 }
 if (isset($svg)) {
-    $rules[] = "url('{$svg}#{$svgId}') format('svg')";
+    $rules[] = "url('{$svg}#" . escape($svgId) . "') format('svg')";
 }
 ?>
 @font-face {
-    font-family: '<?= $name ?>';
+    font-family: '<?= escape($name) ?>';
 <?php if (isset($eot)):?>
     src: url('<?= $eot ?>');
 <?php endif;?>

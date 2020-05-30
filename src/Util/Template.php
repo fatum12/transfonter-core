@@ -26,3 +26,7 @@ class Template
         return $templatePath;
     }
 }
+
+function escape($str) {
+    return str_replace(["'", '"'], ["\\'", '\\"'], $str);
+}

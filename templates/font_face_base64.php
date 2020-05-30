@@ -1,9 +1,11 @@
 <?php
+use function Fatum12\TransfonterCore\Util\escape;
+
 $rules = [];
 if ($local) {
-    $localStr = "local('{$localName}')";
+    $localStr = "local('" . escape($localName) . "')";
     if ($localPostScriptName != $localName) {
-        $localStr .= ", local('{$localPostScriptName}')";
+        $localStr .= ", local('" . escape($localPostScriptName) . "')";
     }
     $rules[] = $localStr;
 }
@@ -21,12 +23,12 @@ if (isset($ttf)) {
     }
 }
 if (isset($svg)) {
-    $rules[] = "url('{$svg}#{$svgId}') format('svg')";
+    $rules[] = "url('{$svg}#" . escape($svgId) . "') format('svg')";
 }
 ?>
 <?php if (isset($eot)):?>
 @font-face {
-    font-family: '<?= $name ?>';
+    font-family: '<?= escape($name) ?>';
     src: url('<?= $eot ?>');
     font-weight: <?= $weight ?>;
     font-style: <?= $style ?>;
@@ -34,7 +36,7 @@ if (isset($svg)) {
 <?php endif;?>
 <?php if (!empty($rules) && !$eotOnly):?>
 @font-face {
-    font-family: '<?= $name ?>';
+    font-family: '<?= escape($name) ?>';
     src: <?= implode(",\n        ", $rules) ?>;
     font-weight: <?= $weight ?>;
     font-style: <?= $style ?>;

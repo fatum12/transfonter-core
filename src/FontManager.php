@@ -130,7 +130,11 @@ class FontManager
             $converter->add(new DropTtfProcessor());
         }
 
-        $cssFile = fopen($dest . '/' . $this->options->get('stylesheetName'), 'w');
+        $cssPath = $dest . '/' . $this->options->get('stylesheetName');
+        $cssFile = fopen($cssPath, 'wb');
+        if ($cssFile === false) {
+            throw new ArgumentException("Can't open file for writing: $cssPath");
+        }
         if ($this->options->get('base64')) {
             $converter->add(new Base64CssWriter($cssFile));
         } else {

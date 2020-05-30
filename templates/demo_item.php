@@ -1,11 +1,14 @@
+<?php
+use function Fatum12\TransfonterCore\Util\escape;
+?>
     <div class="demo">
-        <h1 style="font-family: '<?= $fontFamily ?>'; font-weight: <?= $fontWeight ?>; font-style: <?= $fontStyle ?>;"><?= $fontName ?></h1>
+        <h1 style="font-family: '<?= escape($fontFamily) ?>'; font-weight: <?= $fontWeight ?>; font-style: <?= $fontStyle ?>;"><?= $fontName ?></h1>
         <pre>.your-style {
-    font-family: '<?= $fontFamily ?>';
+    font-family: '<?= escape($fontFamily) ?>';
     font-weight: <?= $fontWeight ?>;
     font-style: <?= $fontStyle ?>;
 }</pre>
-        <div class="font-container" style="font-family: '<?= $fontFamily ?>'; font-weight: <?= $fontWeight ?>; font-style: <?= $fontStyle ?>;">
+        <div class="font-container" style="font-family: '<?= escape($fontFamily) ?>'; font-weight: <?= $fontWeight ?>; font-style: <?= $fontStyle ?>;">
             <p class="letters">
                 <?= implode("<br>\n", $letters) ?><br>
                 0123456789.:,;()*!?'@#<>$%&^+-=~

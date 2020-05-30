@@ -6,6 +6,7 @@ use Fatum12\TransfonterCore\Font;
 use Fatum12\TransfonterCore\TTCUnpacker;
 use Fatum12\TransfonterCore\Language;
 use Fatum12\TransfonterCore\FontDisplay;
+use Fatum12\TransfonterCore\Util\Shell;
 use Psr\Log\AbstractLogger;
 
 $logger = new class extends AbstractLogger {
@@ -19,8 +20,12 @@ $logger = new class extends AbstractLogger {
         fwrite(STDOUT,  "\n");
     }
 };
-$timeStart = microtime(true);
+Shell::addModifier(function ($cmd) use ($logger) {
+    $logger->info("exec: {$cmd}");
+    return $cmd;
+});
 
+$timeStart = microtime(true);
 $manager = new FontManager([
     'formats' => [Font::TYPE_TTF, Font::TYPE_EOT, Font::TYPE_WOFF, Font::TYPE_WOFF2, Font::TYPE_SVG],
     'subsets' => [Language::SUBSET_CYRILLIC, Language::SUBSET_LATIN],
