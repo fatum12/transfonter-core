@@ -7,6 +7,7 @@ use Fatum12\TransfonterCore\Storage;
 use Fatum12\TransfonterCore\Tools\FontTools;
 use Fatum12\TransfonterCore\Language;
 use Fatum12\TransfonterCore\Exception\CommandError;
+use Fatum12\TransfonterCore\Util\Path;
 
 class SubsetsProcessor implements Processor
 {
@@ -33,7 +34,7 @@ class SubsetsProcessor implements Processor
         $characters .= " \n";
 
         $ttfPath = $result->get(Font::TYPE_TTF);
-        $target = $dest . '/subset-' . basename($ttfPath);
+        $target = Path::uniqueFileName($dest . '/subset-' . basename($ttfPath));
 
         try {
             FontTools::subset($ttfPath, $target, $unicodes, $characters);

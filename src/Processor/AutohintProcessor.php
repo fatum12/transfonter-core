@@ -6,6 +6,7 @@ use Fatum12\TransfonterCore\Font;
 use Fatum12\TransfonterCore\Storage;
 use Fatum12\TransfonterCore\Tools\Ttfautohint;
 use Fatum12\TransfonterCore\Exception\CommandError;
+use Fatum12\TransfonterCore\Util\Path;
 
 class AutohintProcessor implements Processor
 {
@@ -18,7 +19,7 @@ class AutohintProcessor implements Processor
         if (strpos($originalName, 'hinted-') === 0) {
             return;
         }
-        $hinted = $dest . '/hinted-' . $originalName;
+        $hinted = Path::uniqueFileName($dest . '/hinted-' . $originalName);
 
         try {
             Ttfautohint::autohint($ttfPath, $hinted);
