@@ -19,19 +19,19 @@ class AutohintProcessor implements Processor
         if (strpos($originalName, 'hinted-') === 0) {
             return;
         }
-        $hinted = Path::uniqueFileName($dest . '/hinted-' . $originalName);
+        $hintedPath = Path::uniqueFileName($dest . '/hinted-' . $originalName);
 
         try {
-            Ttfautohint::autohint($ttfPath, $hinted);
+            Ttfautohint::autohint($ttfPath, $hintedPath);
         } catch (CommandError $e) {
             // ignore autohint errors
-            @unlink($hinted);
+            @unlink($hintedPath);
             return;
         }
 
-        if (file_exists($hinted)) {
+        if (file_exists($hintedPath)) {
             unlink($ttfPath);
-            $result->set(Font::TYPE_TTF, $hinted);
+            $result->set(Font::TYPE_TTF, $hintedPath);
         }
     }
 }

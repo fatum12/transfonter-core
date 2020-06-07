@@ -6,6 +6,7 @@ use Fatum12\TransfonterCore\Font;
 use Fatum12\TransfonterCore\TTCUnpacker;
 use Fatum12\TransfonterCore\Language;
 use Fatum12\TransfonterCore\FontDisplay;
+use Fatum12\TransfonterCore\Hinting;
 use Fatum12\TransfonterCore\Util\Shell;
 use Psr\Log\AbstractLogger;
 
@@ -29,7 +30,7 @@ $timeStart = microtime(true);
 $manager = new FontManager([
     'formats' => [Font::TYPE_TTF, Font::TYPE_EOT, Font::TYPE_WOFF, Font::TYPE_WOFF2, Font::TYPE_SVG],
     'subsets' => [Language::SUBSET_CYRILLIC, Language::SUBSET_LATIN],
-    'autohint' => true,
+    'hinting' => Hinting::TTFAUTOHINT,
     'demoLanguage' => Language::LANG_EN,
     'local' => true,
     'base64' => false,

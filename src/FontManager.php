@@ -6,6 +6,7 @@ use Fatum12\TransfonterCore\Exception\ArgumentException;
 use Fatum12\TransfonterCore\Processor\AutohintProcessor;
 use Fatum12\TransfonterCore\Processor\Base64CssWriter;
 use Fatum12\TransfonterCore\Processor\CssWriter;
+use Fatum12\TransfonterCore\Processor\DehintProcessor;
 use Fatum12\TransfonterCore\Processor\DropTtfProcessor;
 use Fatum12\TransfonterCore\Processor\EotProcessor;
 use Fatum12\TransfonterCore\Processor\FixMetaProcessor;
@@ -50,7 +51,9 @@ class FontManager
             'demoLanguage' => Language::LANG_EN,
             'formats' => [Font::TYPE_WOFF, Font::TYPE_WOFF2],
             'subsets' => [],
+            // keep for backward compatibility
             'autohint' => false,
+            'hinting' => Hinting::KEEP_EXISTING,
             // add local rule
             'local' => false,
             // embed font in CSS
@@ -106,9 +109,13 @@ class FontManager
             ->add(new SubsetsProcessor())
         ;
 
-        if ($this->options->get('autohint')) {
+        $hinting = $this->options->get('hinting');
+        if ($this->options->get('autohint') || $hinting === Hinting::TTFAUTOHINT) {
             $converter->add(new AutohintProcessor());
+        } elseif ($hinting === Hinting::DEHINT) {
+            $converter->add(new DehintProcessor());
         }
+
         if ($this->options->get('fixVerticalMetrics')) {
             $converter->add(new FixVerticalMetricsProcessor());
         }

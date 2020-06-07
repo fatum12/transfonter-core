@@ -15,4 +15,10 @@ class Ttfautohint
         );
         Shell::exec($command);
     }
+
+    public static function dehint($source, $target)
+    {
+        $command = sprintf('ttfautohint -i --dehint "%s" "%s"', $source, $target);
+        Shell::exec($command);
+    }
 }
