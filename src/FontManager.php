@@ -167,10 +167,6 @@ class FontManager
 
         foreach ($this->files as $file) {
             $font = new Font($file);
-            $this->logger->info('process font', [
-                'name' => $font->getName(),
-                'path' => $font->getPath(),
-            ]);
 
             $isWoff2 = $font->getType() == Font::TYPE_WOFF2;
             if ($isWoff2) {
@@ -183,6 +179,12 @@ class FontManager
                 Woff2::decompress($font->getPath());
                 $font->setPath($ttfFromWoff2);
             }
+
+            $this->logger->info('process font', [
+                'name' => $font->getName(),
+                'path' => $font->getPath(),
+            ]);
+
             try {
                 $converter->convert($font, $dest, $this->options);
 
