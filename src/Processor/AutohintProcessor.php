@@ -24,7 +24,7 @@ class AutohintProcessor implements Processor
         try {
             Ttfautohint::autohint($ttfPath, $hintedPath);
         } catch (CommandError $e) {
-            // ignore autohint errors
+            // ignore hinting errors
             @unlink($hintedPath);
             return;
         }

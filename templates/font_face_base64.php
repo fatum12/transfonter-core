@@ -10,17 +10,13 @@ if ($local) {
     $rules[] = $localStr;
 }
 if (isset($woff2)) {
-    $rules[] = "url(data:application/font-woff2;charset=utf-8;base64,{$woff2}) format('woff2')";
+    $rules[] = "url('{$woff2}') format('woff2')";
 }
 if (isset($woff)) {
-    $rules[] = "url(data:application/font-woff;charset=utf-8;base64,{$woff}) format('woff')";
+    $rules[] = "url('{$woff}') format('woff')";
 }
 if (isset($ttf)) {
-    if (isset($woff2) || isset($woff)) {
-        $rules[] = "url('{$ttf}') format('truetype')";
-    } else {
-        $rules[] = "url(data:font/truetype;charset=utf-8;base64,{$ttf}) format('truetype')";
-    }
+    $rules[] = "url('{$ttf}') format('truetype')";
 }
 if (isset($svg)) {
     $rules[] = "url('{$svg}#" . escape($svgId) . "') format('svg')";
