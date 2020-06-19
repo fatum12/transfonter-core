@@ -4,6 +4,7 @@ namespace Fatum12\TransfonterCore\Processor;
 
 use Fatum12\TransfonterCore\Font;
 use Fatum12\TransfonterCore\Storage;
+use Fatum12\TransfonterCore\Util\Path;
 
 class Base64CssWriter extends AbstractCssWriter
 {
@@ -13,7 +14,7 @@ class Base64CssWriter extends AbstractCssWriter
         Font::TYPE_WOFF2 => 'application/font-woff2',
     ];
 
-    protected function getRule(Storage $result, $format, $file)
+    protected function getRule(Storage $options, Storage $result, $format, $file)
     {
         if (
             in_array($format, [Font::TYPE_WOFF, Font::TYPE_WOFF2]) ||
@@ -25,7 +26,7 @@ class Base64CssWriter extends AbstractCssWriter
         ) {
             return 'data:' . self::$mediaTypes[$format] . ';charset=utf-8;base64,' . $this->base64($file);
         }
-        return basename($file);
+        return Path::join($options->get('fontsDirectory'), basename($file));
     }
 
     protected function getTemplateName()

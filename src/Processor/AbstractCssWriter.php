@@ -43,7 +43,7 @@ abstract class AbstractCssWriter implements Processor
             if ($format == Font::TYPE_TTF && !in_array(Font::TYPE_TTF, $formats)) {
                 continue;
             }
-            $data[$format] = $this->getRule($result, $format, $file);
+            $data[$format] = $this->getRule($options, $result, $format, $file);
         }
 
         if ($result->has(Font::TYPE_SVG)) {
@@ -60,12 +60,13 @@ abstract class AbstractCssWriter implements Processor
     }
 
     /**
+     * @param Storage $options
      * @param Storage $result
      * @param $format
      * @param $file
      * @return string
      */
-    abstract protected function getRule(Storage $result, $format, $file);
+    abstract protected function getRule(Storage $options, Storage $result, $format, $file);
 
     /**
      * @return string

@@ -62,7 +62,12 @@ class FontManager
             'fontFamily' => true,
             'fixVerticalMetrics' => false,
             'fontDisplay' => FontDisplay::AUTO,
+            'fontsDirectory' => '',
         ], $options));
+
+        $subdir = (string)$this->options->get('fontsDirectory');
+        $subdir = Path::normalize($subdir);
+        $this->options->set('fontsDirectory', $subdir);
 
         $this->strings = json_decode(file_get_contents(__DIR__ . '/strings.json'), true);
 
@@ -84,22 +89,26 @@ class FontManager
         if (!is_dir($dir)) {
             throw new ArgumentException("Directory not found: {$dir}");
         }
-        $dir = rtrim($dir, '/\\');
 
-        foreach (glob($dir . '/*.{ttf,otf,svg,woff,woff2}', \GLOB_BRACE) as $file) {
+        foreach (glob(Path::join($dir, '*.{ttf,otf,svg,woff,woff2}'), \GLOB_BRACE) as $file) {
             $this->add($file);
         }
     }
 
     public function process($dest)
     {
-        if (!is_writable($dest)) {
-            throw new ArgumentException("Directory $dest is not writable");
-        }
         $this->logger->info('start processing', [
             'options' => $this->options->getAll(),
             'files' => $this->files,
+            'destination' => $dest,
         ]);
+
+        Path::mkdir($dest);
+
+        $subdir = $this->options->get('fontsDirectory');
+        if ($subdir !== '') {
+            Path::mkdir(Path::join($dest, $subdir));
+        }
 
         $converter = new FontConverter($this->progressTrigger, $this->logger);
 
@@ -137,7 +146,7 @@ class FontManager
             $converter->add(new DropTtfProcessor());
         }
 
-        $cssPath = $dest . '/' . $this->options->get('stylesheetName');
+        $cssPath = Path::join($dest, $this->options->get('stylesheetName'));
         $cssFile = fopen($cssPath, 'wb');
         if ($cssFile === false) {
             throw new ArgumentException("Can't open file for writing: $cssPath");
@@ -171,7 +180,7 @@ class FontManager
             $isWoff2 = $font->getType() == Font::TYPE_WOFF2;
             if ($isWoff2) {
                 // fontforge can't work with woff2, so we need to decompress it first
-                $ttfFromWoff2 = dirname($font->getPath()) . '/' . Path::filename($font->getPath()) . '.ttf';
+                $ttfFromWoff2 = Path::join(dirname($font->getPath()), Path::filename($font->getPath()) . '.ttf');
                 $this->logger->info('decompress woff2', [
                     'source' => $font->getPath(),
                     'target' => $ttfFromWoff2,
@@ -180,13 +189,13 @@ class FontManager
                 $font->setPath($ttfFromWoff2);
             }
 
-            $this->logger->info('process font', [
-                'name' => $font->getName(),
-                'path' => $font->getPath(),
-            ]);
-
             try {
-                $converter->convert($font, $dest, $this->options);
+                $this->logger->info('process font', [
+                    'name' => $font->getName(),
+                    'path' => $font->getPath(),
+                ]);
+
+                $converter->convert($font, Path::join($dest, $subdir), $this->options);
 
                 $demoTexts[] = Template::render('demo_item', [
                     'fontName' => $font->getFullName(),
@@ -208,7 +217,7 @@ class FontManager
         fclose($cssFile);
 
         // write demo file
-        $demoPath = $dest . '/' . $this->options->get('demoName');
+        $demoPath = Path::join($dest, $this->options->get('demoName'));
         $this->logger->info('write demo html ' . $demoPath);
         file_put_contents($demoPath, Template::render('demo', [
             'stylesheet' => $this->options->get('stylesheetName'),

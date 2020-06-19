@@ -37,6 +37,7 @@ $manager = new FontManager([
     'fontFamily' => true,
     'fixVerticalMetrics' => true,
     'fontDisplay' => FontDisplay::SWAP,
+    'fontsDirectory' => 'fonts',
 ]);
 $manager->setLogger($logger);
 $manager->loadFromDir(__DIR__ . '/fonts');
