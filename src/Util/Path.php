@@ -2,8 +2,6 @@
 
 namespace Fatum12\TransfonterCore\Util;
 
-use Fatum12\TransfonterCore\Exception\BaseException;
-
 class Path
 {
     public static function uniqueFileName($path)
@@ -76,5 +74,17 @@ class Path
         $path = implode('/', $parts);
         $base = rtrim($base, '\\/');
         return $base . ($base !== '' && $path !== '' ? '/' : '') . $path;
+    }
+
+    public static function changeDirectory($path, callable $func)
+    {
+        $oldDir = getcwd();
+        chdir($path);
+
+        try {
+            $func();
+        } finally {
+            chdir($oldDir);
+        }
     }
 }

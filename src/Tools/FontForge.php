@@ -3,6 +3,7 @@
 namespace Fatum12\TransfonterCore\Tools;
 
 use Fatum12\TransfonterCore\Exception\CommandError;
+use Fatum12\TransfonterCore\Util\Path;
 use Fatum12\TransfonterCore\Util\Shell;
 
 class FontForge
@@ -43,23 +44,22 @@ class FontForge
 
     public static function unpackTTC($source, $targetDir)
     {
-        $oldDir = getcwd();
-        chdir($targetDir);
+        $command = sprintf(
+            'fontforge -script "%s/ttc2ttf.pe" "%s"',
+            self::COMMANDS_PATH,
+            $source
+        );
+        $output = '';
 
         try {
-            $command = sprintf(
-                'fontforge -script "%s/ttc2ttf.pe" "%s"',
-                self::COMMANDS_PATH,
-                $source
-            );
-            $output = Shell::exec($command);
+            Path::changeDirectory($targetDir, function () use ($command, &$output) {
+                $output = Shell::exec($command);
+            });
         } catch (CommandError $e) {
             if ($e->getCode() != Shell::STATUS_TIMEOUT && filesize($source) <= 15 * 1000 * 1000) {
                 return self::unpackTTCAlter($source);
             }
             throw $e;
-        } finally {
-            chdir($oldDir);
         }
 
         return explode("\n", $output);
