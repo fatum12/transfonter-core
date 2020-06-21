@@ -33,7 +33,6 @@ class TTCUnpacker extends File
         if ($dest === null) {
             $dest = dirname($this->path);
         } else {
-            $dest = realpath($dest);
             Path::mkdir($dest);
         }
 
