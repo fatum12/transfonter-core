@@ -5,6 +5,7 @@ namespace Fatum12\TransfonterCore;
 use Fatum12\TransfonterCore\Exception\ArgumentException;
 use Fatum12\TransfonterCore\Exception\FileNotFound;
 use Fatum12\TransfonterCore\Tools\FontForge;
+use Fatum12\TransfonterCore\Util\Path;
 
 class TTCUnpacker extends File
 {
@@ -33,6 +34,7 @@ class TTCUnpacker extends File
             $dest = dirname($this->path);
         } else {
             $dest = realpath($dest);
+            Path::mkdir($dest);
         }
 
         $fonts = FontForge::unpackTTC($this->path, $dest);
