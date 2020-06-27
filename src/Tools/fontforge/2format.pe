@@ -1,3 +1,14 @@
 Open($1, 1)
+
+toFormat = $2:e
+if (toFormat == "ttf")
+    if ($order == 3)
+        ScaleToEm(2048)
+        RoundToInt()
+    endif
+
+    SetOS2Value("FSType", 0)
+endif
+
 Generate($2)
 Close()

@@ -97,14 +97,4 @@ class FontForge
 
         return explode("\n", $output);
     }
-
-    public static function fixMeta($fontPath)
-    {
-        $command = sprintf(
-            'fontforge -script "%s/fixMeta.pe" "%s"',
-            self::COMMANDS_PATH,
-            $fontPath
-        );
-        Shell::exec($command);
-    }
 }

@@ -1,4 +1,0 @@
-Open($1, 1)
-SetOS2Value("FSType", 0)
-Generate($1)
-Close()

@@ -9,7 +9,6 @@ use Fatum12\TransfonterCore\Processor\CssWriter;
 use Fatum12\TransfonterCore\Processor\DehintProcessor;
 use Fatum12\TransfonterCore\Processor\DropTtfProcessor;
 use Fatum12\TransfonterCore\Processor\EotProcessor;
-use Fatum12\TransfonterCore\Processor\FixMetaProcessor;
 use Fatum12\TransfonterCore\Processor\FixVerticalMetricsProcessor;
 use Fatum12\TransfonterCore\Processor\SubsetsProcessor;
 use Fatum12\TransfonterCore\Processor\SvgProcessor;
@@ -114,7 +113,6 @@ class FontManager
 
         $converter
             ->add(new TtfProcessor())
-            ->add(new FixMetaProcessor())
             ->add(new SubsetsProcessor())
         ;
 

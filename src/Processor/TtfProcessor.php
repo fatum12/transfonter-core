@@ -14,13 +14,7 @@ class TtfProcessor implements Processor
     {
         $target = Path::uniqueFileName($dest . '/' . $font->getSafeName() . '.ttf');
 
-        if ($font->getType() == Font::TYPE_TTF) {
-            // font is TTF - copy to new path
-            copy($font->getPath(), $target);
-        } else {
-            // try to convert to TTF
-            FontForge::convert($font->getPath(), $target);
-        }
+        FontForge::convert($font->getPath(), $target);
 
         if (!file_exists($target)) {
             throw new FileNotFound("Can't convert to ttf: $target");
