@@ -35,7 +35,7 @@ class FontTools
     public static function fixVerticalMetrics($source)
     {
         $command = sprintf(
-            "python %s --autofix '%s'",
+            "python3 %s --autofix '%s'",
             __DIR__ . '/bin/gftools-fix-vertical-metrics.py',
             $source
         );

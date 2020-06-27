@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 # Copyright 2013 The Font Bakery Authors.
 # Copyright 2017 The Google Font Tools Authors
@@ -388,4 +388,3 @@ def main():
 
 if __name__ == '__main__':
   main()
-
