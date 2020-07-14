@@ -58,7 +58,7 @@ class FontManager
             // embed font in CSS
             'base64' => false,
             // family support in CSS
-            'fontFamily' => true,
+            'fontFamily' => false,
             'fixVerticalMetrics' => false,
             'fontDisplay' => FontDisplay::AUTO,
             'fontsDirectory' => '',
