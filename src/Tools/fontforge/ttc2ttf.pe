@@ -1,3 +1,6 @@
+# $1 - path to TTC file
+# $2 - path to destination directory
+
 fonts = FontsInFile($1)
 n = SizeOf(fonts)
 i = 0
@@ -15,7 +18,7 @@ while (i < n)
     endif
 
     filename = $fontname + "-" + index + ext
-    Generate(filename)
+    Generate($2 + "/" + filename)
     Print(filename)
     Close()
     ++i

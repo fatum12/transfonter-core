@@ -27,6 +27,7 @@ Shell::addModifier(function ($cmd) use ($logger) {
 });
 
 $timeStart = microtime(true);
+
 $manager = new FontManager([
     'formats' => [Font::TYPE_TTF, Font::TYPE_EOT, Font::TYPE_WOFF, Font::TYPE_WOFF2, Font::TYPE_SVG],
     'subsets' => [Language::SUBSET_CYRILLIC, Language::SUBSET_LATIN],
@@ -44,7 +45,7 @@ $manager->loadFromDir(__DIR__ . '/fonts');
 $manager->process(__DIR__ . '/output');
 
 /*
-$ttc = new TTCUnpacker(__DIR__ . '/fonts/Iowan Old Style.ttc');
+$ttc = new TTCUnpacker(__DIR__ . '/fonts/ttc/Iowan Old Style.ttc');
 $ttc->unpack(__DIR__ . '/output');
 */
 

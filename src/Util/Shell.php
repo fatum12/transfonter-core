@@ -15,7 +15,7 @@ class Shell
      */
     private static $modifiers = [];
 
-    public static function exec($command)
+    public static function exec($command): array
     {
         foreach (self::$modifiers as $modifier) {
             $command = $modifier($command);
@@ -29,7 +29,10 @@ class Shell
             throw new CommandError(sprintf('Command failed, return code: %d, command: %s', $result, $command), $result);
         }
 
-        return trim(implode("\n", $output));
+        // remove empty lines
+        return array_filter($output, function ($val) {
+            return trim($val) !== '';
+        });
     }
 
     public static function escapeArg($arg)

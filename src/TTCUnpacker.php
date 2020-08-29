@@ -40,7 +40,7 @@ class TTCUnpacker extends File
 
         $files = [];
         foreach ($fonts as $font) {
-            if (file_exists($dest . '/' . $font)) {
+            if (is_file($dest . '/' . $font)) {
                 $files[] = $dest . '/' . $font;
             }
         }

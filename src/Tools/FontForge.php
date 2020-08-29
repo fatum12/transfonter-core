@@ -9,6 +9,7 @@ use Fatum12\TransfonterCore\Util\Shell;
 class FontForge
 {
     const COMMANDS_PATH = __DIR__ . '/fontforge';
+    const UNPACK_ALTER_SIZE_LIMIT = 15 * 1000 * 1000;
 
     public static function convert($source, $target)
     {
@@ -28,9 +29,8 @@ class FontForge
             self::COMMANDS_PATH,
             $fontPath
         );
-        $output = Shell::exec($command);
 
-        $rows = explode("\n", $output);
+        $rows = Shell::exec($command);
         $result = [];
         foreach ($rows as $row) {
             $delimiterPos = strpos($row, ':');
@@ -45,42 +45,45 @@ class FontForge
     public static function unpackTTC($source, $targetDir)
     {
         $command = sprintf(
-            'fontforge -script "%s/ttc2ttf.pe" "%s"',
+            'fontforge -script "%s/ttc2ttf.pe" "%s" "%s"',
             self::COMMANDS_PATH,
-            $source
+            $source,
+            $targetDir
         );
-        $output = '';
 
         try {
-            Path::changeDirectory($targetDir, function () use ($command, &$output) {
-                $output = Shell::exec($command);
-            });
+            $result = Shell::exec($command);
         } catch (CommandError $e) {
-            if ($e->getCode() != Shell::STATUS_TIMEOUT && filesize($source) <= 15 * 1000 * 1000) {
-                return self::unpackTTCAlter($source);
+            if ($e->getCode() != Shell::STATUS_TIMEOUT && filesize($source) <= self::UNPACK_ALTER_SIZE_LIMIT) {
+                return self::unpackTTCAlter($source, $targetDir);
             }
             throw $e;
         }
 
-        return explode("\n", $output);
+        return $result;
     }
 
-    private static function unpackTTCAlter($source)
+    private static function unpackTTCAlter($source, $targetDir)
     {
         $fonts = self::fontsInFile($source);
         $result = [];
 
         foreach ($fonts as $key => $font) {
+            $command = sprintf(
+                'fontforge -script "%s/ttcExtractOne.pe" "%s" "%s" %s "%s"',
+                self::COMMANDS_PATH,
+                $source,
+                $font,
+                str_pad($key + 1, 2, '0', \STR_PAD_LEFT),
+                $targetDir
+            );
             try {
-                $command = sprintf(
-                    'fontforge -script "%s/ttcExtractOne.pe" "%s" "%s" %s',
-                    self::COMMANDS_PATH,
-                    $source,
-                    $font,
-                    str_pad($key + 1, 2, '0', \STR_PAD_LEFT)
-                );
-                $result[] = Shell::exec($command);
-            } catch (CommandError $e) {}
+                $output = Shell::exec($command);
+                if ($output) {
+                    $result[] = array_shift($output);
+                }
+            } catch (CommandError $e) {
+            }
         }
 
         return $result;
@@ -93,8 +96,6 @@ class FontForge
             self::COMMANDS_PATH,
             $source
         );
-        $output = Shell::exec($command);
-
-        return explode("\n", $output);
+        return Shell::exec($command);
     }
 }

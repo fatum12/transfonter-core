@@ -1,6 +1,8 @@
 # $1 - path to TTC file
 # $2 - font name
 # $3 - index
+# $4 - path to destination directory
+
 Open($1 + "(" + $2 + ")", 1)
 
 ext = ".ttf"
@@ -9,6 +11,6 @@ if ($order == 3)
 endif
 
 filename = $fontname + "-" + $3 + ext
-Generate(filename)
+Generate($4 + "/" + filename)
 Print(filename)
 Close()
