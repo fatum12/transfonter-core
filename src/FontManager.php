@@ -89,13 +89,15 @@ class FontManager
             throw new ArgumentException("Directory not found: {$dir}");
         }
 
-        foreach (glob(Path::join($dir, '*.{ttf,otf,svg,woff,woff2}'), \GLOB_BRACE) as $file) {
+        foreach (glob(Path::join($dir, '*.{ttf,otf,svg,woff,woff2}'), \GLOB_BRACE | \GLOB_NOSORT) as $file) {
             $this->add($file);
         }
     }
 
     public function process($dest)
     {
+        sort($this->files);
+
         $this->logger->info('start processing', [
             'options' => $this->options->getAll(),
             'files' => $this->files,
