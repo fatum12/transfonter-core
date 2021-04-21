@@ -1,5 +1,6 @@
 {
   "name": "fatum12/transfonter-core",
+  "description": "",
   "require": {
     "php": ">=7.1.0",
     "psr/log": "^1.1"

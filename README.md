@@ -14,13 +14,13 @@ This package is part of https://transfonter.org
 
 ## Installation
 
-The minimum required PHP version is 5.6
+The minimum required PHP version is 7.1
 
 Installing via [Composer](https://getcomposer.org):
 
 * update `composer.json`
 
-```
+```json
 {
   "repositories": [
     {

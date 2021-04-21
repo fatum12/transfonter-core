@@ -31,6 +31,7 @@ $timeStart = microtime(true);
 $manager = new FontManager([
     'formats' => [Font::TYPE_TTF, Font::TYPE_EOT, Font::TYPE_WOFF, Font::TYPE_WOFF2, Font::TYPE_SVG],
     'subsets' => [Language::SUBSET_CYRILLIC, Language::SUBSET_LATIN],
+    'unicodes' => 'U+0400-04FF, 1F5B0',
     'hinting' => Hinting::TTFAUTOHINT,
     'demoLanguage' => Language::LANG_EN,
     'local' => true,
