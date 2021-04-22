@@ -50,8 +50,6 @@ class FontManager
             'demoLanguage' => Language::LANG_EN,
             'formats' => [Font::TYPE_WOFF, Font::TYPE_WOFF2],
             'subsets' => [],
-            // keep for backward compatibility
-            'autohint' => false,
             'hinting' => Hinting::KEEP_EXISTING,
             // add local rule
             'local' => false,
@@ -117,7 +115,7 @@ class FontManager
         ;
 
         $hinting = $this->options->get('hinting');
-        if ($this->options->get('autohint') || $hinting === Hinting::TTFAUTOHINT) {
+        if ($hinting === Hinting::TTFAUTOHINT) {
             $converter->add(new AutohintProcessor());
         } elseif ($hinting === Hinting::DEHINT) {
             $converter->add(new DehintProcessor());
