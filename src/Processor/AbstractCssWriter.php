@@ -2,12 +2,13 @@
 
 namespace Fatum12\TransfonterCore\Processor;
 
+use Fatum12\TransfonterCore\Context;
 use Fatum12\TransfonterCore\Font;
 use Fatum12\TransfonterCore\FontDisplay;
 use Fatum12\TransfonterCore\Storage;
 use Fatum12\TransfonterCore\Util\Template;
 
-abstract class AbstractCssWriter implements Processor
+abstract class AbstractCssWriter extends Processor
 {
     /**
      * @var resource
@@ -19,8 +20,9 @@ abstract class AbstractCssWriter implements Processor
         $this->file = $file;
     }
 
-    public function process(Font $font, $dest, Storage $options, Storage $result)
+    public function process(Font $font, Context $ctx, Storage $result)
     {
+        $options = $ctx->options;
         $useFamily = $options->get('fontFamily');
         $formats = $options->get('formats', []);
         $addLocalRule = $options->get('local', false);

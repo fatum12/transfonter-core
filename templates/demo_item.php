@@ -11,7 +11,7 @@ use function Fatum12\TransfonterCore\Util\escape;
         <div class="font-container" style="font-family: '<?= escape($fontFamily) ?>'; font-weight: <?= $fontWeight ?>; font-style: <?= $fontStyle ?>;">
             <p class="letters">
                 <?= implode("<br>\n", $letters) ?><br>
-                0123456789.:,;()*!?'@#<>$%&^+-=~
+                0123456789.:,;()*!?'@#&lt;&gt;$%&^+-=~
             </p>
 <?php foreach ([10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72] as $size):?>
             <p class="s<?= $size ?>" style="font-size: <?= $size ?>px;"><?= $string ?></p>

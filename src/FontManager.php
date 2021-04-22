@@ -7,6 +7,7 @@ use Fatum12\TransfonterCore\Processor\AutohintProcessor;
 use Fatum12\TransfonterCore\Processor\Base64CssWriter;
 use Fatum12\TransfonterCore\Processor\CssWriter;
 use Fatum12\TransfonterCore\Processor\DehintProcessor;
+use Fatum12\TransfonterCore\Processor\DemoPageProcessor;
 use Fatum12\TransfonterCore\Processor\DropTtfProcessor;
 use Fatum12\TransfonterCore\Processor\EotProcessor;
 use Fatum12\TransfonterCore\Processor\FixVerticalMetricsProcessor;
@@ -15,7 +16,6 @@ use Fatum12\TransfonterCore\Processor\SvgProcessor;
 use Fatum12\TransfonterCore\Processor\TtfProcessor;
 use Fatum12\TransfonterCore\Processor\Woff2Processor;
 use Fatum12\TransfonterCore\Processor\WoffProcessor;
-use Fatum12\TransfonterCore\Util\Template;
 use Fatum12\TransfonterCore\Tools\Woff2;
 use Fatum12\TransfonterCore\Util\Path;
 use Psr\Log\LoggerAwareTrait;
@@ -94,24 +94,22 @@ class FontManager
         }
     }
 
-    public function process($dest)
+    public function process($targetDir)
     {
         sort($this->files);
 
         $this->logger->info('start processing', [
             'options' => $this->options->getAll(),
             'files' => $this->files,
-            'destination' => $dest,
+            'destination' => $targetDir,
         ]);
 
-        Path::mkdir($dest);
+        $subdir = (string)$this->options->get('fontsDirectory');
+        $fontsTargetDir = Path::join($targetDir, $subdir);
 
-        $subdir = $this->options->get('fontsDirectory');
-        if ($subdir !== '') {
-            Path::mkdir(Path::join($dest, $subdir));
-        }
+        Path::mkdir($fontsTargetDir);
 
-        $converter = new FontConverter($this->progressTrigger, $this->logger);
+        $converter = new FontConverter($this->progressTrigger);
 
         $converter
             ->add(new TtfProcessor())
@@ -146,7 +144,7 @@ class FontManager
             $converter->add(new DropTtfProcessor());
         }
 
-        $cssPath = Path::join($dest, $this->options->get('stylesheetName'));
+        $cssPath = Path::join($targetDir, $this->options->get('stylesheetName'));
         $cssFile = fopen($cssPath, 'wb');
         if ($cssFile === false) {
             throw new ArgumentException("Can't open file for writing: $cssPath");
@@ -163,16 +161,21 @@ class FontManager
         ;
 
         $lang = $this->options->get('demoLanguage');
-        if (!Language::isValidLang($lang)) {
-            $lang = Language::LANG_EN;
+        if ($lang) {
+            if (!Language::isValidLang($lang)) {
+                throw new ArgumentException("Unsupported language: $lang");
+            }
+
+            $demoLetters = $this->strings[$lang]['letters'];
+            $demoPangram = $this->strings[$lang]['pangram'];
+            $converter->add(new DemoPageProcessor($demoLetters, $demoPangram));
         }
 
-        $demoLetters = $this->strings[$lang]['letters'];
-        $demoString = $this->strings[$lang]['pangram'];
-
-        $demoTexts = [];
-
-        $useFontFamily = $this->options->get('fontFamily', false);
+        $ctx = new Context();
+        $ctx->targetDir = $targetDir;
+        $ctx->fontsTargetDir = $fontsTargetDir;
+        $ctx->options = $this->options;
+        $ctx->logger = $this->logger;
 
         foreach ($this->files as $file) {
             $font = new Font($file);
@@ -190,21 +193,7 @@ class FontManager
             }
 
             try {
-                $this->logger->info('process font', [
-                    'name' => $font->getName(),
-                    'path' => $font->getPath(),
-                ]);
-
-                $converter->convert($font, Path::join($dest, $subdir), $this->options);
-
-                $demoTexts[] = Template::render('demo_item', [
-                    'fontName' => $font->getFullName(),
-                    'letters' => $demoLetters,
-                    'string' => $demoString,
-                    'fontFamily' => $useFontFamily ? $font->getFamilyName() : $font->getName(),
-                    'fontWeight' => $useFontFamily ? $font->getWeight() : 'normal',
-                    'fontStyle' => $useFontFamily ? $font->getStyle() : 'normal',
-                ]);
+                $converter->convert($font, $ctx);
             } finally {
                 if ($isWoff2) {
                     // remove decompressed woff2
@@ -216,13 +205,7 @@ class FontManager
 
         fclose($cssFile);
 
-        // write demo file
-        $demoPath = Path::join($dest, $this->options->get('demoName'));
-        $this->logger->info('write demo html ' . $demoPath);
-        file_put_contents($demoPath, Template::render('demo', [
-            'stylesheet' => $this->options->get('stylesheetName'),
-            'text' => implode("\n", $demoTexts),
-        ]));
+        $converter->finalize($ctx);
 
         $this->logger->info('end processing');
     }

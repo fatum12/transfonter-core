@@ -3,7 +3,6 @@
 namespace Fatum12\TransfonterCore;
 
 use Fatum12\TransfonterCore\Processor\Processor;
-use Psr\Log\LoggerInterface;
 
 class FontConverter
 {
@@ -11,19 +10,15 @@ class FontConverter
      * @var ProgressTrigger
      */
     private $progressTrigger;
+
     /**
      * @var Processor[]
      */
     private $processors = [];
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
 
-    public function __construct(ProgressTrigger $progressTrigger, LoggerInterface $logger)
+    public function __construct(ProgressTrigger $progressTrigger)
     {
         $this->progressTrigger = $progressTrigger;
-        $this->logger = $logger;
     }
 
     /**
@@ -44,22 +39,34 @@ class FontConverter
 
     /**
      * @param Font $font Source font file
-     * @param string $dest Destination directory
-     * @param Storage $options
+     * @param Context $ctx
      */
-    public function convert(Font $font, $dest, Storage $options)
+    public function convert(Font $font, Context $ctx)
     {
+        $logger = $ctx->logger;
+        $logger->info('process font', [
+            'name' => $font->getName(),
+            'path' => $font->getPath(),
+        ]);
+
         $result = new Storage();
 
         foreach ($this->processors as $processor) {
-            $this->logger->info('start processor ' . get_class($processor));
+            $logger->info('start processor ' . get_class($processor));
 
-            $processor->process($font, $dest, $options, $result);
+            $processor->process($font, $ctx, $result);
             $this->progressTrigger->nextStep();
 
-            $this->logger->info('end processor', [
+            $logger->info('end processor', [
                 'result' => $result->getAll(),
             ]);
+        }
+    }
+
+    public function finalize(Context $ctx): void
+    {
+        foreach ($this->processors as $processor) {
+            $processor->finalize($ctx);
         }
     }
 }

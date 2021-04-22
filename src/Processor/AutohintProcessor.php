@@ -2,15 +2,16 @@
 
 namespace Fatum12\TransfonterCore\Processor;
 
+use Fatum12\TransfonterCore\Context;
 use Fatum12\TransfonterCore\Font;
 use Fatum12\TransfonterCore\Storage;
 use Fatum12\TransfonterCore\Tools\Ttfautohint;
 use Fatum12\TransfonterCore\Exception\CommandError;
 use Fatum12\TransfonterCore\Util\Path;
 
-class AutohintProcessor implements Processor
+class AutohintProcessor extends Processor
 {
-    public function process(Font $font, $dest, Storage $options, Storage $result)
+    public function process(Font $font, Context $ctx, Storage $result)
     {
         $ttfPath = $result->get(Font::TYPE_TTF);
         $originalName = basename($ttfPath);
@@ -19,7 +20,7 @@ class AutohintProcessor implements Processor
         if (strpos($originalName, 'hinted-') === 0) {
             return;
         }
-        $hintedPath = Path::uniqueFileName($dest . '/hinted-' . $originalName);
+        $hintedPath = Path::uniqueFileName($ctx->fontsTargetDir . '/hinted-' . $originalName);
 
         try {
             Ttfautohint::autohint($ttfPath, $hintedPath);

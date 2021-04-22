@@ -34,6 +34,7 @@ $manager = new FontManager([
     'unicodes' => 'U+0400-04FF, 1F5B0',
     'hinting' => Hinting::TTFAUTOHINT,
     'demoLanguage' => Language::LANG_EN,
+    //'demoLanguage' => false,
     'local' => true,
     'base64' => false,
     'fontFamily' => true,

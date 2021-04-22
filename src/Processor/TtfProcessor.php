@@ -2,17 +2,18 @@
 
 namespace Fatum12\TransfonterCore\Processor;
 
+use Fatum12\TransfonterCore\Context;
 use Fatum12\TransfonterCore\Font;
 use Fatum12\TransfonterCore\Storage;
 use Fatum12\TransfonterCore\Util\Path;
 use Fatum12\TransfonterCore\Tools\FontForge;
 use Fatum12\TransfonterCore\Exception\FileNotFound;
 
-class TtfProcessor implements Processor
+class TtfProcessor extends Processor
 {
-    public function process(Font $font, $dest, Storage $options, Storage $result)
+    public function process(Font $font, Context $ctx, Storage $result)
     {
-        $target = Path::uniqueFileName($dest . '/' . $font->getSafeName() . '.ttf');
+        $target = Path::uniqueFileName($ctx->fontsTargetDir . '/' . $font->getSafeName() . '.ttf');
 
         FontForge::convert($font->getPath(), $target);
 
