@@ -16,6 +16,7 @@ class FixVerticalMetricsProcessor extends Processor
             FontTools::fixVerticalMetrics($result->get(Font::TYPE_TTF));
         } catch (CommandError $e) {
             // ignore errors
+            $ctx->logger->warning($e->getMessage());
         }
     }
 }

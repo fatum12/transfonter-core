@@ -26,6 +26,7 @@ class AutohintProcessor extends Processor
             Ttfautohint::autohint($ttfPath, $hintedPath);
         } catch (CommandError $e) {
             // ignore hinting errors
+            $ctx->logger->warning($e->getMessage());
             @unlink($hintedPath);
             return;
         }

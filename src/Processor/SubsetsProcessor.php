@@ -42,6 +42,7 @@ class SubsetsProcessor extends Processor
             FontTools::subset($ttfPath, $target, $unicodes, $characters);
         } catch (CommandError $e) {
             // ignore subsetting errors
+            $ctx->logger->warning($e->getMessage());
             @unlink($target);
             return;
         }

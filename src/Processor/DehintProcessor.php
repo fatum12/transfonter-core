@@ -20,6 +20,7 @@ class DehintProcessor extends Processor
             Ttfautohint::dehint($ttfPath, $dehintedPath);
         } catch (CommandError $e) {
             // ignore errors
+            $ctx->logger->warning($e->getMessage());
             @unlink($dehintedPath);
             return;
         }

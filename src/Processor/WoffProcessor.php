@@ -21,6 +21,7 @@ class WoffProcessor extends Processor
             Sfnt2woff::convert($ttfPath);
         } catch (CommandError $e) {
             // fallback
+            $ctx->logger->warning('sfnt2woff failed, try FontForge. ' . $e->getMessage());
             @unlink($target);
             FontForge::convert($ttfPath, $target);
         }
