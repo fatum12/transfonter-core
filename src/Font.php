@@ -36,7 +36,7 @@ class Font extends File
     /**
      * @var array|null
      */
-    protected $info;
+    private $info;
 
     /**
      * @var array

@@ -7,7 +7,7 @@ class Storage
     /**
      * @var array
      */
-    protected $data;
+    private $data;
 
     public function __construct(array $data = [])
     {

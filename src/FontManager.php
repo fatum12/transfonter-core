@@ -28,15 +28,18 @@ class FontManager
     /**
      * @var Storage
      */
-    protected $options;
+    private $options;
+
     /**
      * @var array Source files
      */
-    protected $files = [];
+    private $files = [];
+
     /**
      * @var array
      */
-    protected $strings;
+    private $strings;
+
     /**
      * @var ProgressTrigger
      */
@@ -143,20 +146,11 @@ class FontManager
         }
 
         $cssPath = Path::join($targetDir, $this->options->get('stylesheetName'));
-        $cssFile = fopen($cssPath, 'wb');
-        if ($cssFile === false) {
-            throw new ArgumentException("Can't open file for writing: $cssPath");
-        }
         if ($this->options->get('base64')) {
-            $converter->add(new Base64CssWriter($cssFile));
+            $converter->add(new Base64CssWriter($cssPath));
         } else {
-            $converter->add(new CssWriter($cssFile));
+            $converter->add(new CssWriter($cssPath));
         }
-
-        $this->progressTrigger
-            ->reset()
-            ->setTotalSteps(count($this->files) * $converter->stepsCount())
-        ;
 
         $lang = $this->options->get('demoLanguage');
         if ($lang) {
@@ -168,6 +162,11 @@ class FontManager
             $demoPangram = $this->strings[$lang]['pangram'];
             $converter->add(new DemoPageProcessor($demoLetters, $demoPangram));
         }
+
+        $this->progressTrigger
+            ->reset()
+            ->setTotalSteps(count($this->files) * $converter->stepsCount())
+        ;
 
         $ctx = new Context();
         $ctx->targetDir = $targetDir;
@@ -192,6 +191,9 @@ class FontManager
 
             try {
                 $converter->convert($font, $ctx);
+            } catch (\Exception $e) {
+                $converter->finalize($ctx);
+                throw $e;
             } finally {
                 if ($isWoff2) {
                     // remove decompressed woff2
@@ -200,8 +202,6 @@ class FontManager
                 }
             }
         }
-
-        fclose($cssFile);
 
         $converter->finalize($ctx);
 
