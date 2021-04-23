@@ -8,7 +8,7 @@ class Hinting
     const TTFAUTOHINT = 'ttfautohint';
     const DEHINT = 'dehint';
 
-    public static function getList()
+    public static function getList(): array
     {
         return [
             self::KEEP_EXISTING => 'Keep existing',

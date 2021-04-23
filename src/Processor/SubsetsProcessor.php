@@ -12,7 +12,7 @@ use Fatum12\TransfonterCore\Util\Path;
 
 class SubsetsProcessor extends Processor
 {
-    public function process(Font $font, Context $ctx, Storage $result)
+    public function process(Font $font, Context $ctx, Storage $result): void
     {
         $options = $ctx->options;
         $subsets = $options->get('subsets', []);

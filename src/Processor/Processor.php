@@ -8,7 +8,7 @@ use Fatum12\TransfonterCore\Storage;
 
 abstract class Processor
 {
-    abstract public function process(Font $font, Context $ctx, Storage $result);
+    abstract public function process(Font $font, Context $ctx, Storage $result): void;
 
     public function finalize(Context $ctx): void
     {

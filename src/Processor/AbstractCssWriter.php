@@ -20,7 +20,7 @@ abstract class AbstractCssWriter extends Processor
         $this->file = $file;
     }
 
-    public function process(Font $font, Context $ctx, Storage $result)
+    public function process(Font $font, Context $ctx, Storage $result): void
     {
         $options = $ctx->options;
         $useFamily = $options->get('fontFamily');
@@ -64,18 +64,18 @@ abstract class AbstractCssWriter extends Processor
     /**
      * @param Storage $options
      * @param Storage $result
-     * @param $format
-     * @param $file
+     * @param string $format
+     * @param string $file
      * @return string
      */
-    abstract protected function getRule(Storage $options, Storage $result, $format, $file);
+    abstract protected function getRule(Storage $options, Storage $result, string $format, string $file): string;
 
     /**
      * @return string
      */
-    abstract protected function getTemplateName();
+    abstract protected function getTemplateName(): string;
 
-    protected function getSvgId(Font $font)
+    protected function getSvgId(Font $font): string
     {
         return $font->getName();
     }

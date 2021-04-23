@@ -3,7 +3,6 @@
 namespace Fatum12\TransfonterCore\Tools;
 
 use Fatum12\TransfonterCore\Exception\CommandError;
-use Fatum12\TransfonterCore\Util\Path;
 use Fatum12\TransfonterCore\Util\Shell;
 
 class FontForge
@@ -11,7 +10,7 @@ class FontForge
     const COMMANDS_PATH = __DIR__ . '/fontforge';
     const UNPACK_ALTER_SIZE_LIMIT = 15 * 1000 * 1000;
 
-    public static function convert($source, $target)
+    public static function convert(string $source, string $target): void
     {
         $command = sprintf(
             'fontforge -script "%s/2format.pe" "%s" "%s"',
@@ -22,7 +21,7 @@ class FontForge
         Shell::exec($command);
     }
 
-    public static function getFontInfo($fontPath)
+    public static function getFontInfo(string $fontPath): array
     {
         $command = sprintf(
             'fontforge -script "%s/getFontInfo.pe" "%s"',
@@ -42,7 +41,7 @@ class FontForge
         return $result;
     }
 
-    public static function unpackTTC($source, $targetDir)
+    public static function unpackTTC(string $source, string $targetDir): array
     {
         $command = sprintf(
             'fontforge -script "%s/ttc2ttf.pe" "%s" "%s"',
@@ -63,7 +62,7 @@ class FontForge
         return $result;
     }
 
-    private static function unpackTTCAlter($source, $targetDir)
+    private static function unpackTTCAlter(string $source, string $targetDir): array
     {
         $fonts = self::fontsInFile($source);
         $result = [];
@@ -89,7 +88,7 @@ class FontForge
         return $result;
     }
 
-    public static function fontsInFile($source)
+    public static function fontsInFile(string $source): array
     {
         $command = sprintf(
             'fontforge -script "%s/ttcFontsList.pe" "%s"',

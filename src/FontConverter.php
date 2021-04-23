@@ -25,14 +25,14 @@ class FontConverter
      * @param Processor $processor
      * @return $this
      */
-    public function add(Processor $processor)
+    public function add(Processor $processor): self
     {
         $this->processors[] = $processor;
 
         return $this;
     }
 
-    public function stepsCount()
+    public function stepsCount(): int
     {
         return count($this->processors);
     }
@@ -41,7 +41,7 @@ class FontConverter
      * @param Font $font Source font file
      * @param Context $ctx
      */
-    public function convert(Font $font, Context $ctx)
+    public function convert(Font $font, Context $ctx): void
     {
         $logger = $ctx->logger;
         $logger->info('process font', [

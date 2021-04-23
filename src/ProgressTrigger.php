@@ -23,21 +23,21 @@ class ProgressTrigger
         $this->reset();
     }
 
-    public function onProgress(callable $callback)
+    public function onProgress(callable $callback): self
     {
         $this->callback = $callback;
 
         return $this;
     }
 
-    public function reset()
+    public function reset(): self
     {
         $this->currentStep = 0;
 
         return $this;
     }
 
-    public function nextStep()
+    public function nextStep(): self
     {
         $this->currentStep++;
         $progress = floor($this->currentStep * 100 / $this->totalSteps);
@@ -49,7 +49,7 @@ class ProgressTrigger
         return $this;
     }
 
-    public function setTotalSteps($total)
+    public function setTotalSteps($total): self
     {
         $this->totalSteps = $total;
 

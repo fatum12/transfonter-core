@@ -15,7 +15,11 @@ class Shell
      */
     private static $modifiers = [];
 
-    public static function exec($command): array
+    /**
+     * @param string $command
+     * @return string[]
+     */
+    public static function exec(string $command): array
     {
         foreach (self::$modifiers as $modifier) {
             $command = $modifier($command);
@@ -35,12 +39,12 @@ class Shell
         });
     }
 
-    public static function escapeArg($arg)
+    public static function escapeArg($arg): string
     {
         return str_replace("'", "'\\''", $arg);
     }
 
-    public static function addModifier(callable $modifier)
+    public static function addModifier(callable $modifier): void
     {
         self::$modifiers[] = $modifier;
     }

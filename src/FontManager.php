@@ -76,12 +76,12 @@ class FontManager
         $this->logger = new NullLogger();
     }
 
-    public function add($path)
+    public function add(string $path): void
     {
         $this->files[] = $path;
     }
 
-    public function loadFromDir($dir)
+    public function loadFromDir(string $dir): void
     {
         if (!is_dir($dir)) {
             throw new ArgumentException("Directory not found: {$dir}");
@@ -92,7 +92,7 @@ class FontManager
         }
     }
 
-    public function process($targetDir)
+    public function process(string $targetDir): void
     {
         sort($this->files);
 

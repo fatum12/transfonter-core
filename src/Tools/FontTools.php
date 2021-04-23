@@ -6,7 +6,7 @@ use Fatum12\TransfonterCore\Util\Shell;
 
 class FontTools
 {
-    public static function subset($source, $target, array $unicodes = [], $characters = '')
+    public static function subset(string $source, string $target, array $unicodes = [], string $characters = ''): void
     {
         $command = sprintf(
             "pyftsubset '%s' --unicodes='%s' --text='%s' --ignore-missing-unicodes --ignore-missing-glyphs " .
@@ -20,7 +20,7 @@ class FontTools
         Shell::exec($command);
     }
 
-    public static function parseUnicodes($str)
+    public static function parseUnicodes(string $str): array
     {
         $items = preg_split('/[\s\t\n,;]/', $str, -1, \PREG_SPLIT_NO_EMPTY);
         $result = [];
@@ -32,7 +32,7 @@ class FontTools
         return $result;
     }
 
-    public static function fixVerticalMetrics($source)
+    public static function fixVerticalMetrics(string $source): void
     {
         $command = sprintf(
             "python3 %s --autofix '%s'",

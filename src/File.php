@@ -14,23 +14,22 @@ class File
     protected $type;
     
     /**
-     * Magic numbers
-     * @var array
+     * @var array Magic numbers
      */
     protected static $magic = [];
 
     /**
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
 
     /**
-     * @return string Font type
+     * @return string File extension
      */
-    public function getType()
+    public function getType(): string
     {
         if (!$this->type) {
             $this->type = strtolower(pathinfo($this->path, \PATHINFO_EXTENSION));
@@ -42,7 +41,7 @@ class File
     /**
      * @return string
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         return basename($this->getPath());
     }
@@ -50,7 +49,7 @@ class File
     /**
      * @return bool
      */
-    public function isValid()
+    public function isValid(): bool
     {
         $type = $this->getType();
 

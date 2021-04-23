@@ -19,22 +19,28 @@ class Font extends File
      * @link http://www.w3.org/TR/css3-fonts/#font-weight-numeric-values
      */
     public static $weights = [
-        'thin' => 100,
-        'extralight' => 200,
-        'ultralight' => 200,
-        'light' => 300,
-        'medium' => 500,
-        'semibold' => 600,
-        'demibold' => 600,
-        'extrabold' => 800,
-        'ultrabold' => 800,
+        'thin' => '100',
+        'extralight' => '200',
+        'ultralight' => '200',
+        'light' => '300',
+        'medium' => '500',
+        'semibold' => '600',
+        'demibold' => '600',
         'bold' => 'bold',
-        'black' => 900,
-        'heavy' => 900,
+        'extrabold' => '800',
+        'ultrabold' => '800',
+        'black' => '900',
+        'heavy' => '900',
     ];
 
+    /**
+     * @var array|null
+     */
     protected $info;
 
+    /**
+     * @var array
+     */
     protected static $magic = [
         self::TYPE_TTF => "\x00\x01\x00\x00\x00",
         self::TYPE_OTF => 'OTTO',
@@ -43,12 +49,12 @@ class Font extends File
         self::TYPE_SVG => '<?xml',
     ];
 
-    public function __construct($path)
+    public function __construct(string $path)
     {
         $this->setPath($path);
     }
 
-    public function setPath($path)
+    public function setPath(string $path): void
     {
         if (!is_file($path)) {
             throw new FileNotFound("File not found: {$path}");
@@ -58,12 +64,12 @@ class Font extends File
         $this->info = null;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->getInfo()['font_name'];
     }
 
-    public function getSafeName()
+    public function getSafeName(): string
     {
         $safeName = trim(preg_replace('/[^a-zA-Z0-9\s_\-]/', '', $this->getName()));
         $safeName = preg_replace('/\s+/', '_', $safeName);
@@ -74,12 +80,12 @@ class Font extends File
         return $safeName;
     }
 
-    public function getFullName()
+    public function getFullName(): string
     {
         return $this->getInfo()['full_name'];
     }
 
-    public function getFamilyName()
+    public function getFamilyName(): string
     {
         $fontInfo = $this->getInfo();
         $rule = '(italic(\s|-)*)?(' . implode('|', array_keys(self::$weights)) . ')((\s|-)*italic)?|italic|regular';
@@ -89,7 +95,7 @@ class Font extends File
         return $familyName;
     }
 
-    public function getWeight()
+    public function getWeight(): string
     {
         $fontInfo = $this->getInfo();
 
@@ -106,7 +112,7 @@ class Font extends File
         return 'normal';
     }
 
-    public function getStyle()
+    public function getStyle(): string
     {
         $fontInfo = $this->getInfo();
 
@@ -121,7 +127,7 @@ class Font extends File
         return 'normal';
     }
 
-    protected function getInfo()
+    protected function getInfo(): array
     {
         if (!$this->info) {
             $this->info = FontForge::getFontInfo($this->getPath());

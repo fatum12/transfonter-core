@@ -8,7 +8,7 @@ use Fatum12\TransfonterCore\Storage;
 
 class DropTtfProcessor extends Processor
 {
-    public function process(Font $font, Context $ctx, Storage $result)
+    public function process(Font $font, Context $ctx, Storage $result): void
     {
         unlink($result->get(Font::TYPE_TTF));
         $result->drop(Font::TYPE_TTF);

@@ -63,7 +63,7 @@ class Language
         self::SUBSET_VIETNAMESE => ['U+0102-0103', 'U+0110-0111', 'U+1EA0-1EF9', 'U+20AB'],
     ];
 
-    public static function getLangList()
+    public static function getLangList(): array
     {
         return [
             self::LANG_EN => 'English',
@@ -72,12 +72,12 @@ class Language
         ];
     }
 
-    public static function isValidLang($lang)
+    public static function isValidLang($lang): bool
     {
         return array_key_exists($lang, self::getLangList());
     }
 
-    public static function getSubsetsList()
+    public static function getSubsetsList(): array
     {
         return [
             self::SUBSET_ARABIC => 'Arabic',
@@ -107,7 +107,7 @@ class Language
         ];
     }
 
-    public static function isValidSubset($subset)
+    public static function isValidSubset($subset): bool
     {
         return array_key_exists($subset, self::getSubsetsList());
     }

@@ -4,7 +4,7 @@ namespace Fatum12\TransfonterCore\Util;
 
 class Path
 {
-    public static function uniqueFileName($path)
+    public static function uniqueFileName(string $path): string
     {
         $info = pathinfo($path);
 
@@ -22,12 +22,12 @@ class Path
      * @param string $file Path to file
      * @return string Name of the file without extension
      */
-    public static function filename($file)
+    public static function filename(string $file): string
     {
         return pathinfo($file, PATHINFO_FILENAME);
     }
 
-    public static function normalize($path)
+    public static function normalize(string $path): string
     {
         $path = str_replace('\\', '/', $path);
         $path = preg_replace('/[^a-z0-9_\-\s.\/]/i', '', $path);
@@ -55,14 +55,14 @@ class Path
         return implode('/', $result);
     }
 
-    public static function mkdir($path, $mode = 0755, $recursive = true)
+    public static function mkdir(string $path, int $mode = 0755, bool $recursive = true): void
     {
         if (!is_dir($path) && !@mkdir($path, $mode, $recursive)) {
             throw new \RuntimeException("Unable to create directory: {$path}");
         }
     }
 
-    public static function join($base, ...$parts)
+    public static function join(string $base, string ...$parts): string
     {
         array_walk($parts, function (&$item) {
             $item = trim($item, '\\/');
@@ -76,7 +76,7 @@ class Path
         return $base . ($base !== '' && $path !== '' ? '/' : '') . $path;
     }
 
-    public static function changeDirectory($path, callable $func)
+    public static function changeDirectory(string $path, callable $func): void
     {
         $oldDir = getcwd();
         chdir($path);

@@ -10,7 +10,7 @@ class FontDisplay
     const FALLBACK = 'fallback';
     const OPTIONAL = 'optional';
 
-    public static function getList()
+    public static function getList(): array
     {
         return [
             self::AUTO => self::AUTO,

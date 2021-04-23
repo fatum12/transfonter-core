@@ -6,7 +6,7 @@ use Fatum12\TransfonterCore\Util\Shell;
 
 class Ttf2eot
 {
-    public static function convert($source, $target)
+    public static function convert(string $source, string $target): void
     {
         $command = sprintf(
             'ttf2eot "%s" > "%s"',

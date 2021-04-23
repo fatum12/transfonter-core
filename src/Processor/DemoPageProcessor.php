@@ -32,7 +32,7 @@ class DemoPageProcessor extends Processor
         $this->pangram = $pangram;
     }
 
-    public function process(Font $font, Context $ctx, Storage $result)
+    public function process(Font $font, Context $ctx, Storage $result): void
     {
         $useFontFamily = $ctx->options->get('fontFamily', false);
 

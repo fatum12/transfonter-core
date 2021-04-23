@@ -11,7 +11,7 @@ use Fatum12\TransfonterCore\Exception\FileNotFound;
 
 class TtfProcessor extends Processor
 {
-    public function process(Font $font, Context $ctx, Storage $result)
+    public function process(Font $font, Context $ctx, Storage $result): void
     {
         $target = Path::uniqueFileName($ctx->fontsTargetDir . '/' . $font->getSafeName() . '.ttf');
 

@@ -11,7 +11,7 @@ use Fatum12\TransfonterCore\Util\Path;
 
 class AutohintProcessor extends Processor
 {
-    public function process(Font $font, Context $ctx, Storage $result)
+    public function process(Font $font, Context $ctx, Storage $result): void
     {
         $ttfPath = $result->get(Font::TYPE_TTF);
         $originalName = basename($ttfPath);

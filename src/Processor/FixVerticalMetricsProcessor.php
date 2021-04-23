@@ -10,7 +10,7 @@ use Fatum12\TransfonterCore\Tools\FontTools;
 
 class FixVerticalMetricsProcessor extends Processor
 {
-    public function process(Font $font, Context $ctx, Storage $result)
+    public function process(Font $font, Context $ctx, Storage $result): void
     {
         try {
             FontTools::fixVerticalMetrics($result->get(Font::TYPE_TTF));

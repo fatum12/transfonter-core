@@ -14,7 +14,7 @@ class Storage
         $this->data = $data;
     }
 
-    public function has($key)
+    public function has($key): bool
     {
         return array_key_exists($key, $this->data);
     }
@@ -27,17 +27,17 @@ class Storage
         return $default;
     }
 
-    public function getAll()
+    public function getAll(): array
     {
         return $this->data;
     }
 
-    public function set($key, $value)
+    public function set($key, $value): void
     {
         $this->data[$key] = $value;
     }
 
-    public function drop($key)
+    public function drop($key): void
     {
         unset($this->data[$key]);
     }
