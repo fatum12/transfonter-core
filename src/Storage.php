@@ -14,12 +14,12 @@ class Storage
         $this->data = $data;
     }
 
-    public function has($key): bool
+    public function has(string $key): bool
     {
         return array_key_exists($key, $this->data);
     }
 
-    public function get($key, $default = null)
+    public function get(string $key, $default = null)
     {
         if ($this->has($key)) {
             return $this->data[$key];
@@ -32,12 +32,12 @@ class Storage
         return $this->data;
     }
 
-    public function set($key, $value): void
+    public function set(string $key, $value): void
     {
         $this->data[$key] = $value;
     }
 
-    public function drop($key): void
+    public function drop(string $key): void
     {
         unset($this->data[$key]);
     }

@@ -95,6 +95,11 @@ class FontManager
         }
     }
 
+    public function getOption(string $key, $default = null)
+    {
+        return $this->options->get($key, $default);
+    }
+
     public function process(string $targetDir): void
     {
         sort($this->files);
