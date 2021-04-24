@@ -8,15 +8,6 @@ use Fatum12\TransfonterCore\Util\Path;
 
 class Base64CssWriter extends AbstractCssWriter
 {
-    /**
-     * @var array
-     */
-    private static $mediaTypes = [
-        Font::TYPE_TTF => 'font/truetype',
-        Font::TYPE_WOFF => 'application/font-woff',
-        Font::TYPE_WOFF2 => 'application/font-woff2',
-    ];
-
     protected function getRule(Storage $options, Storage $result, string $format, string $file): string
     {
         if (
@@ -27,7 +18,7 @@ class Base64CssWriter extends AbstractCssWriter
                 !$result->has(Font::TYPE_WOFF2)
             )
         ) {
-            return 'data:' . self::$mediaTypes[$format] . ';charset=utf-8;base64,' . $this->base64($file);
+            return 'data:' . Font::$mimeTypes[$format] . ';charset=utf-8;base64,' . $this->base64($file);
         }
         return Path::join($options->get('fontsDirectory'), basename($file));
     }

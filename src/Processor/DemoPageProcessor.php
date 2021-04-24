@@ -34,12 +34,14 @@ class DemoPageProcessor extends Processor
 
     public function process(Font $font, Context $ctx, Storage $result): void
     {
+        $preloads = $this->preloads($ctx->options, $result);
         $useFontFamily = $ctx->options->get('fontFamily', false);
 
         $this->demoTexts[] = Template::render('demo_item', [
             'fontName' => $font->getFullName(),
             'letters' => $this->letters,
-            'string' => $this->pangram,
+            'pangram' => $this->pangram,
+            'preloads' => $preloads,
             'fontFamily' => $useFontFamily ? $font->getFamilyName() : $font->getName(),
             'fontWeight' => $useFontFamily ? $font->getWeight() : 'normal',
             'fontStyle' => $useFontFamily ? $font->getStyle() : 'normal',
@@ -60,5 +62,28 @@ class DemoPageProcessor extends Processor
         if ($result === false) {
             throw new ArgumentException("Can't write demo html: $demoPath");
         }
+    }
+
+    private function preloads(Storage $options, Storage $result): array
+    {
+        $preloads = [];
+        if ($options->get('base64')) {
+            return $preloads;
+        }
+
+        foreach ([Font::TYPE_WOFF2, Font::TYPE_WOFF, Font::TYPE_TTF] as $format) {
+            if ($result->has($format)) {
+                $file = $result->get($format);
+                $mime = Font::$mimeTypes[$format];
+                $preloads[] = [
+                    Path::join($options->get('fontsDirectory'), basename($file)),
+                    $mime,
+                ];
+
+                break;
+            }
+        }
+
+        return $preloads;
     }
 }

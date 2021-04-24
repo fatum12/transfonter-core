@@ -49,6 +49,18 @@ class Font extends File
         self::TYPE_SVG => '<?xml',
     ];
 
+    /**
+     * @var array
+     */
+    public static $mimeTypes = [
+        self::TYPE_TTF => 'font/ttf',
+        self::TYPE_OTF => 'font/otf',
+        self::TYPE_EOT => 'application/vnd.ms-fontobject',
+        self::TYPE_WOFF => 'font/woff',
+        self::TYPE_WOFF2 => 'font/woff2',
+        self::TYPE_SVG => 'image/svg+xml',
+    ];
+
     public function __construct(string $path)
     {
         $this->setPath($path);
