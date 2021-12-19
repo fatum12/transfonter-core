@@ -64,4 +64,12 @@ class File
 
         return true;
     }
+
+    /**
+     * @return int Size of the file in bytes
+     */
+    public function getSize(): int
+    {
+        return filesize($this->getPath());
+    }
 }
