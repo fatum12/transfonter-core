@@ -1,4 +1,11 @@
 {
+  "de": {
+    "letters": [
+      "abcdefghijklmnopqrstuvwxyzäöüß",
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜẞ"
+    ],
+    "pangram": "Victor jagt zwölf Boxkämpfer quer über den großen Sylter Deich."
+  },
   "en": {
     "letters": [
       "abcdefghijklmnopqrstuvwxyz",
@@ -6,14 +13,19 @@
     ],
     "pangram": "The quick brown fox jumps over the lazy dog."
   },
-  "ru": {
+  "es": {
     "letters": [
-      "абвгдеёжзийклмнопрстуфхцчшщъыьэюя",
-      "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ",
+      "abcdefghijklmnñopqrstuvwxyz",
+      "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
+    ],
+    "pangram": "El veloz murciélago hindú comía feliz cardillo y kiwi."
+  },
+  "fr": {
+    "letters": [
       "abcdefghijklmnopqrstuvwxyz",
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     ],
-    "pangram": "Съешь же ещё этих мягких французских булок, да выпей чаю."
+    "pangram": "Portez ce vieux whisky au juge blond qui fume."
   },
   "ka": {
     "letters": [
@@ -23,5 +35,21 @@
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     ],
     "pangram": "ჩიტს გაჰქონდა ჟღურტული ზეცაში, კვართიან საპყარს ძილს უფრთხობს ჭიქის ჯახუნი."
+  },
+  "pt": {
+    "letters": [
+      "abcdefghijklmnopqrstuvwxyz",
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    ],
+    "pangram": "Luís argüia à Júlia que “brações” faziam vexame."
+  },
+  "ru": {
+    "letters": [
+      "абвгдеёжзийклмнопрстуфхцчшщъыьэюя",
+      "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ",
+      "abcdefghijklmnopqrstuvwxyz",
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    ],
+    "pangram": "Съешь же ещё этих мягких французских булок, да выпей чаю."
   }
 }
