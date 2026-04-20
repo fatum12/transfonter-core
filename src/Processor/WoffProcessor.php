@@ -15,16 +15,8 @@ class WoffProcessor extends Processor
     public function process(Font $font, Context $ctx, Storage $result): void
     {
         $ttfPath = $result->get(Font::TYPE_TTF);
-        $target = $ctx->fontsTargetDir . '/' . Path::filename($ttfPath) . '.woff';
-
-        try {
-            Sfnt2woff::convert($ttfPath);
-        } catch (CommandError $e) {
-            // fallback
-            $ctx->logger->warning('sfnt2woff failed, try FontForge. ' . $e->getMessage());
-            @unlink($target);
-            FontForge::convert($ttfPath, $target);
-        }
+        $target = Path::uniqueFileName($ctx->fontsTargetDir . '/' . Path::filename($ttfPath) . '.woff');
+        FontForge::convert($ttfPath, $target);
 
         $result->set(Font::TYPE_WOFF, $target);
     }

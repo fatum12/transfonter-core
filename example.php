@@ -3,7 +3,6 @@ require __DIR__ . '/vendor/autoload.php';
 
 use Fatum12\TransfonterCore\FontManager;
 use Fatum12\TransfonterCore\Font;
-use Fatum12\TransfonterCore\TTCUnpacker;
 use Fatum12\TransfonterCore\Language;
 use Fatum12\TransfonterCore\FontDisplay;
 use Fatum12\TransfonterCore\Hinting;
@@ -45,11 +44,6 @@ $manager = new FontManager([
 $manager->setLogger($logger);
 $manager->loadFromDir(__DIR__ . '/fonts');
 $manager->process(__DIR__ . '/output');
-
-/*
-$ttc = new TTCUnpacker(__DIR__ . '/fonts/ttc/Iowan Old Style.ttc');
-$ttc->unpack(__DIR__ . '/output');
-*/
 
 $timeEnd = microtime(true);
 

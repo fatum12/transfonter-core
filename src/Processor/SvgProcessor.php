@@ -13,7 +13,7 @@ class SvgProcessor extends Processor
     public function process(Font $font, Context $ctx, Storage $result): void
     {
         $ttfPath = $result->get(Font::TYPE_TTF);
-        $target = $ctx->fontsTargetDir . '/' . Path::filename($ttfPath) . '.svg';
+        $target = Path::uniqueFileName($ctx->fontsTargetDir . '/' . Path::filename($ttfPath) . '.svg');
         FontForge::convert($ttfPath, $target);
 
         $result->set(Font::TYPE_SVG, $target);

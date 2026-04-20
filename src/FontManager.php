@@ -87,10 +87,10 @@ class FontManager
     public function loadFromDir(string $dir): void
     {
         if (!is_dir($dir)) {
-            throw new ArgumentException("Directory not found: {$dir}");
+            throw new ArgumentException("Directory not found: $dir");
         }
 
-        foreach (glob(Path::join($dir, '*.{ttf,otf,svg,woff,woff2}'), \GLOB_BRACE | \GLOB_NOSORT) as $file) {
+        foreach (glob(Path::join($dir, '*.{' . implode(',', Font::sourceTypes()) . '}'), \GLOB_BRACE | \GLOB_NOSORT) as $file) {
             $this->add($file);
         }
     }
@@ -102,6 +102,10 @@ class FontManager
 
     public function process(string $targetDir): void
     {
+        if (empty($this->files)) {
+            throw new ArgumentException('Empty files list');
+        }
+
         sort($this->files);
 
         $this->logger->info('start processing', [
@@ -168,47 +172,50 @@ class FontManager
             $converter->add(new DemoPageProcessor($demoLetters, $demoPangram));
         }
 
-        $this->progressTrigger
-            ->reset()
-            ->setTotalSteps(count($this->files) * $converter->stepsCount())
-        ;
+        $files = [];
+        $unpackDir = false;
 
-        $ctx = new Context();
-        $ctx->targetDir = $targetDir;
-        $ctx->fontsTargetDir = $fontsTargetDir;
-        $ctx->options = $this->options;
-        $ctx->logger = $this->logger;
-
-        foreach ($this->files as $file) {
-            $font = new Font($file);
-
-            $isWoff2 = $font->getType() == Font::TYPE_WOFF2;
-            if ($isWoff2) {
-                // fontforge can't work with woff2, so we need to decompress it first
-                $ttfFromWoff2 = Path::join(dirname($font->getPath()), Path::filename($font->getPath()) . '.ttf');
-                $this->logger->info('decompress woff2', [
-                    'source' => $font->getPath(),
-                    'target' => $ttfFromWoff2,
-                ]);
-                Woff2::decompress($font->getPath());
-                $font->setPath($ttfFromWoff2);
-            }
-
-            try {
-                $converter->convert($font, $ctx);
-            } catch (\Exception $e) {
-                $converter->finalize($ctx);
-                throw $e;
-            } finally {
-                if ($isWoff2) {
-                    // remove decompressed woff2
-                    $this->logger->info('unlink source woff2');
-                    @unlink($font->getPath());
+        try {
+            foreach ($this->files as $file) {
+                $font = new Font($file);
+                if ($font->isCollection()) {
+                    if (!$unpackDir) {
+                        $unpackDir = Path::createTempDirectory("ttc_");
+                    }
+                    $unpackedFiles = $font->unpack($unpackDir, false);
+                    $files = array_merge($files, $unpackedFiles);
+                } else {
+                    $files[] = $file;
                 }
             }
-        }
 
-        $converter->finalize($ctx);
+            $this->progressTrigger
+                ->reset()
+                ->setTotalSteps(count($files) * $converter->stepsCount());
+
+            $ctx = new Context();
+            $ctx->targetDir = $targetDir;
+            $ctx->fontsTargetDir = $fontsTargetDir;
+            $ctx->options = $this->options;
+            $ctx->logger = $this->logger;
+
+            foreach ($files as $file) {
+                $font = new Font($file);
+
+                try {
+                    $converter->convert($font, $ctx);
+                } catch (\Exception $e) {
+                    $converter->finalize($ctx);
+                    throw $e;
+                }
+            }
+
+            $converter->finalize($ctx);
+        } finally {
+            if ($unpackDir) {
+                Path::removeDirectory($unpackDir);
+            }
+        }
 
         $this->logger->info('end processing');
     }

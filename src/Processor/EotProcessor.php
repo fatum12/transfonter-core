@@ -13,7 +13,7 @@ class EotProcessor extends Processor
     public function process(Font $font, Context $ctx, Storage $result): void
     {
         $ttfPath = $result->get(Font::TYPE_TTF);
-        $target = $ctx->fontsTargetDir . '/' . Path::filename($ttfPath) . '.eot';
+        $target = Path::uniqueFileName($ctx->fontsTargetDir . '/' . Path::filename($ttfPath) . '.eot');
         Ttf2eot::convert($ttfPath, $target);
 
         $result->set(Font::TYPE_EOT, $target);

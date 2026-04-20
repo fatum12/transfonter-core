@@ -54,12 +54,22 @@ class File
         $type = $this->getType();
 
         if (isset(static::$magic[$type])) {
-            $search = static::$magic[$type];
             $fh = fopen($this->getPath(), 'rb');
-            $magic = fread($fh, strlen($search));
-            fclose($fh);
-
-            return $search === $magic;
+            if ($fh === false) {
+                throw new \RuntimeException("Cannot open file for reading: " . $this->getPath());
+            }
+            try {
+                foreach (static::$magic[$type] as $search) {
+                    rewind($fh);
+                    $magic = fread($fh, strlen($search));
+                    if  ($search === $magic) {
+                        return true;
+                    }
+                }
+                return false;
+            } finally {
+                fclose($fh);
+            }
         }
 
         return true;

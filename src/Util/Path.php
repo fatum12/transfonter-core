@@ -58,7 +58,7 @@ class Path
     public static function mkdir(string $path, int $mode = 0755, bool $recursive = true): void
     {
         if (!is_dir($path) && !@mkdir($path, $mode, $recursive)) {
-            throw new \RuntimeException("Unable to create directory: {$path}");
+            throw new \RuntimeException("Unable to create directory: $path");
         }
     }
 
@@ -85,6 +85,35 @@ class Path
             $func();
         } finally {
             chdir($oldDir);
+        }
+    }
+
+    public static function createTempDirectory(string $prefix = ''): string
+    {
+        $path = rtrim(sys_get_temp_dir(), '/') . '/' . $prefix . (new \DateTime())->format('U_u') . '_' . mt_rand();
+        if (!@mkdir($path, 0755, true)) {
+            throw new \RuntimeException("Unable to create temp directory: $path");
+        }
+        return $path;
+    }
+
+    public static function removeDirectory(string $path): void
+    {
+        if (!file_exists($path)) {
+            return;
+        }
+        if (!is_dir($path)) {
+            unlink($path);
+            return;
+        }
+        foreach (new \DirectoryIterator($path) as $file) {
+            if ($file->isDot()) {
+                continue;
+            }
+            self::removeDirectory($file->getPathname());
+        }
+        if (!@rmdir($path)) {
+            throw new \RuntimeException("Unable to delete directory: $path");
         }
     }
 }

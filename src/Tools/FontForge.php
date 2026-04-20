@@ -41,7 +41,7 @@ class FontForge
         return $result;
     }
 
-    public static function unpackTTC(string $source, string $targetDir): array
+    public static function unpackTTC(string $source, string $targetDir, bool $withFallback = true): array
     {
         $command = sprintf(
             'fontforge -script "%s/ttc2ttf.pe" "%s" "%s"',
@@ -53,7 +53,7 @@ class FontForge
         try {
             $result = Shell::exec($command);
         } catch (CommandError $e) {
-            if ($e->getCode() != Shell::STATUS_TIMEOUT && filesize($source) <= self::UNPACK_ALTER_SIZE_LIMIT) {
+            if ($withFallback && $e->getCode() != Shell::STATUS_TIMEOUT && filesize($source) <= self::UNPACK_ALTER_SIZE_LIMIT) {
                 return self::unpackTTCAlter($source, $targetDir);
             }
             throw $e;

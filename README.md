@@ -8,7 +8,6 @@ This package is part of https://transfonter.org
 
 * [FontForge](http://fontforge.github.io/)
 * [ttf2eot](https://code.google.com/p/ttf2eot/)
-* [woff2_compress](https://github.com/google/woff2)
 * [ttfautohint](http://www.freetype.org/ttfautohint/)
 * [pyftsubset](https://github.com/fonttools/fonttools)
 
