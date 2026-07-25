@@ -24,6 +24,7 @@ class SubsetsProcessor extends Processor
             $characters === '' &&
             empty($userUnicodes)
         ) {
+            $ctx->logger->info('subsets not configured, skipping');
             return;
         }
 

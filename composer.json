@@ -2,8 +2,8 @@
   "name": "fatum12/transfonter-core",
   "description": "",
   "require": {
-    "php": ">=7.1.0",
-    "psr/log": "^1.1"
+    "php": ">=8.0.0",
+    "psr/log": "^3"
   },
   "autoload": {
     "psr-4": {

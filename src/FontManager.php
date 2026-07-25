@@ -90,8 +90,14 @@ class FontManager
             throw new ArgumentException("Directory not found: $dir");
         }
 
-        foreach (glob(Path::join($dir, '*.{' . implode(',', Font::sourceTypes()) . '}'), \GLOB_BRACE | \GLOB_NOSORT) as $file) {
-            $this->add($file);
+        $allowedExtensions = Font::sourceTypes();
+        foreach (new \DirectoryIterator($dir) as $fileInfo) {
+            if ($fileInfo->isDot() || !$fileInfo->isFile()) {
+                continue;
+            }
+            if (in_array($fileInfo->getExtension(), $allowedExtensions)) {
+                $this->add($fileInfo->getPathname());
+            }
         }
     }
 
