@@ -9,12 +9,12 @@ class FontConverter
     /**
      * @var ProgressTrigger
      */
-    private $progressTrigger;
+    private ProgressTrigger $progressTrigger;
 
     /**
      * @var Processor[]
      */
-    private $processors = [];
+    private array $processors = [];
 
     public function __construct(ProgressTrigger $progressTrigger)
     {

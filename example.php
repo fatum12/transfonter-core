@@ -10,7 +10,7 @@ use Fatum12\TransfonterCore\Util\Shell;
 use Psr\Log\AbstractLogger;
 
 $logger = new class extends AbstractLogger {
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = array()): void
     {
         $msg = strtoupper($level) . ': ' . $message;
         if ($context) {

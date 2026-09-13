@@ -3,6 +3,7 @@
 namespace Fatum12\TransfonterCore;
 
 use Fatum12\TransfonterCore\Exception\ArgumentException;
+use Fatum12\TransfonterCore\Exception\CommandError;
 use Fatum12\TransfonterCore\Processor\AutohintProcessor;
 use Fatum12\TransfonterCore\Processor\Base64CssWriter;
 use Fatum12\TransfonterCore\Processor\CssWriter;
@@ -106,7 +107,7 @@ class FontManager
         return $this->options->get($key, $default);
     }
 
-    public function process(string $targetDir): void
+    public function process(string $targetDir): array
     {
         if (empty($this->files)) {
             throw new ArgumentException('Empty files list');
@@ -180,6 +181,7 @@ class FontManager
 
         $files = [];
         $unpackDir = false;
+        $result = [];
 
         try {
             foreach ($this->files as $file) {
@@ -210,6 +212,12 @@ class FontManager
 
                 try {
                     $converter->convert($font, $ctx);
+                    $result['success'][] = $file;
+                } catch (CommandError $e) {
+                    $result['failed'][] = [
+                        'file' => $file,
+                        'error' => $e,
+                    ];
                 } catch (\Exception $e) {
                     $converter->finalize($ctx);
                     throw $e;
@@ -224,5 +232,6 @@ class FontManager
         }
 
         $this->logger->info('end processing');
+        return $result;
     }
 }
