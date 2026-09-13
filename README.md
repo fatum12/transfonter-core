@@ -7,13 +7,13 @@ This package is part of https://transfonter.org
 ## Dependencies
 
 * [FontForge](http://fontforge.github.io/)
-* [ttf2eot](https://code.google.com/p/ttf2eot/)
+* [ttf2eot](https://github.com/wget/ttf2eot)
 * [ttfautohint](http://www.freetype.org/ttfautohint/)
 * [pyftsubset](https://github.com/fonttools/fonttools)
 
 ## Installation
 
-The minimum required PHP version is 7.1
+The minimum required PHP version is 8
 
 Installing via [Composer](https://getcomposer.org):
 
@@ -24,7 +24,7 @@ Installing via [Composer](https://getcomposer.org):
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://bitbucket.org/fatum12/transfonter-core.git"
+      "url": "git@github.com:fatum12/transfonter-core.git"
     }
   ],
   "require": {
