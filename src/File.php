@@ -2,6 +2,8 @@
 
 namespace Fatum12\TransfonterCore;
 
+use Fatum12\TransfonterCore\Util\Path;
+
 class File
 {
     /**
@@ -32,7 +34,7 @@ class File
     public function getType(): string
     {
         if (!$this->type) {
-            $this->type = strtolower(pathinfo($this->path, \PATHINFO_EXTENSION));
+            $this->type = Path::extension($this->path);
         }
 
         return $this->type;

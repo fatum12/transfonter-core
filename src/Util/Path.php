@@ -27,6 +27,11 @@ class Path
         return pathinfo($file, PATHINFO_FILENAME);
     }
 
+    public static function extension(string $file): string
+    {
+        return strtolower(pathinfo($file, PATHINFO_EXTENSION));
+    }
+
     public static function normalize(string $path): string
     {
         $path = str_replace('\\', '/', $path);
