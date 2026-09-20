@@ -28,6 +28,7 @@ class Font extends File
     const TYPE_SFD = 'sfd';
     const TYPE_T11 = 't11';
     const TYPE_T42 = 't42';
+    const TYPE_AFM = 'afm';
 
     /**
      * @var array
@@ -75,6 +76,7 @@ class Font extends File
         self::TYPE_SFD => ['SplineFontDB'],
         self::TYPE_T11 => ['%!PS'],
         self::TYPE_T42 => ['%!PS'],
+        self::TYPE_AFM => ['StartFontMetrics'],
     ];
 
     /**

@@ -13,7 +13,7 @@ class Shell
     /**
      * @var callable[]
      */
-    private static $modifiers = [];
+    private static array $modifiers = [];
 
     /**
      * @param string $command
